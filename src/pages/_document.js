@@ -31,8 +31,16 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html {...this.helmetHtmlAttrComponents}>
-        <Head>{this.helmetHeadComponents}</Head>
+      <Html {...this.helmetHtmlAttrComponents} className={'font-raleway'}>
+        <Head>
+          {this.helmetHeadComponents}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@400;700&display=swap"
+            rel="stylesheet"
+          />
+        </Head>
         <body {...this.helmetBodyAttrComponents}>
           <Main />
           <NextScript />
