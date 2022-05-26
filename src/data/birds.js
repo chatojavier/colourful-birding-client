@@ -235,11 +235,3 @@ export const QUERY_BIRD_SEO_BY_SLUG = gql`
     }
   }
 `;
-
-// export const QUERY_BIRD_PER_PAGE = gql`
-//   query BirdPerPage {
-//     allSettings {
-//       readingSettingsBirdsPerPage
-//     }
-//   }
-// `;
