@@ -149,10 +149,9 @@ export async function getStaticPaths() {
   // remaining segments to make up the path or URI
 
   const paths = pages
-    .filter(({ uri }) => typeof uri === 'string')
+    .filter(({ uri }) => typeof uri === 'string' && uri !== '/')
     .map(({ uri }) => {
       const segments = uri.split('/').filter((seg) => seg !== '');
-
       return {
         params: {
           slugParent: segments.shift(),
@@ -161,6 +160,7 @@ export async function getStaticPaths() {
       };
     });
 
+  console.log(paths);
   return {
     paths,
     fallback: false,
