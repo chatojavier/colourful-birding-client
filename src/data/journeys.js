@@ -134,62 +134,6 @@ export const QUERY_JOURNEY_BY_SLUG = gql`
   }
 `;
 
-export const QUERY_JOURNEYS_BY_CATEGORY_ID_INDEX = gql`
-  ${JOURNEY_FIELDS}
-  query JourneysByRegionId($categoryId: Int!) {
-    journeys(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...JourneyFields
-      }
-    }
-  }
-`;
-
-export const QUERY_JOURNEYS_BY_CATEGORY_ID_ARCHIVE = gql`
-  ${JOURNEY_FIELDS}
-  query JourneysByRegionId($categoryId: Int!) {
-    journeys(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...JourneyFields
-        excerpt
-        journeyInfo {
-          price
-          programedDates {
-            to
-            from
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const QUERY_JOURNEYS_BY_CATEGORY_ID = gql`
-  ${JOURNEY_FIELDS}
-  ${JOURNEY_INFO}
-  query JourneysByRegionId($categoryId: Int!) {
-    journeys(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...JourneyFields
-        ...JourneyInfo
-        content
-        excerpt
-        featuredImage {
-          node {
-            altText
-            caption
-            sourceUrl
-            srcSet
-            sizes
-            id
-          }
-        }
-        modified
-      }
-    }
-  }
-`;
-
 export const QUERY_JOURNEYS_BY_AUTHOR_SLUG_INDEX = gql`
   ${JOURNEY_FIELDS}
   query JourneyByAuthorSlugIndex($slug: String!) {

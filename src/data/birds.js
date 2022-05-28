@@ -95,58 +95,6 @@ export const QUERY_BIRD_BY_SLUG = gql`
   }
 `;
 
-export const QUERY_BIRDS_BY_CATEGORY_ID_INDEX = gql`
-  ${BIRD_FIELDS}
-  query BirdsByRegionId($categoryId: Int!) {
-    birds(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...BirdFields
-      }
-    }
-  }
-`;
-
-export const QUERY_BIRDS_BY_CATEGORY_ID_ARCHIVE = gql`
-  ${BIRD_FIELDS}
-  query BirdsByRegionId($categoryId: Int!) {
-    birds(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...BirdFields
-        birdInfo {
-          familyName
-        }
-      }
-    }
-  }
-`;
-
-export const QUERY_BIRDS_BY_CATEGORY_ID = gql`
-  ${BIRD_FIELDS}
-  query BirdsByRegionId($categoryId: Int!) {
-    birds(where: { categoryId: $categoryId, hasPassword: false }) {
-      nodes {
-        ...BirdFields
-        content
-        excerpt
-        birdInfo {
-          familyName
-        }
-        featuredImage {
-          node {
-            altText
-            caption
-            sourceUrl
-            srcSet
-            sizes
-            id
-          }
-        }
-        modified
-      }
-    }
-  }
-`;
-
 export const QUERY_BIRDS_BY_AUTHOR_SLUG_INDEX = gql`
   ${BIRD_FIELDS}
   query BirdByAuthorSlugIndex($slug: String!) {

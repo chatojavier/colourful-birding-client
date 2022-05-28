@@ -6,9 +6,6 @@ import {
   QUERY_ALL_BIRDS_ARCHIVE,
   QUERY_ALL_BIRDS,
   QUERY_BIRD_BY_SLUG,
-  QUERY_BIRDS_BY_CATEGORY_ID_INDEX,
-  QUERY_BIRDS_BY_CATEGORY_ID_ARCHIVE,
-  QUERY_BIRDS_BY_CATEGORY_ID,
   QUERY_BIRD_SEO_BY_SLUG,
 } from 'data/birds';
 
@@ -144,35 +141,13 @@ export async function getAllBirds(options = {}) {
  * getBirdsByRegionId
  */
 
-const birdsByRegionIdIncludesTypes = {
-  all: QUERY_BIRDS_BY_CATEGORY_ID,
-  archive: QUERY_BIRDS_BY_CATEGORY_ID_ARCHIVE,
-  index: QUERY_BIRDS_BY_CATEGORY_ID_INDEX,
-};
-
 export async function getBirdsByRegionId({ regionId, ...options }) {
-  const { queryIncludes = 'index' } = options;
-
-  const apolloClient = getApolloClient();
-
-  let birdsData;
-
-  try {
-    birdsData = await apolloClient.query({
-      query: birdsByRegionIdIncludesTypes[queryIncludes],
-      variables: {
-        regionId,
-      },
-    });
-  } catch (e) {
-    console.log(`[birds][getBirdsByRegionId] Failed to query bird data: ${e.message}`);
-    throw e;
-  }
-
-  const birds = birdsData?.data.birds.nodes;
+  const { birds } = await getAllBirds(options);
+  const birdsByRegion = birds.filter((bird) => bird.regions.some((region) => region.databaseId === regionId));
+  console.log(birdsByRegion);
 
   return {
-    birds: Array.isArray(birds) && birds.map(mapBirdData),
+    birds: birdsByRegion,
   };
 }
 
@@ -252,9 +227,10 @@ export function mapBirdData(bird = {}) {
 
 export async function getRelatedBirds(regions, birdId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
+  console.log(regions[0]);
 
   let related = {
-    region: regions && regions.shift(),
+    region: regions && [...regions].shift(),
   };
 
   if (related.region) {

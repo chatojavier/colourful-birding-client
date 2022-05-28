@@ -30,7 +30,7 @@ export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
     datePublished: datePublished ? datePublished.toISOString() : '',
     dateModified: dateModified ? dateModified.toISOString() : datePublished.toISOString(),
     description: excerpt,
-    keywords: [categories.map(({ name }) => `${name}`).join(', ')],
+    keywords: categories && [categories.map(({ name }) => `${name}`).join(', ')],
     copyrightYear: datePublished ? datePublished.getFullYear() : '',
     author: {
       '@type': 'Person',
