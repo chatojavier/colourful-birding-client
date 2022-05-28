@@ -1,5 +1,6 @@
 import { getApolloClient } from 'lib/apollo-client';
 import { sortObjectsByDate } from 'lib/datetime';
+import { sortObjectsRamdomly } from 'lib/util';
 
 import {
   QUERY_ALL_BIRDS_INDEX,
@@ -227,7 +228,6 @@ export function mapBirdData(bird = {}) {
 
 export async function getRelatedBirds(regions, birdId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
-  console.log(regions[0]);
 
   let related = {
     region: regions && [...regions].shift(),
@@ -240,9 +240,9 @@ export async function getRelatedBirds(regions, birdId, count = 5) {
     });
 
     const filtered = birds.filter(({ databaseId }) => databaseId !== birdId);
-    const sorted = sortObjectsByDate(filtered);
+    sortObjectsRamdomly(filtered);
 
-    related.birds = sorted.map((bird) => ({ title: bird.title, slug: bird.slug }));
+    related.birds = filtered.map((bird) => ({ title: bird.title, slug: bird.slug }));
   }
 
   if (!Array.isArray(related.birds) || related.birds.length === 0) {
