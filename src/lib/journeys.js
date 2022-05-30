@@ -230,8 +230,9 @@ export function mapJourneyData(journey = {}) {
 export async function getRelatedJourneys(regions, journeyId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
 
+  const regionsUpdated = [...regions];
   let related = {
-    region: regions && [...regions].shift(),
+    region: regionsUpdated.shift(),
   };
 
   if (related.region) {
@@ -241,18 +242,18 @@ export async function getRelatedJourneys(regions, journeyId, count = 5) {
     });
 
     const filtered = journeys.filter(({ databaseId }) => databaseId !== journeyId);
-    sortObjectsRamdomly(filtered);
+    filtered.length > 1 && sortObjectsRamdomly(filtered);
 
     related.journeys = filtered.map((journey) => ({ title: journey.title, slug: journey.slug }));
   }
 
   if (!Array.isArray(related.journeys) || related.journeys.length === 0) {
-    const relatedJourneys = await getRelatedJourneys(regions, journeyId, count);
+    const relatedJourneys = await getRelatedJourneys(regionsUpdated, journeyId, count);
     related = relatedJourneys || related;
   }
 
   if (Array.isArray(related.journeys) && related.journeys.length > count) {
-    return related.journeys.slice(0, count);
+    related.journeys = related.journeys.slice(0, count);
   }
 
   return related;

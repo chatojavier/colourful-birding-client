@@ -228,8 +228,9 @@ export function mapBirdData(bird = {}) {
 export async function getRelatedBirds(regions, birdId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
 
+  const regionsUpdated = [...regions];
   let related = {
-    region: regions && [...regions].shift(),
+    region: regionsUpdated.shift(),
   };
 
   if (related.region) {
@@ -239,18 +240,18 @@ export async function getRelatedBirds(regions, birdId, count = 5) {
     });
 
     const filtered = birds.filter(({ databaseId }) => databaseId !== birdId);
-    sortObjectsRamdomly(filtered);
+    filtered.length > 1 && sortObjectsRamdomly(filtered);
 
     related.birds = filtered.map((bird) => ({ title: bird.title, slug: bird.slug }));
   }
 
   if (!Array.isArray(related.birds) || related.birds.length === 0) {
-    const relatedBirds = await getRelatedBirds(regions, birdId, count);
+    const relatedBirds = await getRelatedBirds(regionsUpdated, birdId, count);
     related = relatedBirds || related;
   }
 
   if (Array.isArray(related.birds) && related.birds.length > count) {
-    return related.birds.slice(0, count);
+    related.birds = related.birds.slice(0, count);
   }
 
   return related;
