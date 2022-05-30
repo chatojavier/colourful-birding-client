@@ -145,7 +145,6 @@ export async function getAllBirds(options = {}) {
 export async function getBirdsByRegionId({ regionId, ...options }) {
   const { birds } = await getAllBirds(options);
   const birdsByRegion = birds.filter((bird) => bird.regions.some((region) => region.databaseId === regionId));
-  console.log(birdsByRegion);
 
   return {
     birds: birdsByRegion,
