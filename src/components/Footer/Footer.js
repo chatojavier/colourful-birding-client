@@ -1,6 +1,5 @@
 import useSite from 'hooks/use-site';
 import Container from 'components/Container';
-import Image from 'next/image';
 import Divider from 'components/Divider';
 import styles from './Footer.module.scss';
 import { findMenuByLocation } from 'lib/menus';
@@ -40,7 +39,13 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="flex w-[120px] md:w-[150px]"
             >
-              <Image src="/images/colourful-footer-logo.png" alt="Colourful Peru" width={150} height={55} />
+              <img
+                src="https://admin.colourfulbirding.com/wp-content/uploads/images/colourful-footer-logo.png"
+                alt="Colourful Peru"
+                width={150}
+                height={55}
+                loadeing="lazy"
+              />
             </a>
           </div>
           <p className="text-justify text-xxs md:text-xs">

@@ -1,9 +1,9 @@
 {
-  "name": "next-wordpress-starter",
-  "homepage": "https://next-wordpress-starter.spacejelly.dev",
+  "name": "colourful_birding_website",
+  "homepage": "https://colourfulbirding.com",
   "version": "0.1.0",
   "license": "MIT",
-  "author": "Colby Fayock <hello@colbyfayock.com>",
+  "author": "Javier Benavides<javier@javierbenavides.com>",
   "scripts": {
     "build": "next build",
     "wpe-build": "npm run build",
@@ -43,7 +43,6 @@
     "style.css": "^1.0.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.1.6",
     "autoprefixer": "^10.4.7",
     "eslint": "8.11.0",
     "eslint-config-next": "^12.1.6",

@@ -29,6 +29,9 @@ module.exports = withPlugins([[indexSearch], [feed], [sitemap], [socialImages]],
 
     OG_IMAGE_DIRECTORY: '/images/og',
   },
+
+  // Time in seconds of no pages generating during static
+  staticPageGenerationTimeout: 1000,
 });
 
 /**
