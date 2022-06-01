@@ -44,7 +44,7 @@ jobs:
 
       - run: yarn build && yarn export
         env:
-          WORDPRESS_GRAPHQL_ENDPOINT: "${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}"
+          WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
           BIRDS_PER_PAGE: 12
           WORDPRESS_PLUGIN_SEO: true
           WORDPRESS_MENU_LOCATION_NAVIGATION: MAIN_MENU
