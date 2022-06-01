@@ -20,7 +20,14 @@ module.exports = {
       black: '#000',
       white: '#fff',
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        colourfull: 'linear-gradient(90deg, #00FF9D 0%, #0086FF 33%, #0A19A1 68%, #AC38F6 100%)',
+      },
+      fontSize: {
+        xxs: '0.625rem',
+      },
+    },
   },
   plugins: [
     plugin(function ({ addBase, theme }) {

@@ -1,9 +1,9 @@
 {
-  "name": "next-wordpress-starter",
-  "homepage": "https://next-wordpress-starter.spacejelly.dev",
+  "name": "colourful_birding_website",
+  "homepage": "https://colourfulbirding.com",
   "version": "0.1.0",
   "license": "MIT",
-  "author": "Colby Fayock <hello@colbyfayock.com>",
+  "author": "Javier Benavides<javier@javierbenavides.com>",
   "scripts": {
     "build": "next build",
     "wpe-build": "npm run build",
@@ -52,7 +52,8 @@
     "husky": "^7.0.4",
     "lint-staged": ">=12.4.1",
     "postcss": "^8.4.14",
-    "prettier": "2.6.0",
+    "prettier": "^2.6.2",
+    "prettier-plugin-tailwindcss": "^0.1.11",
     "tailwindcss": "^3.0.24"
   },
   "repository": {

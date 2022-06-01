@@ -31,3 +31,14 @@ export function removeExtraSpaces(text) {
   if (typeof text !== 'string') return;
   return text.replace(/\s+/g, ' ').trim();
 }
+
+/**
+ * sortObjectsRamdomly
+ */
+
+export function sortObjectsRamdomly(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}

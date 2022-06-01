@@ -1,5 +1,6 @@
 import { getApolloClient } from 'lib/apollo-client';
 import { sortObjectsByDate } from 'lib/datetime';
+import { sortObjectsRamdomly } from 'lib/util';
 
 import {
   QUERY_ALL_BIRDS_INDEX,
@@ -144,7 +145,6 @@ export async function getAllBirds(options = {}) {
 export async function getBirdsByRegionId({ regionId, ...options }) {
   const { birds } = await getAllBirds(options);
   const birdsByRegion = birds.filter((bird) => bird.regions.some((region) => region.databaseId === regionId));
-  console.log(birdsByRegion);
 
   return {
     birds: birdsByRegion,
@@ -227,10 +227,10 @@ export function mapBirdData(bird = {}) {
 
 export async function getRelatedBirds(regions, birdId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
-  console.log(regions[0]);
 
+  const regionsUpdated = [...regions];
   let related = {
-    region: regions && [...regions].shift(),
+    region: regionsUpdated.shift(),
   };
 
   if (related.region) {
@@ -240,18 +240,18 @@ export async function getRelatedBirds(regions, birdId, count = 5) {
     });
 
     const filtered = birds.filter(({ databaseId }) => databaseId !== birdId);
-    const sorted = sortObjectsByDate(filtered);
+    filtered.length > 1 && sortObjectsRamdomly(filtered);
 
-    related.birds = sorted.map((bird) => ({ title: bird.title, slug: bird.slug }));
+    related.birds = filtered.map((bird) => ({ title: bird.title, slug: bird.slug }));
   }
 
   if (!Array.isArray(related.birds) || related.birds.length === 0) {
-    const relatedBirds = await getRelatedBirds(regions, birdId, count);
+    const relatedBirds = await getRelatedBirds(regionsUpdated, birdId, count);
     related = relatedBirds || related;
   }
 
   if (Array.isArray(related.birds) && related.birds.length > count) {
-    return related.birds.slice(0, count);
+    related.birds = related.birds.slice(0, count);
   }
 
   return related;

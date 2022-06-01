@@ -6,11 +6,9 @@ import {
   QUERY_ALL_JOURNEYS_ARCHIVE,
   QUERY_ALL_JOURNEYS,
   QUERY_JOURNEY_BY_SLUG,
-  QUERY_JOURNEYS_BY_CATEGORY_ID_INDEX,
-  QUERY_JOURNEYS_BY_CATEGORY_ID_ARCHIVE,
-  QUERY_JOURNEYS_BY_CATEGORY_ID,
   QUERY_JOURNEY_SEO_BY_SLUG,
 } from 'data/journeys';
+import { sortObjectsRamdomly } from './util';
 
 /**
  * journeyPathBySlug
@@ -144,35 +142,14 @@ export async function getAllJourneys(options = {}) {
  * getJourneysByRegionId
  */
 
-const journeysByRegionIdIncludesTypes = {
-  all: QUERY_JOURNEYS_BY_CATEGORY_ID,
-  archive: QUERY_JOURNEYS_BY_CATEGORY_ID_ARCHIVE,
-  index: QUERY_JOURNEYS_BY_CATEGORY_ID_INDEX,
-};
-
 export async function getJourneysByRegionId({ regionId, ...options }) {
-  const { queryIncludes = 'index' } = options;
-
-  const apolloClient = getApolloClient();
-
-  let journeysData;
-
-  try {
-    journeysData = await apolloClient.query({
-      query: journeysByRegionIdIncludesTypes[queryIncludes],
-      variables: {
-        regionId,
-      },
-    });
-  } catch (e) {
-    console.log(`[journeys][getJourneysByRegionId] Failed to query journey data: ${e.message}`);
-    throw e;
-  }
-
-  const journeys = journeysData?.data.journeys.nodes;
+  const { journeys } = await getAllJourneys(options);
+  const journeysByRegion = journeys.filter((journey) =>
+    journey.regions.some((region) => region.databaseId === regionId)
+  );
 
   return {
-    journeys: Array.isArray(journeys) && journeys.map(mapJourneyData),
+    journeys: journeysByRegion,
   };
 }
 
@@ -253,8 +230,9 @@ export function mapJourneyData(journey = {}) {
 export async function getRelatedJourneys(regions, journeyId, count = 5) {
   if (!Array.isArray(regions) || regions.length === 0) return;
 
+  const regionsUpdated = [...regions];
   let related = {
-    region: regions && regions.shift(),
+    region: regionsUpdated.shift(),
   };
 
   if (related.region) {
@@ -264,18 +242,18 @@ export async function getRelatedJourneys(regions, journeyId, count = 5) {
     });
 
     const filtered = journeys.filter(({ databaseId }) => databaseId !== journeyId);
-    const sorted = sortObjectsByDate(filtered);
+    filtered.length > 1 && sortObjectsRamdomly(filtered);
 
-    related.journeys = sorted.map((journey) => ({ title: journey.title, slug: journey.slug }));
+    related.journeys = filtered.map((journey) => ({ title: journey.title, slug: journey.slug }));
   }
 
   if (!Array.isArray(related.journeys) || related.journeys.length === 0) {
-    const relatedJourneys = await getRelatedJourneys(regions, journeyId, count);
+    const relatedJourneys = await getRelatedJourneys(regionsUpdated, journeyId, count);
     related = relatedJourneys || related;
   }
 
   if (Array.isArray(related.journeys) && related.journeys.length > count) {
-    return related.journeys.slice(0, count);
+    related.journeys = related.journeys.slice(0, count);
   }
 
   return related;

@@ -92,13 +92,13 @@ export function findMenuByLocation(menus, location) {
   if (!Array.isArray(location)) {
     location = [location];
   }
+  const menuLocations = location.map((loc) => loc.toUpperCase());
 
-  const searchLocations = [...location];
   do {
-    menu = menus.find(function ({ locations }) {
-      return locations.map((loc) => loc.toUpperCase()).includes(searchLocations.shift()?.toUpperCase());
-    });
-  } while (!menu && location.length > 0);
+    menu = menus.find(({ locations }) =>
+      locations.map((loc) => loc.toUpperCase()).some((loc) => menuLocations.includes(loc))
+    );
+  } while (!menu && menuLocations.length > 0);
 
   if (!menu) {
     return null;
