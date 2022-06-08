@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     fontFamily: {
       raleway: ['Raleway', 'sans-serif'],
-      bebas: ['Bebas Neue', 'cursive'],
+      bebas: ['Bebas Neue'],
     },
     colors: {
       green: '#00FF9D',
@@ -19,6 +19,8 @@ module.exports = {
       darkgrey: '#404040',
       black: '#000',
       white: '#fff',
+      primary: '#0A19A1',
+      secondary: '#AC38F6',
     },
     extend: {
       backgroundImage: {

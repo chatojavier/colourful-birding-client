@@ -42,3 +42,12 @@ export function sortObjectsRamdomly(arr) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
+
+/**
+ * getFirstPathname
+ */
+
+export function getFirstPathname(url) {
+  if (typeof url !== 'string') return;
+  return url.split('/')[1];
+}

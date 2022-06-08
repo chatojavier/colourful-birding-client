@@ -1,24 +1,19 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import useSite from 'hooks/use-site';
-import { findMenuByLocation, MENU_LOCATION_NAVIGATION_DEFAULT } from 'lib/menus';
-import NavListItem from 'components/NavListItem';
-import SocialMediaIcons from 'components/SocialMediaIcons/SocialMediaIcons';
 import Divider from 'components/Divider';
 import BurgerButton from 'components/BurgerButton';
+import NavMenu from 'components/NavMenu';
 
 const Nav = () => {
-  const { metadata = {}, menus } = useSite();
+  const [isOpen, setIsOpen] = useState(false);
+  const { metadata = {} } = useSite();
   const { title } = metadata;
-
-  const navigation = findMenuByLocation(menus, [
-    process.env.WORDPRESS_MENU_LOCATION_NAVIGATION,
-    MENU_LOCATION_NAVIGATION_DEFAULT,
-  ]);
 
   return (
     <nav>
-      <div className="navbar | container mx-auto flex items-center justify-between p-2">
-        <div className="nav-left | flex items-center space-x-16">
+      <div className="navbar | container mx-auto flex items-center justify-between p-2 md:space-x-8">
+        <div className="nav-left | shrink-0">
           <Link href="/">
             <a>
               <img
@@ -30,16 +25,9 @@ const Nav = () => {
               />
             </a>
           </Link>
-          <ul className="nav__menu | flex hidden space-x-4 text-xs uppercase text-blue md:block">
-            {navigation?.map((listItem) => {
-              return <NavListItem key={listItem.id} className="" item={listItem} />;
-            })}
-          </ul>
         </div>
-        <div className="nav-right | hidden text-blue md:block">
-          <SocialMediaIcons iconSize={14} />
-        </div>
-        <BurgerButton />
+        <NavMenu isOpen={isOpen} />
+        <BurgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="mobileMenuBtn | md:hidden" />
       </div>
       <Divider />
     </nav>

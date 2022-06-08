@@ -3,7 +3,7 @@ import Container from 'components/Container';
 import Divider from 'components/Divider';
 import styles from './Footer.module.scss';
 import { findMenuByLocation } from 'lib/menus';
-import Link from 'next/link';
+import MenuListItem from 'components/MenuListItem';
 
 const Footer = () => {
   const { menus } = useSite();
@@ -22,11 +22,7 @@ const Footer = () => {
             className={`footer__menu | mt-2 mb-8 flex w-full flex-col items-center space-y-4 text-xxs uppercase text-blue md:flex-row md:justify-center md:space-y-0 md:space-x-4 md:text-xs lg:absolute ${styles.menu}`}
           >
             {navigation?.map((menuItem) => (
-              <li key={menuItem.label} className="footer__menu-item | flex items-center">
-                <Link href={menuItem.path}>
-                  <a>{menuItem.label}</a>
-                </Link>
-              </li>
+              <MenuListItem key={menuItem.id} item={menuItem} />
             ))}
           </ul>
         )}

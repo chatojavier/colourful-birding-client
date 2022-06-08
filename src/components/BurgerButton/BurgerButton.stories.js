@@ -10,13 +10,18 @@ export default {
   },
 };
 
-const Template = () => <BurgerButton />;
+const Template = (args) => (
+  <div className="p-8">
+    <BurgerButton {...args} />
+  </div>
+);
 
 export const Default = Template.bind({});
-Default.decorators = [
-  (BurgerButton) => (
-    <div className="p-8">
-      <BurgerButton />
-    </div>
-  ),
-];
+Default.args = {
+  isOpen: false,
+};
+
+export const Open = Template.bind({});
+Open.args = {
+  isOpen: true,
+};
