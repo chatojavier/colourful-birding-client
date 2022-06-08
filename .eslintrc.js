@@ -15,6 +15,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
     'next/core-web-vitals',
+    'plugin:storybook/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -31,4 +32,5 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@next/next/no-img-element': 'off',
   },
+  ignorePatterns: ['!.storybook'],
 };

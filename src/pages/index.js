@@ -1,6 +1,7 @@
 import useSite from 'hooks/use-site';
 import { getPaginatedPosts } from 'lib/posts';
 import { WebsiteJsonLd } from 'lib/json-ld';
+import PropTypes from 'prop-types';
 
 import Layout from 'components/Layout';
 import Header from 'components/Header';
@@ -73,3 +74,8 @@ export async function getStaticProps() {
     },
   };
 }
+
+Home.propTypes = {
+  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pagination: PropTypes.object.isRequired,
+};
