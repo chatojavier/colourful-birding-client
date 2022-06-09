@@ -23,7 +23,7 @@ module.exports = function socialImages(nextConfig = {}) {
     outputDirectory,
     outputName,
     getData: getAllPosts,
-    generate: async ({ posts = [] }) => {
+    generate: async ({ posts = [], birds = [], journeys = [] }) => {
       mkdirp(outputDirectory);
 
       const homepage = pkg.homepage && pkg.homepage.replace(/http(s)?:\/\//, '');
@@ -31,8 +31,10 @@ module.exports = function socialImages(nextConfig = {}) {
 
       const browser = await chromium.launch();
 
+      const allPostTypes = [...posts, ...birds, ...journeys];
+
       await Promise.all(
-        posts.map(async (post) => {
+        allPostTypes.map(async (post) => {
           const { title, slug } = post;
           let html = template;
 

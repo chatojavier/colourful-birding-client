@@ -57,7 +57,7 @@ export default function TemplateArchive({
 
       <Section>
         <Container>
-          <SectionTitle>Posts</SectionTitle>
+          <SectionTitle>{Title || title}</SectionTitle>
           {Array.isArray(posts) && (
             <>
               <ul className={styles.posts}>

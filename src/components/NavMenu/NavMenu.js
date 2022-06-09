@@ -20,7 +20,7 @@ const NavMenu = ({ isOpen }) => {
     >
       <ul className="nav__menu | space-y-8 font-bebas text-2xl uppercase text-primary md:flex md:items-center md:space-y-0 md:space-x-4 md:font-raleway md:text-xs">
         {navigation?.map((listItem) => {
-          return <MenuListItem key={listItem.id} item={listItem} />;
+          return <MenuListItem key={listItem.id} item={listItem} className="" />;
         })}
       </ul>
       <SocialMediaIcons iconSize={14} />

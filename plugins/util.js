@@ -96,16 +96,56 @@ async function getAllPosts(apolloClient, process, verbose = false) {
           }
         }
       }
+      birds(first: 10000) {
+        edges {
+          node {
+            title
+            excerpt
+            databaseId
+            slug
+            date
+            modified
+            regions {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+      journeys(first: 10000) {
+        edges {
+          node {
+            title
+            excerpt
+            databaseId
+            slug
+            date
+            modified
+            regions {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
     }
   `;
 
   let posts = [];
+  let birds = [];
+  let journeys = [];
 
   try {
     const data = await apolloClient.query({ query });
-    const nodes = [...data.data.posts.edges.map(({ node = {} }) => node)];
 
-    posts = nodes.map((post) => {
+    const postsNodes = [...data.data.posts.edges.map(({ node = {} }) => node)];
+    posts = postsNodes.map((post) => {
       const data = { ...post };
 
       if (data.author) {
@@ -125,9 +165,45 @@ async function getAllPosts(apolloClient, process, verbose = false) {
       return data;
     });
 
+    const birdsNodes = [...data.data.birds.edges.map(({ node = {} }) => node)];
+    birds = birdsNodes.map((bird) => {
+      const data = { ...bird };
+
+      if (data.regions) {
+        data.regions = data.regions.edges.map(({ node }) => node.name);
+      }
+
+      if (data.excerpt) {
+        //Sanitize the excerpt by removing all HTML tags
+        const regExHtmlTags = /(<([^>]+)>)/g;
+        data.excerpt = data.excerpt.replace(regExHtmlTags, '');
+      }
+
+      return data;
+    });
+
+    const journeysNodes = [...data.data.journeys.edges.map(({ node = {} }) => node)];
+    journeys = journeysNodes.map((journey) => {
+      const data = { ...journey };
+
+      if (data.regions) {
+        data.regions = data.regions.edges.map(({ node }) => node.name);
+      }
+
+      if (data.excerpt) {
+        //Sanitize the excerpt by removing all HTML tags
+        const regExHtmlTags = /(<([^>]+)>)/g;
+        data.excerpt = data.excerpt.replace(regExHtmlTags, '');
+      }
+
+      return data;
+    });
+
     verbose && console.log(`[${process}] Successfully fetched posts from ${apolloClient.link.options.uri}`);
     return {
       posts,
+      birds,
+      journeys,
     };
   } catch (e) {
     throw new Error(`[${process}] Failed to fetch posts from ${apolloClient.link.options.uri}: ${e.message}`);
@@ -225,7 +301,7 @@ async function getFeedData(apolloClient, process, verbose = false) {
 }
 
 /**
- * getFeedData
+ * getSitemapData
  */
 
 async function getSitemapData(apolloClient, process, verbose = false) {
@@ -242,7 +318,7 @@ async function getSitemapData(apolloClient, process, verbose = false) {
  * generateFeed
  */
 
-function generateFeed({ posts = [], metadata = {} }) {
+function generateFeed({ posts = [], birds = [], journeys = [], metadata = {} }) {
   const { homepage = '' } = config;
 
   const feed = new RSS({
@@ -267,6 +343,30 @@ function generateFeed({ posts = [], metadata = {} }) {
     });
   });
 
+  birds.map((bird) => {
+    feed.item({
+      title: bird.title,
+      guid: `${homepage}/birds/${bird.slug}`,
+      url: `${homepage}/birds/${bird.slug}`,
+      date: bird.date,
+      description: bird.excerpt,
+      author: metadata.title,
+      categories: bird.regions || [],
+    });
+  });
+
+  journeys.map((journey) => {
+    feed.item({
+      title: journey.title,
+      guid: `${homepage}/journeys/${journey.slug}`,
+      url: `${homepage}/journeys/${journey.slug}`,
+      date: journey.date,
+      description: journey.excerpt,
+      author: metadata.title,
+      categories: journey.regions || [],
+    });
+  });
+
   return feed.xml({ indent: true });
 }
 
@@ -274,8 +374,9 @@ function generateFeed({ posts = [], metadata = {} }) {
  * generateIndexSearch
  */
 
-function generateIndexSearch({ posts }) {
-  const index = posts.map((post = {}) => {
+function generateIndexSearch({ posts, birds, journeys }) {
+  const allPostTypes = [...posts, ...birds, ...journeys];
+  const index = allPostTypes.map((post = {}) => {
     // We need to decode the title because we're using the
     // rendered version which assumes this value will be used
     // within the DOM
@@ -301,7 +402,7 @@ function generateIndexSearch({ posts }) {
  * getSitemapData
  */
 
-function generateSitemap({ posts = [], pages = [] }, nextConfig = {}) {
+function generateSitemap({ posts = [], birds = [], journeys = [], pages = [] }, nextConfig = {}) {
   const { homepage = '' } = config;
   const { trailingSlash } = nextConfig;
 
@@ -321,15 +422,33 @@ function generateSitemap({ posts = [], pages = [] }, nextConfig = {}) {
                 `;
           })
           .join('')}
-          ${posts
-            .map((post) => {
-              return `<url>
-                        <loc>${homepage}/posts/${post.slug}${trailingSlash ? '/' : ''}</loc>
-                        <lastmod>${new Date(post.modified).toISOString()}</lastmod>
-                      </url>
-                  `;
-            })
-            .join('')}
+        ${posts
+          .map((post) => {
+            return `<url>
+                      <loc>${homepage}/posts/${post.slug}${trailingSlash ? '/' : ''}</loc>
+                      <lastmod>${new Date(post.modified).toISOString()}</lastmod>
+                    </url>
+                `;
+          })
+          .join('')}
+        ${birds
+          .map((bird) => {
+            return `<url>
+                      <loc>${homepage}/birds/${bird.slug}${trailingSlash ? '/' : ''}</loc>
+                      <lastmod>${new Date(bird.modified).toISOString()}</lastmod>
+                    </url>
+                `;
+          })
+          .join('')}
+        ${journeys
+          .map((journey) => {
+            return `<url>
+                      <loc>${homepage}/journeys/${journey.slug}${trailingSlash ? '/' : ''}</loc>
+                      <lastmod>${new Date(journey.modified).toISOString()}</lastmod>
+                    </url>
+                `;
+          })
+          .join('')}
     </urlset>
     `;
 
