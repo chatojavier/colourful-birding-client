@@ -51,3 +51,21 @@ export function getFirstPathname(url) {
   if (typeof url !== 'string') return;
   return url.split('/')[1];
 }
+
+/**
+ * getTextColorByName
+ */
+export const getTextColorByName = (color) => {
+  switch (color) {
+    case 'green':
+      return 'text-green';
+    case 'purple':
+      return 'text-purple';
+    case 'blue':
+      return 'text-blue';
+    case 'lightblue':
+      return 'text-lightblue';
+    default:
+      return '#000000';
+  }
+};

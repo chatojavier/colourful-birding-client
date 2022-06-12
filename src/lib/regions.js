@@ -1,6 +1,7 @@
 import { getApolloClient } from 'lib/apollo-client';
 
 import { QUERY_ALL_REGIONS, QUERY_REGION_BY_SLUG, QUERY_REGION_SEO_BY_SLUG } from 'data/regions';
+import { Mountains, Coast, Rainforest } from 'components/SVG/Regions';
 
 /**
  * regionPathBySlug
@@ -137,4 +138,21 @@ export async function getRegions({ count } = {}) {
 export function mapRegionData(region = {}) {
   const data = { ...region };
   return data;
+}
+
+/**
+ * getRegionIconByName
+ */
+
+export function getRegionIconByName(name, size) {
+  switch (name) {
+    case 'Coast':
+      return <Coast size={size} />;
+    case 'Rainforest':
+      return <Rainforest size={size} />;
+    case 'Mountains':
+      return <Mountains size={size} />;
+    default:
+      return null;
+  }
 }
