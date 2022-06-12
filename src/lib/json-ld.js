@@ -5,11 +5,20 @@ import { postPathBySlug } from 'lib/posts';
 import { pagePathBySlug } from 'lib/pages';
 
 import config from '../../package.json';
+import { birdPathBySlug } from './birds';
+import { journeyPathBySlug } from './journeys';
 
-export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
+export function ArticleJsonLd({ post = {}, siteTitle = '', hasAuthor = false, postType = 'post' }) {
   const { homepage = '', faviconPath = '/favicon.ico' } = config;
-  const { title, slug, excerpt, date, author, categories, modified, featuredImage } = post;
-  const path = postPathBySlug(slug);
+  const { title, slug, excerpt, date, author, categories, modified, featuredImage, regions } = post;
+  const path =
+    postType === 'post'
+      ? postPathBySlug(slug)
+      : postType === 'bird'
+      ? birdPathBySlug(slug)
+      : postType === 'journey'
+      ? journeyPathBySlug(slug)
+      : '';
   const datePublished = !!date && new Date(date);
   const dateModified = !!modified && new Date(modified);
 
@@ -17,6 +26,12 @@ export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
    * default image in case there is no featuredImage comming from WP,
    * like the open graph social image
    * */
+
+  const keywords = categories
+    ? [categories.map(({ name }) => `${name}`).join(', '), postType]
+    : regions
+    ? [regions.map(({ name }) => `${name}`).join(', '), postType]
+    : [postType];
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -30,12 +45,8 @@ export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
     datePublished: datePublished ? datePublished.toISOString() : '',
     dateModified: dateModified ? dateModified.toISOString() : datePublished.toISOString(),
     description: excerpt,
-    keywords: categories && [categories.map(({ name }) => `${name}`).join(', ')],
+    keywords: keywords,
     copyrightYear: datePublished ? datePublished.getFullYear() : '',
-    author: {
-      '@type': 'Person',
-      name: author?.name,
-    },
     publisher: {
       '@type': 'Organization',
       name: siteTitle,
@@ -45,6 +56,14 @@ export function ArticleJsonLd({ post = {}, siteTitle = '' }) {
       },
     },
   };
+
+  if (hasAuthor) {
+    jsonLd.author = {
+      '@type': 'Person',
+      name: author.name,
+      url: authorPathByName(author.name),
+    };
+  }
 
   return (
     <Helmet encodeSpecialCharacters={false}>

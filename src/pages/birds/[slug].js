@@ -24,6 +24,7 @@ export default function Bird({ bird, socialImage, related }) {
 
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
+  console.log(bird);
   if (!bird.og) {
     bird.og = {};
   }
@@ -48,7 +49,7 @@ export default function Bird({ bird, socialImage, related }) {
   }
 
   const metadataOptions = {
-    compactRegions: false,
+    compactCategories: false,
   };
 
   const { birds: relatedBirdsList, title: relatedBirdsTitle } = related || {};
@@ -59,7 +60,7 @@ export default function Bird({ bird, socialImage, related }) {
     <Layout>
       <Helmet {...helmetSettings} />
 
-      <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} />
+      <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} hasAuthor={!!bird.author} postType="bird" />
 
       <Header>
         {featuredImage && (
