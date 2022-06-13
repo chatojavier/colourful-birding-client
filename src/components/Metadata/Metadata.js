@@ -3,26 +3,17 @@ import Link from 'next/link';
 import { categoryPathBySlug } from 'lib/categories';
 import { authorPathByName } from 'lib/users';
 import { formatDate } from 'lib/datetime';
-import ClassName from 'models/classname';
-
-import { FaMapPin } from 'react-icons/fa';
-import styles from './Metadata.module.scss';
-
 const DEFAULT_METADATA_OPTIONS = {
   compactCategories: true,
 };
 
-const Metadata = ({ className, author, date, categories, options = DEFAULT_METADATA_OPTIONS, isSticky = false }) => {
-  const metadataClassName = new ClassName(styles.metadata);
-
-  metadataClassName.addIf(className, className);
-
+const Metadata = ({ className, postType = 'post', author, date, categories, options = DEFAULT_METADATA_OPTIONS }) => {
   const { compactCategories } = options;
 
   return (
-    <ul className={metadataClassName.toString()}>
+    <ul className={`${className} text-xs`}>
       {author && (
-        <li className={styles.metadataAuthor}>
+        <li>
           <address>
             {author.avatar && (
               <img
@@ -46,11 +37,11 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
           </time>
         </li>
       )}
-      {Array.isArray(categories) && categories[0] && (
-        <li className={styles.metadataCategories}>
+      {postType !== 'journeys' && Array.isArray(categories) && categories[0] && (
+        <li>
           {compactCategories && (
             <p title={categories.map(({ name }) => name).join(', ')}>
-              <Link href={categoryPathBySlug(categories[0].slug)}>
+              <Link href={categoryPathBySlug(postType, categories[0].slug)}>
                 <a>{categories[0].name}</a>
               </Link>
               {categories.length > 1 && ' and more'}
@@ -61,7 +52,7 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
               {categories.map((category) => {
                 return (
                   <li key={category.slug}>
-                    <Link href={categoryPathBySlug(category.slug)}>
+                    <Link href={categoryPathBySlug(postType, category.slug)}>
                       <a>{category.name}</a>
                     </Link>
                   </li>
@@ -69,11 +60,6 @@ const Metadata = ({ className, author, date, categories, options = DEFAULT_METAD
               })}
             </ul>
           )}
-        </li>
-      )}
-      {isSticky && (
-        <li className={styles.metadataSticky}>
-          <FaMapPin aria-label="Sticky Post" />
         </li>
       )}
     </ul>

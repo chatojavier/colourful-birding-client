@@ -63,7 +63,7 @@ export default function TemplateArchive({
               <ul className={styles.posts}>
                 {posts.map((post) => {
                   return (
-                    <li key={post.slug}>
+                    <li key={post.slug} className="group">
                       <PostCard post={post} options={postOptions} />
                     </li>
                   );

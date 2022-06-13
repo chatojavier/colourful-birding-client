@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 
 export const BIRD_FIELDS = gql`
   fragment BirdFields on Bird {
+    contentTypeName
     id
     databaseId
     date

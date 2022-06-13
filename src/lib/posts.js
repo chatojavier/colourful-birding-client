@@ -22,8 +22,17 @@ import {
  * postPathBySlug
  */
 
-export function postPathBySlug(slug) {
-  return `/posts/${slug}`;
+export function postPathBySlug(postType, slug) {
+  switch (postType) {
+    case 'post':
+      return `/posts/${slug}`;
+    case 'birds':
+      return `/birds/${slug}`;
+    case 'journeys':
+      return `/journeys/${slug}`;
+    default:
+      return `/posts/${slug}`;
+  }
 }
 
 /**

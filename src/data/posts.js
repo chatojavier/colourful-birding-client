@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 
 export const POST_FIELDS = gql`
   fragment PostFields on Post {
+    contentTypeName
     id
     categories {
       edges {
@@ -143,6 +144,7 @@ export const QUERY_POST_BY_SLUG = gql`
       title
       slug
       isSticky
+      contentTypeName
     }
   }
 `;
@@ -279,6 +281,7 @@ export const QUERY_POSTS_BY_AUTHOR_SLUG = gql`
 export const QUERY_POST_SEO_BY_SLUG = gql`
   query PostSEOBySlug($slug: ID!) {
     post(id: $slug, idType: SLUG) {
+      contentTypeName
       id
       seo {
         canonical

@@ -1,0 +1,7 @@
+@import "../../styles/settings/__settings.scss";
+
+.postcard {
+  &__background {
+    grid-template-columns: auto minmax(80%, 800px) auto;
+  }
+}

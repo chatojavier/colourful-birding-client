@@ -31,6 +31,7 @@ module.exports = {
       },
     },
   },
+  safelist: ['text-green', 'text-purple', 'text-blue', 'text-lightblue'],
   plugins: [
     plugin(function ({ addBase, theme }) {
       addBase({

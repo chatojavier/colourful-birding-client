@@ -1,17 +1,37 @@
 import Link from 'next/link';
 
-import { postPathBySlug, sanitizeExcerpt } from 'lib/posts';
+import { postPathBySlug } from 'lib/posts';
 
-import Metadata from 'components/Metadata';
-
-import { FaMapPin } from 'react-icons/fa';
-import styles from './PostCard.module.scss';
+import DateFromTo from 'components/DateFromTo';
+import DateFormated from 'components/DateFormated';
+import { getMediaQueries } from 'lib/responsive';
+import Button from 'components/Button';
+import { useEffect, useRef, useState } from 'react';
+import useWindowSize from 'hooks/use-window-resize';
 
 const PostCard = ({ post, options = {} }) => {
-  const { title, excerpt, slug, date, author, categories, isSticky = false } = post;
+  const {
+    title,
+    slug,
+    date,
+    author,
+    categories = null,
+    regions = null,
+    featuredImage,
+    contentTypeName,
+    programedDates,
+  } = post;
+  const featuredImageHtml = useRef(null);
+  const backgroundHtml = useRef(null);
+  const [bottomSpace, setBottomSpace] = useState(0);
+  const [windowWidth] = useWindowSize();
+
+  const { md, xl } = getMediaQueries();
   const { excludeMetadata = [] } = options;
 
   const metadata = {};
+
+  const categoriesUpdated = categories || regions;
 
   if (!excludeMetadata.includes('author')) {
     metadata.author = author;
@@ -22,38 +42,98 @@ const PostCard = ({ post, options = {} }) => {
   }
 
   if (!excludeMetadata.includes('categories')) {
-    metadata.categories = categories;
+    metadata.categories = categoriesUpdated;
   }
 
-  let postCardStyle = styles.postCard;
-
-  if (isSticky) {
-    postCardStyle = `${postCardStyle} ${styles.postCardSticky}`;
-  }
+  useEffect(() => {
+    const featuredImageHieght = featuredImageHtml.current.offsetHeight;
+    const backgroundHeight = backgroundHtml.current.offsetHeight;
+    const bottomSpace = featuredImageHieght - backgroundHeight;
+    if (bottomSpace > 0 && windowWidth >= 768) {
+      setBottomSpace(bottomSpace);
+    } else {
+      setBottomSpace(0);
+    }
+  }, [windowWidth]);
 
   return (
-    <div className={postCardStyle}>
-      {isSticky && <FaMapPin aria-label="Sticky Post" />}
-      <Link href={postPathBySlug(slug)}>
-        <a>
-          <h3
-            className={styles.postCardTitle}
-            dangerouslySetInnerHTML={{
-              __html: title,
-            }}
-          />
-        </a>
-      </Link>
-      <Metadata className={styles.postCardMetadata} {...metadata} />
-      {excerpt && (
+    <>
+      <div className="post-card | relative md:py-16">
+        <div className="postcard__main | md:relative md:mx-auto md:w-[80%] md:max-w-[800px]">
+          <div
+            className="postcard__main__featured-image | h-[280px] w-full overflow-hidden md:absolute md:right-0 md:aspect-square md:h-auto md:w-[50%] md:max-w-[485px] md:shrink-0 md:group-even:left-0"
+            ref={featuredImageHtml}
+          >
+            <Link href={postPathBySlug(contentTypeName, slug)}>
+              <a>
+                {featuredImage && (
+                  <img
+                    src={featuredImage?.sourceUrl}
+                    srcSet={featuredImage?.srcSet}
+                    sizes={`${xl} 485px, ${md} 35.5vw, 100vw`}
+                    alt={featuredImage?.altText}
+                    title={title}
+                    className="postcard__main__featured-image__image h-full w-full object-cover"
+                  />
+                )}
+              </a>
+            </Link>
+          </div>
+          <div className="postcard__main__content | relative -mt-16 w-10/12 bg-white px-8 py-4 group-even:ml-auto group-even:flex group-even:flex-col group-even:items-end md:mt-0 md:w-1/2 md:bg-opacity-0 md:group-even:block">
+            <h4 className="postcard__main__content__title | font-bebas text-4xl uppercase group-even:text-right md:text-5xl md:group-even:text-left lg:text-6xl">
+              <Link href={postPathBySlug(contentTypeName, slug)}>
+                <a>{title}</a>
+              </Link>
+            </h4>
+            <div className="postcard__main__content__date | mb-4 text-xs md:text-sm lg:text-base">
+              {contentTypeName === 'journeys' && programedDates && (
+                <DateFromTo from={programedDates.from} to={programedDates.to} />
+              )}
+              {contentTypeName === 'post' && <DateFormated date={date} />}
+            </div>
+            {/* <div className="postcard__main__content__excerpt | text-sm mb-4 md:text-base lg:text-lg">
+            {excerpt && (
+              <div
+                className="postcard__main__content__excerpt__text"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeExcerpt(excerpt),
+                }}
+              />
+            )}
+          </div> */}
+            <Button
+              className="postcard__main__content__button"
+              href={postPathBySlug(contentTypeName, slug)}
+              variant="primary"
+              size="large"
+            >
+              {contentTypeName === 'journeys' ? 'Discover' : 'Read More'}
+            </Button>
+          </div>
+        </div>
         <div
-          className={styles.postCardContent}
-          dangerouslySetInnerHTML={{
-            __html: sanitizeExcerpt(excerpt),
-          }}
-        />
-      )}
-    </div>
+          className="postcard__backgorund | -z-10 hidden h-full w-full md:absolute md:top-0 md:right-0 md:grid md:grid-cols-[auto_86%_auto] lg:grid-cols-[auto_875px_auto]"
+          ref={backgroundHtml}
+        >
+          <div className="postcard__background__left col-start-1 col-end-3 h-full overflow-hidden group-even:col-start-2 group-even:col-end-4">
+            {featuredImage && (
+              <img
+                src={featuredImage.sourceUrl}
+                srcSet={featuredImage.srcSet}
+                sizes={`80vw`}
+                alt={featuredImage.altText}
+                title={title}
+                className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
+              />
+            )}
+            <div className="postcard__background__overlay | absolute top-0 left-0 z-20 h-full w-full bg-white opacity-75"></div>
+          </div>
+          <div className="postcard__backgrund__center h-full"></div>
+          <div className="postcard__backgrund__right h-full"></div>
+        </div>
+      </div>
+      <div className="post-card__bottomSpace md:mt-16" style={{ height: bottomSpace }}></div>
+    </>
   );
 };
 

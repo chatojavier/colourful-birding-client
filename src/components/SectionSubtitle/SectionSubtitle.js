@@ -1,4 +1,4 @@
-const SectionSubtitle = ({ children }) => (
-  <div className="section-subtitle | font-raleway uppercase md:text-2xl">{children}</div>
-);
+const SectionSubtitle = ({ children, ...props }) => {
+  return <div className={`section-subtitle | font-raleway text-sm uppercase md:text-2xl ${props}`}>{children}</div>;
+};
 export default SectionSubtitle;

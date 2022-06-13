@@ -22,7 +22,7 @@ const props = {
 };
 
 export default {
-  title: 'components/BirdInfo',
+  title: 'sections/BirdInfo',
   component: BirdInfo,
 };
 

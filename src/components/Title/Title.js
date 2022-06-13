@@ -1,17 +1,14 @@
-import ClassName from 'models/classname';
+import { getTextColorByName } from 'lib/util';
 
-import styles from './Title.module.scss';
-
-const Title = ({ className, title, thumbnail }) => {
-  const titleClassName = new ClassName(styles.title);
-
-  titleClassName.addIf(className, className);
-
+const Title = ({ children, color }) => {
   return (
-    <div className={titleClassName.toString()}>
-      {thumbnail && <img src={thumbnail.url} alt="" aria-hidden="true" />}
-      <span>{title}</span>
-    </div>
+    <h1
+      className={`section-title | font-bebas text-3xl md:text-[80px] md:leading-[70px] ${
+        color && getTextColorByName(color)
+      }`}
+    >
+      {children}
+    </h1>
   );
 };
 

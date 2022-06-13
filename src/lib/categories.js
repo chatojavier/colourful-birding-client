@@ -6,8 +6,17 @@ import { QUERY_ALL_CATEGORIES, QUERY_CATEGORY_BY_SLUG, QUERY_CATEGORY_SEO_BY_SLU
  * categoryPathBySlug
  */
 
-export function categoryPathBySlug(slug) {
-  return `/categories/${slug}`;
+export function categoryPathBySlug(postType, slug) {
+  switch (postType) {
+    case 'post':
+      return `/categories/${slug}`;
+    case 'birds':
+      return `/regions/${slug}`;
+    case 'journeys':
+      return `/regions/${slug}`;
+    default:
+      return `/categories/`;
+  }
 }
 
 /**

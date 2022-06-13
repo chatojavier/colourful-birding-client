@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 
 export const JOURNEY_FIELDS = gql`
   fragment JourneyFields on Journey {
+    contentTypeName
     id
     databaseId
     date
@@ -77,6 +78,16 @@ export const QUERY_ALL_JOURNEYS_ARCHIVE = gql`
           programedDates {
             to
             from
+          }
+        }
+        featuredImage {
+          node {
+            altText
+            caption
+            sourceUrl
+            srcSet
+            sizes
+            id
           }
         }
       }
