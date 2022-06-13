@@ -65,6 +65,8 @@ export const getTextColorByName = (color) => {
       return 'text-blue';
     case 'lightblue':
       return 'text-lightblue';
+    case 'white':
+      return 'text-white';
     default:
       return '#000000';
   }

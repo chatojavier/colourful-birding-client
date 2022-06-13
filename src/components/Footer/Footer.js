@@ -1,9 +1,9 @@
 import useSite from 'hooks/use-site';
-import Container from 'components/Container';
 import Divider from 'components/Divider';
 import styles from './Footer.module.scss';
 import { findMenuByLocation } from 'lib/menus';
 import MenuListItem from 'components/MenuListItem';
+import SectionNewsletter from 'components/SectionNewsletter';
 
 const Footer = () => {
   const { menus } = useSite();
@@ -12,9 +12,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <section>
-        <Container></Container>
-      </section>
+      <SectionNewsletter />
       <Divider />
       <section className="footer | container relative mx-auto p-4">
         {navigation && (

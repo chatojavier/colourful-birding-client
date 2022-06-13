@@ -11,6 +11,8 @@ const Button = ({ children, className, color = 'purple', filled = false, ...rest
           return `${constantClasses} bg-blue border-blue hover:text-blue`;
         case 'lightblue':
           return `${constantClasses} bg-lightblue border-lightblue hover:text-lightblue`;
+        case 'white':
+          return `${constantClasses} bg-white border-white hover:text-darkgrey`;
         default:
           return `${constantClasses} bg-purple border-purple hover:text-purple`;
       }
@@ -25,6 +27,8 @@ const Button = ({ children, className, color = 'purple', filled = false, ...rest
         return `bg-blue border-blue text-blue ${constantClasses}`;
       case 'lightblue':
         return `bg-lightblue border-lightblue text-lightblue ${constantClasses}`;
+      case 'white':
+        return `bg-white border-white text-white bg-opacity-0 hover:bg-opacity-100 hover:text-primary hover:border-opacity-0`;
       default:
         return `bg-purple border-purple text-purple ${constantClasses}`;
     }

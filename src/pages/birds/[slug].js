@@ -24,7 +24,6 @@ export default function Bird({ bird, socialImage, related }) {
 
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
-  console.log(bird);
   if (!bird.og) {
     bird.og = {};
   }
