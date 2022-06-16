@@ -19,8 +19,12 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
         {galleryDesktop.map((item, index) => (
           <SwiperSlide key={item.id} className="overflow-hidden">
             <picture>
-              <source srcSet={galleryDesktop[index].srcSet} sizes={galleryDesktop[index].sizes} media={md} />
-              <source srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+              {galleryDesktop[index]?.srcSet && (
+                <source srcSet={galleryDesktop[index]?.srcSet} sizes={galleryDesktop[index]?.sizes} media={md} />
+              )}
+              {galleryMobile && galleryMobile[index]?.srcSet && (
+                <source srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+              )}
               <img
                 src={galleryDesktop[index].sourceUrl}
                 alt={galleryDesktop[index].altText}

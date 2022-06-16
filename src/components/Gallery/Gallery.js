@@ -48,8 +48,12 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
                   ></div>
                 )}
                 <picture>
-                  <source srcSet={galleryDesktop[index].srcSet} sizes={galleryDesktop[index].sizes} media={md} />
-                  <source srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+                  {galleryDesktop[index]?.srcSet && (
+                    <source srcSet={galleryDesktop[index]?.srcSet} sizes={galleryDesktop[index]?.sizes} media={md} />
+                  )}
+                  {galleryMobile && galleryMobile[index]?.srcSet && (
+                    <source srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+                  )}
                   <img
                     src={galleryDesktop[index].sourceUrl}
                     alt={galleryDesktop[index].altText}
