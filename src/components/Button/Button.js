@@ -1,4 +1,6 @@
-const Button = ({ children, className, color = 'purple', filled = false, ...rest }) => {
+import Link from 'next/link';
+
+const Button = ({ children, className, color = 'purple', filled = false, path = '', ...rest }) => {
   const getClassesByColorAndFill = (color, filled) => {
     if (filled) {
       const constantClasses = 'text-white hover:bg-opacity-0';
@@ -34,13 +36,27 @@ const Button = ({ children, className, color = 'purple', filled = false, ...rest
     }
   };
   return (
-    <button
-      {...rest}
-      className={`border-2 border-solid px-6 py-1 text-xs font-bold uppercase md:px-8 md:py-2 md:text-sm lg:px-10 lg:py-3 lg:text-base
+    <>
+      {!path ? (
+        <button
+          {...rest}
+          className={`border-2 border-solid px-6 py-1 text-xs font-bold uppercase md:px-8 md:py-2 md:text-sm lg:px-10 lg:text-base
       ${getClassesByColorAndFill(color, filled)} ${className}`}
-    >
-      {children}
-    </button>
+        >
+          {children}
+        </button>
+      ) : (
+        <Link href={path}>
+          <a
+            {...rest}
+            className={`border-2 border-solid px-6 py-1 text-xs font-bold uppercase md:px-8 md:py-2 md:text-sm lg:px-10 lg:text-base
+      ${getClassesByColorAndFill(color, filled)} ${className}`}
+          >
+            {children}
+          </a>
+        </Link>
+      )}
+    </>
   );
 };
 

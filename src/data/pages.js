@@ -169,3 +169,23 @@ export const QUERY_PAGE_SEO_BY_URI = gql`
     }
   }
 `;
+
+export const QUERY_PAGE_CUSTOMDATA_BY_URI = gql`
+  query PageCustomDataByUri($uri: ID!) {
+    page(id: $uri, idType: URI) {
+      content
+      featuredImage {
+        node {
+          altText
+          caption
+          id
+          sizes
+          sourceUrl
+          srcSet
+        }
+      }
+      id
+      title
+    }
+  }
+`;

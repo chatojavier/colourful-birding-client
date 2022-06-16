@@ -1,13 +1,5 @@
-import ClassName from 'models/classname';
-
-import styles from './Container.module.scss';
-
-const Container = ({ children, className }) => {
-  const containerClassName = new ClassName(styles.container);
-
-  containerClassName.addIf(className, className);
-
-  return <div className={containerClassName.toString()}>{children}</div>;
+const Container = ({ children, className = '' }) => {
+  return <div className={`container mx-auto max-w-5xl px-8 ${className}`}>{children}</div>;
 };
 
 export default Container;

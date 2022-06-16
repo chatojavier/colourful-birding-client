@@ -14,8 +14,10 @@ const SectionRelatedPostCard = ({
 }) => {
   return (
     <div className="related-posts">
-      <div className="related-posts__header |  mb-4 flex flex-col items-end p-6">
-        <SectionTitle color={'purple'}>{title}</SectionTitle>
+      <div className="related-posts__header | container mx-auto mb-4 flex flex-col items-end p-6">
+        <SectionTitle color={'purple'} className="text-right">
+          {title}
+        </SectionTitle>
         <SectionSubtitle>{subtitle}</SectionSubtitle>
       </div>
       <div className="related-posts__posts">
@@ -32,7 +34,7 @@ const SectionRelatedPostCard = ({
         )}
       </div>
       <div className="related-posts__button mx-auto w-fit">
-        <Button href={slug} color="purple" filled className="mx-auto">
+        <Button path={slug} color="purple" filled className="mx-auto">
           See All the Journeys
         </Button>
       </div>

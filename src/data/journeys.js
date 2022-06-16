@@ -141,6 +141,22 @@ export const QUERY_JOURNEY_BY_SLUG = gql`
         }
       }
       modified
+      gallery {
+        galleryDesktop {
+          altText
+          sourceUrl
+          srcSet
+          sizes
+          id
+        }
+        galleryMobile {
+          altText
+          sourceUrl
+          srcSet
+          sizes
+          id
+        }
+      }
     }
   }
 `;

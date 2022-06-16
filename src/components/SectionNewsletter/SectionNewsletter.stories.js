@@ -1,7 +1,7 @@
 import SectionNewsletter from './SectionNewsletter';
 
 export default {
-  title: 'sections/SectionNewsletter',
+  title: 'sections/Newsletter',
   component: SectionNewsletter,
   parameters: {
     layout: 'fullscreen',

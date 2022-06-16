@@ -1,27 +1,22 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
-import { getBirdBySlug, getAllBirds, getRelatedBirds, birdPathBySlug } from 'lib/birds';
+import { getBirdBySlug, getAllBirds } from 'lib/birds';
 import { regionPathBySlug } from 'lib/regions';
-import { formatDate } from 'lib/datetime';
 import { ArticleJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import Layout from 'components/Layout';
-import Header from 'components/Header';
-import Section from 'components/Section';
 import Container from 'components/Container';
-import Content from 'components/Content';
-import Metadata from 'components/Metadata';
-import FeaturedImage from 'components/FeaturedImage';
-
-import styles from 'styles/pages/Post.module.scss';
+import BirdInfo from 'components/BirdInfo';
+import JumboGallery from 'components/JumboGallery';
+import Widescreen from 'components/Widescreen';
+import SectionRelatedPostCard from 'components/SectionRelatedPostCard';
+import { getRelatedJourneys } from 'lib/journeys';
 
 export default function Bird({ bird, socialImage, related }) {
-  const { title, metaTitle, description, content, date, regions, modified, featuredImage } = bird;
-
+  const { title, metaTitle, description, content, regions, featuredImage, familyName, gallery } = bird;
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
   if (!bird.og) {
@@ -47,11 +42,7 @@ export default function Bird({ bird, socialImage, related }) {
     metadata.twitter.title = metadata.title;
   }
 
-  const metadataOptions = {
-    compactCategories: false,
-  };
-
-  const { birds: relatedBirdsList, title: relatedBirdsTitle } = related || {};
+  const { journeys: relatedJourneysList } = related || {};
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
@@ -61,64 +52,26 @@ export default function Bird({ bird, socialImage, related }) {
 
       <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} hasAuthor={!!bird.author} postType="bird" />
 
-      <Header>
-        {featuredImage && (
-          <FeaturedImage
-            {...featuredImage}
-            src={featuredImage.sourceUrl}
-            dangerouslySetInnerHTML={featuredImage.caption}
-          />
-        )}
-        <h1
-          className={styles.title}
-          dangerouslySetInnerHTML={{
-            __html: title,
-          }}
+      <Widescreen className="mb-6 md:mb-20">
+        <JumboGallery
+          galleryDesktop={gallery.galleryDesktop}
+          galleryMobile={gallery.galleryMobile}
+          featuredImage={featuredImage}
         />
-        <Metadata className={styles.postMetadata} date={date} categories={regions} options={metadataOptions} />
-      </Header>
+      </Widescreen>
 
-      <Content>
-        <Section>
-          <Container>
-            <div
-              className={styles.content}
-              dangerouslySetInnerHTML={{
-                __html: content,
-              }}
-            />
-          </Container>
-        </Section>
-      </Content>
+      <Container className="mb-6 md:mb-20">
+        <BirdInfo title={title} regions={regions} content={content} familyName={familyName} />
+      </Container>
 
-      <Section className={styles.postFooter}>
-        <Container>
-          <p className={styles.postModified}>Last updated on {formatDate(modified)}.</p>
-          {Array.isArray(relatedBirdsList) && relatedBirdsList.length > 0 && (
-            <div className={styles.relatedPosts}>
-              {relatedBirdsTitle.name ? (
-                <span>
-                  More from{' '}
-                  <Link href={relatedBirdsTitle.link}>
-                    <a>{relatedBirdsTitle.name}</a>
-                  </Link>
-                </span>
-              ) : (
-                <span>More Birds</span>
-              )}
-              <ul>
-                {relatedBirdsList.map((bird) => (
-                  <li key={bird.title}>
-                    <Link href={birdPathBySlug(bird.slug)}>
-                      <a>{bird.title}</a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </Container>
-      </Section>
+      <Widescreen>
+        <SectionRelatedPostCard
+          title={`${title}'s Journeys`}
+          subtitle="We Take Care of Make It Perfect"
+          posts={relatedJourneysList}
+          slug="/journeys"
+        />
+      </Widescreen>
     </Layout>
   );
 }
@@ -132,12 +85,12 @@ export async function getStaticProps({ params = {} } = {}) {
     socialImage: `${process.env.OG_IMAGE_DIRECTORY}/${params?.slug}.png`,
   };
 
-  const { region: relatedRegion, birds: relatedBirds } = (await getRelatedBirds(regions, birdId)) || {};
-  const hasRelated = relatedRegion && Array.isArray(relatedBirds) && relatedBirds.length;
+  const { region: relatedRegion, journeys: relatedJourneys } = (await getRelatedJourneys(regions, birdId, 2)) || {};
+  const hasRelated = relatedRegion && Array.isArray(relatedJourneys) && relatedJourneys.length;
 
   if (hasRelated) {
     props.related = {
-      birds: relatedBirds,
+      journeys: relatedJourneys,
       title: {
         name: relatedRegion.name || null,
         link: regionPathBySlug(relatedRegion.slug),

@@ -1,4 +1,5 @@
 import JumboGallery from './JumboGallery';
+import DateFromTo from 'components/DateFromTo';
 
 const props = {
   galleryDesktop: [
@@ -108,5 +109,25 @@ export default {
   },
 };
 
-export const Default = (args) => <JumboGallery {...args} />;
+const Template = (args) => <JumboGallery {...args} />;
+
+export const Default = Template.bind({});
 Default.args = { ...props };
+
+export const Square = Template.bind({});
+Square.args = { ...props, square: true };
+
+export const WithInfo = Template.bind({});
+WithInfo.args = {
+  ...props,
+  square: true,
+  info: {
+    title: 'Gallery Info Card',
+    subtitle: <DateFromTo from="2022-06-02" to="2022-06-08" />,
+    button: {
+      path: '/',
+      text: 'Button',
+      color: 'lightblue',
+    },
+  },
+};

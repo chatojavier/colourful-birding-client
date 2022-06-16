@@ -108,5 +108,7 @@ export default {
   },
 };
 
-export const Default = (args) => <GalleryBlur {...args} />;
+const Template = (args) => <GalleryBlur {...args} />;
+
+export const Default = Template.bind({});
 Default.args = { ...props };

@@ -16,7 +16,7 @@ const NavMenu = ({ isOpen }) => {
     <div
       className={`nav-right | ${
         !isOpen ? 'left-full' : 'left-0'
-      } | fixed top-[70px] z-10 flex h-[calc(100vh-70px)] w-full flex-col items-center justify-center space-y-24 bg-white text-primary transition-all duration-300 md:static md:h-auto md:flex-row md:justify-between md:space-y-0 md:space-x-4 md:transition-none`}
+      } | fixed top-[70px] z-30 flex h-[calc(100vh-70px)] w-full flex-col items-center justify-center space-y-24 bg-white text-primary transition-all duration-300 md:static md:h-auto md:flex-row md:justify-between md:space-y-0 md:space-x-4 md:transition-none`}
     >
       <ul className="nav__menu | space-y-8 font-bebas text-2xl uppercase text-primary md:flex md:items-center md:space-y-0 md:space-x-4 md:font-raleway md:text-xs">
         {navigation?.map((listItem) => {

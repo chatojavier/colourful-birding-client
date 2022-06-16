@@ -15,9 +15,9 @@ const DateFromTo = ({ from, to }) => {
   const daysOfDifferenceFormatted = daysOfDifference === 1 ? '1 day' : `${daysOfDifference} days`;
   return (
     <span>
-      {dateFromFormatted}
-      {dateFromFormatted !== dateToFormatted && <> - {dateToFormatted}</>}
-      <span className="text-muted"> ({daysOfDifferenceFormatted})</span>
+      <span className="inline-block">{dateFromFormatted}</span>
+      <span className="inline-block">{dateFromFormatted !== dateToFormatted && <> - {dateToFormatted}</>}</span>
+      <span className="inline-block">&nbsp;{'(' + daysOfDifferenceFormatted + ')'}</span>
     </span>
   );
 };

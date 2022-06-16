@@ -5,13 +5,12 @@ import { EffectFade, Controller } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getMediaQueries } from 'lib/responsive';
 
-const GalleryBlur = ({ galleryDesktop, galleryMobile, control }) => {
+const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
   const { md } = getMediaQueries();
   return (
     <div className="gallery-background">
       <Swiper
         modules={[EffectFade, Controller]}
-        onSlideChange={() => console.log('slide change')}
         effect="fade"
         loop={true}
         onSwiper={control}

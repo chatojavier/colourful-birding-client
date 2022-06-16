@@ -244,7 +244,13 @@ export async function getRelatedJourneys(regions, journeyId, count = 5) {
     const filtered = journeys.filter(({ databaseId }) => databaseId !== journeyId);
     filtered.length > 1 && sortObjectsRamdomly(filtered);
 
-    related.journeys = filtered.map((journey) => ({ title: journey.title, slug: journey.slug }));
+    related.journeys = filtered.map((journey) => ({
+      title: journey.title,
+      slug: journey.slug,
+      featuredImage: journey.featuredImage,
+      contentTypeName: journey.contentTypeName,
+      programedDates: journey.programedDates,
+    }));
   }
 
   if (!Array.isArray(related.journeys) || related.journeys.length === 0) {

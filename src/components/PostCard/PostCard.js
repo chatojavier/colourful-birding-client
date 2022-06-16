@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { postPathBySlug } from 'lib/posts';
-
+import { sanitizeExcerpt } from 'lib/posts';
 import DateFromTo from 'components/DateFromTo';
 import DateFormated from 'components/DateFormated';
 import { getMediaQueries } from 'lib/responsive';
@@ -20,10 +20,11 @@ const PostCard = ({ post, options = {} }) => {
     featuredImage,
     contentTypeName,
     programedDates,
+    excerpt,
   } = post;
   const featuredImageHtml = useRef(null);
   const backgroundHtml = useRef(null);
-  const [bottomSpace, setBottomSpace] = useState(0);
+  const [bottomSpace, setBottomSpace] = useState(24);
   const [windowWidth] = useWindowSize();
 
   const { md, xl } = getMediaQueries();
@@ -48,11 +49,11 @@ const PostCard = ({ post, options = {} }) => {
   useEffect(() => {
     const featuredImageHieght = featuredImageHtml.current.offsetHeight;
     const backgroundHeight = backgroundHtml.current.offsetHeight;
-    const bottomSpace = featuredImageHieght - backgroundHeight;
+    const bottomSpace = featuredImageHieght + 64 - backgroundHeight;
     if (bottomSpace > 0 && windowWidth >= 768) {
-      setBottomSpace(bottomSpace);
+      setBottomSpace(bottomSpace + 24);
     } else {
-      setBottomSpace(0);
+      setBottomSpace(24);
     }
   }, [windowWidth]);
 
@@ -91,19 +92,21 @@ const PostCard = ({ post, options = {} }) => {
               )}
               {contentTypeName === 'post' && <DateFormated date={date} />}
             </div>
-            {/* <div className="postcard__main__content__excerpt | text-sm mb-4 md:text-base lg:text-lg">
-            {excerpt && (
-              <div
-                className="postcard__main__content__excerpt__text"
-                dangerouslySetInnerHTML={{
-                  __html: sanitizeExcerpt(excerpt),
-                }}
-              />
+            {contentTypeName === 'post' && (
+              <div className="postcard__main__content__excerpt | mb-4 text-sm md:text-base lg:text-lg">
+                {excerpt && (
+                  <div
+                    className="postcard__main__content__excerpt__text"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeExcerpt(excerpt),
+                    }}
+                  />
+                )}
+              </div>
             )}
-          </div> */}
             <Button
               className="postcard__main__content__button"
-              href={postPathBySlug(contentTypeName, slug)}
+              path={postPathBySlug(contentTypeName, slug)}
               variant="primary"
               size="large"
             >
@@ -132,7 +135,7 @@ const PostCard = ({ post, options = {} }) => {
           <div className="postcard__backgrund__right h-full"></div>
         </div>
       </div>
-      <div className="post-card__bottomSpace md:mt-16" style={{ height: bottomSpace }}></div>
+      <div className="post-card__bottomSpace" style={{ height: bottomSpace }}></div>
     </>
   );
 };

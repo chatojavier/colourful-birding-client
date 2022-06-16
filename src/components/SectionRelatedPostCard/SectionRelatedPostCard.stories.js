@@ -1,7 +1,7 @@
 import SectionRelatedPostCard from './SectionRelatedPostCard';
 
 export default {
-  title: 'sections/SectionRelatedPostCard',
+  title: 'sections/RelatedPostCard',
   component: SectionRelatedPostCard,
   parameters: {
     layout: 'fullscreen',

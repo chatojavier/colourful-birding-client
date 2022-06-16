@@ -108,5 +108,14 @@ export default {
   },
 };
 
-export const Default = (args) => <Gallery {...args} />;
+const Template = (args) => (
+  <div className="relative h-[480px]">
+    <Gallery {...args} />
+  </div>
+);
+
+export const Default = Template.bind({});
 Default.args = { ...props };
+
+export const Square = Template.bind({});
+Square.args = { ...props, square: true };

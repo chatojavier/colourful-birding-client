@@ -6,6 +6,7 @@ import {
   QUERY_ALL_PAGES,
   QUERY_PAGE_BY_URI,
   QUERY_PAGE_SEO_BY_URI,
+  QUERY_PAGE_CUSTOMDATA_BY_URI,
 } from 'data/pages';
 
 /**
@@ -205,3 +206,24 @@ export function getBreadcrumbsByUri(uri, pages) {
 
   return breadcrumbs;
 }
+
+export const getPageCustomDataByUri = async (uri) => {
+  const apolloClient = getApolloClient();
+  let pageData;
+
+  try {
+    pageData = await apolloClient.query({
+      query: QUERY_PAGE_CUSTOMDATA_BY_URI,
+      variables: {
+        uri,
+      },
+    });
+  } catch (e) {
+    console.log(`[pages][getPageByUri] Failed to query page data: ${e.message}`);
+    throw e;
+  }
+
+  const page = [pageData?.data.page].map(mapPageData)[0];
+
+  return page;
+};

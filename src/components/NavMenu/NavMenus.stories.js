@@ -1,5 +1,5 @@
 import { SiteContext } from 'hooks/use-site';
-import { getInitialProps } from '__mocks__/getInitialProps';
+import { getInitialGlobalProps } from '__mocks__/getInitialProps';
 import NavMenu from './NavMenu';
 
 export default {
@@ -7,7 +7,7 @@ export default {
   component: NavMenu,
   loaders: [
     async () => ({
-      initialValues: await getInitialProps(),
+      initialValues: await getInitialGlobalProps(),
     }),
   ],
 };

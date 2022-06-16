@@ -1,27 +1,39 @@
-import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
-import { getJourneyBySlug, getAllJourneys, getRelatedJourneys, journeyPathBySlug } from 'lib/journeys';
+import { getJourneyBySlug, getAllJourneys, getRelatedJourneys } from 'lib/journeys';
 import { regionPathBySlug } from 'lib/regions';
-import { formatDate } from 'lib/datetime';
+import { getAllBirds } from 'lib/birds';
 import { ArticleJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import Layout from 'components/Layout';
-import Header from 'components/Header';
 import Section from 'components/Section';
 import Container from 'components/Container';
-import Content from 'components/Content';
-import Metadata from 'components/Metadata';
-import FeaturedImage from 'components/FeaturedImage';
-
-import styles from 'styles/pages/Post.module.scss';
+import Widescreen from 'components/Widescreen';
+import RelatedCarousel from 'components/RelatedCarousel';
+import JumboGallery from 'components/JumboGallery';
+import DateFromTo from 'components/DateFromTo';
+import JourneyInfo from 'components/JourneyInfo';
+import Button from 'components/Button';
+import SectionRelatedPostCard from 'components/SectionRelatedPostCard';
 
 export default function Journey({ journey, socialImage, related }) {
-  const { title, metaTitle, description, content, date, regions, modified, featuredImage } = journey;
-
+  const {
+    title,
+    metaTitle,
+    description,
+    content,
+    featuredImage,
+    contentTypeName,
+    destinations,
+    mapEmbed,
+    programedDates,
+    price,
+    birdsToWatch,
+    gallery,
+  } = journey;
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
   if (!journey.og) {
@@ -47,13 +59,21 @@ export default function Journey({ journey, socialImage, related }) {
     metadata.twitter.title = metadata.title;
   }
 
-  const metadataOptions = {
-    compactRegions: false,
-  };
-
-  const { journeys: relatedJourneysList, title: relatedJourneysTitle } = related || {};
+  const { journeys: relatedJourneysList } = related || {};
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
+
+  const galleryInfo = {
+    title: title,
+    subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} />,
+    button: {
+      path: '/',
+      text: 'Book Now',
+      color: 'lightblue',
+    },
+  };
+
+  const journeyInfoProps = { contentTypeName, content, destinations, mapEmbed, programedDates, price };
 
   return (
     <Layout>
@@ -61,64 +81,51 @@ export default function Journey({ journey, socialImage, related }) {
 
       <ArticleJsonLd post={journey} siteTitle={siteMetadata.title} />
 
-      <Header>
-        {featuredImage && (
-          <FeaturedImage
-            {...featuredImage}
-            src={featuredImage.sourceUrl}
-            dangerouslySetInnerHTML={featuredImage.caption}
-          />
-        )}
-        <h1
-          className={styles.title}
-          dangerouslySetInnerHTML={{
-            __html: title,
-          }}
+      <Widescreen>
+        <JumboGallery
+          galleryDesktop={gallery.galleryDesktop}
+          galleryMobile={gallery.galleryMobile}
+          featuredImage={featuredImage}
+          square
+          info={galleryInfo}
         />
-        <Metadata className={styles.postMetadata} date={date} categories={regions} options={metadataOptions} />
-      </Header>
+      </Widescreen>
 
-      <Content>
-        <Section>
-          <Container>
-            <div
-              className={styles.content}
-              dangerouslySetInnerHTML={{
-                __html: content,
-              }}
-            />
-          </Container>
-        </Section>
-      </Content>
-
-      <Section className={styles.postFooter}>
+      <Section>
         <Container>
-          <p className={styles.postModified}>Last updated on {formatDate(modified)}.</p>
-          {Array.isArray(relatedJourneysList) && relatedJourneysList.length > 0 && (
-            <div className={styles.relatedPosts}>
-              {relatedJourneysTitle.name ? (
-                <span>
-                  More from{' '}
-                  <Link href={relatedJourneysTitle.link}>
-                    <a>{relatedJourneysTitle.name}</a>
-                  </Link>
-                </span>
-              ) : (
-                <span>More Journeys</span>
-              )}
-              <ul>
-                {relatedJourneysList.map((journey) => (
-                  <li key={journey.title}>
-                    <Link href={journeyPathBySlug(journey.slug)}>
-                      <a>{journey.title}</a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          <JourneyInfo {...journeyInfoProps} className="mb-12" />
+
+          <div className="journey-extended-info">
+            <div className="journey-extended-info__buttons | space-y-2 md:flex md:justify-center md:space-y-0">
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+                Itinerary
+              </Button>
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+                Acomodation
+              </Button>
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+                Tours Inclution
+              </Button>
+              <Button color="lightblue" filled className="!mt-8 block w-full py-2 md:hidden">
+                Book Now
+              </Button>
             </div>
-          )}
+          </div>
         </Container>
       </Section>
+
+      <Section>
+        <RelatedCarousel title="Birds to watch" subtitle="In this Journey" posts={birdsToWatch} color="lightblue" />
+      </Section>
+
+      <Widescreen>
+        <SectionRelatedPostCard
+          title={`Similar Journeys`}
+          subtitle="We Take Care of Make It Perfect"
+          posts={relatedJourneysList}
+          slug="/journeys"
+        />
+      </Widescreen>
     </Layout>
   );
 }
@@ -127,12 +134,19 @@ export async function getStaticProps({ params = {} } = {}) {
   const { journey } = await getJourneyBySlug(params?.slug);
   const { regions, databaseId: journeyId } = journey;
 
+  if (journey?.birdsToWatch) {
+    const { birds } = await getAllBirds({
+      queryIncludes: 'archive',
+    });
+    journey.birdsToWatch = journey.birdsToWatch.map((bird) => birds.find((b) => b.id === bird.id));
+  }
+
   const props = {
     journey,
     socialImage: `${process.env.OG_IMAGE_DIRECTORY}/${params?.slug}.png`,
   };
 
-  const { region: relatedRegion, journeys: relatedJourneys } = (await getRelatedJourneys(regions, journeyId)) || {};
+  const { region: relatedRegion, journeys: relatedJourneys } = (await getRelatedJourneys(regions, journeyId, 2)) || {};
   const hasRelated = relatedRegion && Array.isArray(relatedJourneys) && relatedJourneys.length;
 
   if (hasRelated) {

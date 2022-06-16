@@ -1,5 +1,5 @@
 import { SiteContext } from 'hooks/use-site';
-import { getInitialProps } from '__mocks__/getInitialProps';
+import { getInitialGlobalProps } from '__mocks__/getInitialProps';
 import Nav from './Nav';
 
 export default {
@@ -12,7 +12,7 @@ const Template = () => <Nav />;
 export const Default = Template.bind({});
 Default.loaders = [
   async () => ({
-    initialValues: await getInitialProps(),
+    initialValues: await getInitialGlobalProps(),
   }),
 ];
 Default.decorators = [

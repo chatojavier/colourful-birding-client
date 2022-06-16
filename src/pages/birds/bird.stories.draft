@@ -1,0 +1,38 @@
+import Bird from './[slug].js';
+import { getStaticBirdProps, getInitialGlobalProps } from '../../__mocks__/getInitialProps';
+import { SiteContext } from 'hooks/use-site.js';
+
+export default {
+  title: 'pages/Bird',
+  component: Bird,
+  loaders: [
+    async () => ({
+      initialValues: await getInitialGlobalProps(),
+      args: await getStaticBirdProps('yellow-scarfed-tanager'),
+    }),
+  ],
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
+
+export const BirdPage = (_, { loaded: { initialValues, args } }) => {
+  console.log(args);
+  return (
+    <SiteContext.Provider value={initialValues}>
+      <Bird {...args.props} />
+    </SiteContext.Provider>
+  );
+};
+
+BirdPage.story = {
+  parameters: {
+    nextRouter: {
+      path: '/birds/[slug]',
+      asPath: '/birds/yellow-scarfed-tanager',
+      query: {
+        url: 'yellow-scarfed-tanager',
+      },
+    },
+  },
+};

@@ -144,14 +144,14 @@ export function mapRegionData(region = {}) {
  * getRegionIconByName
  */
 
-export function getRegionIconByName(name, size) {
+export function getRegionIconByName(name) {
   switch (name) {
     case 'Coast':
-      return <Coast size={size} />;
+      return <Coast />;
     case 'Rainforest':
-      return <Rainforest size={size} />;
+      return <Rainforest />;
     case 'Mountains':
-      return <Mountains size={size} />;
+      return <Mountains />;
     default:
       return null;
   }

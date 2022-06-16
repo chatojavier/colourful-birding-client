@@ -1,11 +1,11 @@
 import { getTextColorByName } from 'lib/util';
 
-const Title = ({ children, color }) => {
+const Title = ({ children, color, className = '' }) => {
   return (
     <h1
-      className={`section-title | font-bebas text-3xl md:text-[80px] md:leading-[70px] ${
+      className={`section-title | font-bebas text-[34px] leading-[36px] md:text-6xl lg:text-[80px] lg:leading-[70px] ${
         color && getTextColorByName(color)
-      }`}
+      } ${className}`}
     >
       {children}
     </h1>

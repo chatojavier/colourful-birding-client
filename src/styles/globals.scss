@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./components/_gallery";
+@import "./components/_related-carousel";
+
 html,
 body {
   @apply font-raleway text-darkgrey;

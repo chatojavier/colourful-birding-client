@@ -39,6 +39,16 @@ export const QUERY_ALL_BIRDS_ARCHIVE = gql`
         birdInfo {
           familyName
         }
+        featuredImage {
+          node {
+            altText
+            caption
+            sourceUrl
+            srcSet
+            sizes
+            id
+          }
+        }
       }
     }
   }
@@ -92,6 +102,22 @@ export const QUERY_BIRD_BY_SLUG = gql`
         }
       }
       modified
+      gallery {
+        galleryDesktop {
+          altText
+          sourceUrl
+          srcSet
+          sizes
+          id
+        }
+        galleryMobile {
+          altText
+          sourceUrl
+          srcSet
+          sizes
+          id
+        }
+      }
     }
   }
 `;
