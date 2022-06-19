@@ -14,7 +14,7 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
         effect="fade"
         loop={true}
         onSwiper={control}
-        className=" md:h=[578px] h-[472px]"
+        className="md:h=[578px] h-[472px]"
       >
         {galleryDesktop.map((item, index) => (
           <SwiperSlide key={item.id} className="overflow-hidden">

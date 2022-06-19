@@ -274,7 +274,7 @@ export function getJourneysPerPage() {
   if (process.env.JOURNEYS_PER_PAGE) {
     return Number(process.env.JOURNEYS_PER_PAGE);
   }
-  return 16;
+  return 4;
 }
 
 /**

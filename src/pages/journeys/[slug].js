@@ -17,7 +17,7 @@ import JumboGallery from 'components/JumboGallery';
 import DateFromTo from 'components/DateFromTo';
 import JourneyInfo from 'components/JourneyInfo';
 import Button from 'components/Button';
-import SectionRelatedPostCard from 'components/SectionRelatedPostCard';
+import CollectionPostCard from 'components/CollectionPostCard';
 
 export default function Journey({ journey, socialImage, related }) {
   const {
@@ -119,7 +119,7 @@ export default function Journey({ journey, socialImage, related }) {
       </Section>
 
       <Widescreen>
-        <SectionRelatedPostCard
+        <CollectionPostCard
           title={`Similar Journeys`}
           subtitle="We Take Care of Make It Perfect"
           posts={relatedJourneysList}

@@ -2,6 +2,8 @@ import { getApolloClient } from 'lib/apollo-client';
 
 import { updateUserAvatar } from 'lib/users';
 import { sortObjectsByDate } from 'lib/datetime';
+import { getAllJourneys } from 'lib/journeys';
+import { getAllBirds } from './birds';
 
 import {
   QUERY_ALL_POSTS_INDEX,
@@ -383,8 +385,8 @@ export async function getPostsPerPage() {
  * getPageCount
  */
 
-export async function getPagesCount(posts, postsPerPage) {
-  const _postsPerPage = postsPerPage ?? (await getPostsPerPage());
+export function getPagesCount(posts, postsPerPage) {
+  const _postsPerPage = postsPerPage ?? 16;
   return Math.ceil(posts.length / _postsPerPage);
 }
 
@@ -392,9 +394,16 @@ export async function getPagesCount(posts, postsPerPage) {
  * getPaginatedPosts
  */
 
-export async function getPaginatedPosts({ currentPage = 1, ...options } = {}) {
-  const { posts } = await getAllPosts(options);
-  const postsPerPage = await getPostsPerPage();
+export async function getPaginatedPosts({ currentPage = 1, postType = 'post', postsPerPage = 12, ...options } = {}) {
+  let posts =
+    postType === 'journeys'
+      ? await getAllJourneys(options)
+      : postType === 'birds'
+      ? await getAllBirds(options)
+      : await getAllPosts(options);
+  for (const key in posts) {
+    posts = posts[key];
+  }
   const pagesCount = await getPagesCount(posts, postsPerPage);
   let page = Number(currentPage);
   if (typeof page === 'undefined' || isNaN(page) || page > pagesCount) {
@@ -410,3 +419,12 @@ export async function getPaginatedPosts({ currentPage = 1, ...options } = {}) {
     },
   };
 }
+
+export const setPaginatePosts = (posts, postsPerPage = 12) => {
+  const paginatedPosts = [];
+  const pagesCount = Math.ceil(posts.length / postsPerPage);
+  for (let i = 1; i <= pagesCount; i++) {
+    paginatedPosts.push(posts.slice((i - 1) * postsPerPage, i * postsPerPage));
+  }
+  return paginatedPosts;
+};

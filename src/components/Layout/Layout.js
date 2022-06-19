@@ -7,6 +7,7 @@ import { helmetSettingsFromMetadata } from 'lib/site';
 import Nav from 'components/Nav';
 import Main from 'components/Main';
 import Footer from 'components/Footer';
+import { Transition } from '@headlessui/react';
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -64,9 +65,19 @@ const Layout = ({ children }) => {
       <Helmet {...helmetSettings} />
 
       <Nav />
-
-      <Main>{children}</Main>
-
+      <Transition
+        appear={true}
+        show={true}
+        enter="transition-opacity duration-1000 transition ease-in"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-1000 transition ease-out"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+        unmount={false}
+      >
+        <Main>{children}</Main>
+      </Transition>
       <Footer />
     </div>
   );

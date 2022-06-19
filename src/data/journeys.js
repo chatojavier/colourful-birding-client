@@ -79,6 +79,12 @@ export const QUERY_ALL_JOURNEYS_ARCHIVE = gql`
             to
             from
           }
+          birdsToWatch {
+            ... on Bird {
+              id
+              slug
+            }
+          }
         }
         featuredImage {
           node {

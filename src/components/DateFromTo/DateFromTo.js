@@ -1,6 +1,6 @@
 const DateFromTo = ({ from, to }) => {
-  const dateFrom = new Date(from);
-  const dateTo = new Date(to);
+  const dateFrom = new Date(from.split('-').join(', '));
+  const dateTo = new Date(to.split('-').join(', '));
   const dateFromOptions =
     dateFrom.getFullYear() === dateTo.getFullYear()
       ? { month: 'short', day: 'numeric' }
@@ -16,7 +16,7 @@ const DateFromTo = ({ from, to }) => {
   return (
     <span>
       <span className="inline-block">{dateFromFormatted}</span>
-      <span className="inline-block">{dateFromFormatted !== dateToFormatted && <> - {dateToFormatted}</>}</span>
+      <span className="inline-block">{dateFromFormatted !== dateToFormatted && <>&nbsp;- {dateToFormatted}</>}</span>
       <span className="inline-block">&nbsp;{'(' + daysOfDifferenceFormatted + ')'}</span>
     </span>
   );

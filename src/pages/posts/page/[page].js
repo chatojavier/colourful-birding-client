@@ -37,7 +37,7 @@ export async function getStaticPaths() {
   const { posts } = await getAllPosts({
     queryIncludes: 'index',
   });
-  const pagesCount = await getPagesCount(posts);
+  const pagesCount = await getPagesCount(posts, 4);
   const paths = [...new Array(pagesCount)].map((_, i) => {
     return { params: { page: String(i + 1) } };
   });

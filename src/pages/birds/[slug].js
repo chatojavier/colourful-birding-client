@@ -12,7 +12,7 @@ import Container from 'components/Container';
 import BirdInfo from 'components/BirdInfo';
 import JumboGallery from 'components/JumboGallery';
 import Widescreen from 'components/Widescreen';
-import SectionRelatedPostCard from 'components/SectionRelatedPostCard';
+import CollectionPostCard from 'components/CollectionPostCard';
 import { getRelatedJourneys } from 'lib/journeys';
 
 export default function Bird({ bird, socialImage, related }) {
@@ -65,7 +65,7 @@ export default function Bird({ bird, socialImage, related }) {
       </Container>
 
       <Widescreen>
-        <SectionRelatedPostCard
+        <CollectionPostCard
           title={`${title}'s Journeys`}
           subtitle="We Take Care of Make It Perfect"
           posts={relatedJourneysList}

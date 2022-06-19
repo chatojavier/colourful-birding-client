@@ -9,7 +9,7 @@ import Button from 'components/Button';
 import { useEffect, useRef, useState } from 'react';
 import useWindowSize from 'hooks/use-window-resize';
 
-const PostCard = ({ post, options = {} }) => {
+const PostCard = ({ post, options = {}, color = 'purple' }) => {
   const {
     title,
     slug,
@@ -24,7 +24,8 @@ const PostCard = ({ post, options = {} }) => {
   } = post;
   const featuredImageHtml = useRef(null);
   const backgroundHtml = useRef(null);
-  const [bottomSpace, setBottomSpace] = useState(24);
+  const [bottomSpace, setBottomSpace] = useState(0);
+  const [refresh, setRefresh] = useState(0);
   const [windowWidth] = useWindowSize();
 
   const { md, xl } = getMediaQueries();
@@ -55,7 +56,17 @@ const PostCard = ({ post, options = {} }) => {
     } else {
       setBottomSpace(24);
     }
-  }, [windowWidth]);
+  }, [windowWidth, refresh]);
+
+  useEffect(() => {
+    let timeout;
+    if (bottomSpace === 0) {
+      timeout = setTimeout(() => setRefresh(refresh + 1), 500);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [bottomSpace]);
 
   return (
     <>
@@ -105,10 +116,11 @@ const PostCard = ({ post, options = {} }) => {
               </div>
             )}
             <Button
-              className="postcard__main__content__button"
+              className="postcard__main__content__button | inline-block md:mt-4"
               path={postPathBySlug(contentTypeName, slug)}
               variant="primary"
               size="large"
+              color={color}
             >
               {contentTypeName === 'journeys' ? 'Discover' : 'Read More'}
             </Button>
