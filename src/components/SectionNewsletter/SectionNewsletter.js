@@ -6,7 +6,7 @@ import SectionTitle from 'components/SectionTitle';
 const SectionNewsletter = () => {
   return (
     <section className="section-newsletter | | h-[375px] w-full bg-[url('/images/newsletter-background.webp')] bg-cover bg-center md:h-[480px] xl:h-[550px]">
-      <div className="container mx-auto flex h-full max-w-[800px] flex-col items-center justify-center space-y-8 px-[12%]">
+      <div className="container mx-auto flex h-full max-w-[500px] flex-col items-center justify-center space-y-8 px-[12%] md:px-0">
         <div className="section-newsletter__header  w-full">
           <SectionTitle className="section-newsletter-title" color="white">
             Stay in Contact

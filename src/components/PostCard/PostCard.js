@@ -28,7 +28,7 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
   const [refresh, setRefresh] = useState(0);
   const [windowWidth] = useWindowSize();
 
-  const { md, xl } = getMediaQueries();
+  const { md, lg } = getMediaQueries();
   const { excludeMetadata = [] } = options;
 
   const metadata = {};
@@ -82,9 +82,10 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
                   <img
                     src={featuredImage?.sourceUrl}
                     srcSet={featuredImage?.srcSet}
-                    sizes={`${xl} 485px, ${md} 35.5vw, 100vw`}
+                    sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
                     alt={featuredImage?.altText}
                     title={title}
+                    loading="lazy"
                     className="postcard__main__featured-image__image h-full w-full object-cover"
                   />
                 )}

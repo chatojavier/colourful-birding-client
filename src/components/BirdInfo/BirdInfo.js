@@ -11,14 +11,14 @@ const BirdInfo = ({ title, regions, content, familyName }) => {
           <Title color={'green'}>{title}</Title>
           <Subtitle>{familyName}</Subtitle>
         </div>
-        <div className="bird-info__regions | shrink-0">
+        <div className="bird-info__regions | shrink-0 space-y-4">
           {regions.map((region) => (
             <div
               key={region.databaseId}
               className="bird-info__region | flex items-end space-x-2 md:flex-row-reverse md:justify-end md:space-x-reverse"
             >
               <div className="bird-info__region-name | text-xs md:text-xl">{region.name}</div>
-              <div className="bird-info__region-icon w-[30px] md:w-auto">{getRegionIconByName(region.name, 40)}</div>
+              <div className="bird-info__region-icon w-[30px]">{getRegionIconByName(region.name)}</div>
             </div>
           ))}
         </div>

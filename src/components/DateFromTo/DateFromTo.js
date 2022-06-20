@@ -1,8 +1,10 @@
 import { format } from 'date-fns';
 
 const DateFromTo = ({ from, to }) => {
-  const dateFrom = new Date(from.split('-').join(', '));
-  const dateTo = new Date(to.split('-').join(', '));
+  const fromUpdated = new Date(from);
+  const toUpdated = new Date(to);
+  const dateFrom = new Date(fromUpdated.getTime() + fromUpdated.getTimezoneOffset() * 60000);
+  const dateTo = new Date(toUpdated.getTime() + toUpdated.getTimezoneOffset() * 60000);
   const dateFromPattern = dateFrom.getFullYear() === dateTo.getFullYear() ? 'MMM d' : 'MMM d, yyyy';
   const dateFromFormatted = format(dateFrom, dateFromPattern);
   const dateToFormatted = format(dateTo, 'MMM d, yyyy');

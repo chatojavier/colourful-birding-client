@@ -30,7 +30,7 @@ const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, squar
             src={featuredImage.sourceUrl}
             alt={featuredImage.altText}
             srcSet={featuredImage.srcSet}
-            sizes={featuredImage.sizes}
+            sizes="100vw"
             className="h-full w-full object-cover object-center"
           />
         </div>

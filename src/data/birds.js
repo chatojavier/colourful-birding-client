@@ -109,6 +109,10 @@ export const QUERY_BIRD_BY_SLUG = gql`
           srcSet
           sizes
           id
+          mediaDetails {
+            height
+            width
+          }
         }
         galleryMobile {
           altText
@@ -116,6 +120,10 @@ export const QUERY_BIRD_BY_SLUG = gql`
           srcSet
           sizes
           id
+          mediaDetails {
+            height
+            width
+          }
         }
       }
     }

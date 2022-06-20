@@ -40,8 +40,9 @@ const CollectionPostCard = ({
           {posts && Array.isArray(posts) && posts.length > 0 ? (
             <>
               {posts.map((post) => {
+                console.log(post);
                 return (
-                  <div className="related-posts__post | group mb-6" key={post.id}>
+                  <div className="related-posts__post | group mb-6" key={post.slug}>
                     <PostCard post={post} postOptions={postOptions} color={color} />
                   </div>
                 );
