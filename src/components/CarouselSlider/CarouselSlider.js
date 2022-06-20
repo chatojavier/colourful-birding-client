@@ -26,7 +26,7 @@ const CarouselSlider = ({ post }) => {
                 <h2>{title}</h2>
               </div>
               <div className="carousel-slider__subtitle | text-sm uppercase">
-                <div>{familyName || <DateFormated date={date} />}</div>
+                <div>{familyName ? familyName : date ? <DateFormated date={date} /> : ''}</div>
               </div>
               {contentTypeName === 'post' && (
                 <div className="carousel-slider__excerpt | mt-2 h-0 overflow-hidden text-sm transition-all group-hover:h-20">
