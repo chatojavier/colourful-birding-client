@@ -1,16 +1,11 @@
+import { format } from 'date-fns';
+
 const DateFromTo = ({ from, to }) => {
   const dateFrom = new Date(from.split('-').join(', '));
   const dateTo = new Date(to.split('-').join(', '));
-  const dateFromOptions =
-    dateFrom.getFullYear() === dateTo.getFullYear()
-      ? { month: 'short', day: 'numeric' }
-      : { month: 'short', day: 'numeric', year: 'numeric' };
-  const dateFromFormatted = dateFrom.toLocaleDateString('en-US', dateFromOptions);
-  const dateToFormatted = dateTo.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const dateFromPattern = dateFrom.getFullYear() === dateTo.getFullYear() ? 'MMM d' : 'MMM d, yyyy';
+  const dateFromFormatted = format(dateFrom, dateFromPattern);
+  const dateToFormatted = format(dateTo, 'MMM d, yyyy');
   const daysOfDifference = Math.abs(dateTo.getDate() - dateFrom.getDate());
   const daysOfDifferenceFormatted = daysOfDifference === 1 ? '1 day' : `${daysOfDifference} days`;
   return (

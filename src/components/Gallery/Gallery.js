@@ -2,9 +2,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { useEffect, useState } from 'react';
-import { Navigation, Controller, Autoplay } from 'swiper';
+import { Navigation, Controller, Autoplay, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getMediaQueries } from 'lib/responsive';
+import Loader from 'components/Loader';
 
 const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = false }) => {
   const { md } = getMediaQueries();
@@ -25,7 +26,7 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
     <div className="gallery-main absolute top-0 left-0 z-20 h-full w-full py-[10%] md:top-12 md:h-[calc(100%-1rem)] md:py-0">
       <Swiper
         onInit={(swiper) => setSwiper(swiper)}
-        modules={[Navigation, Controller, Autoplay]}
+        modules={[Navigation, Controller, Autoplay, Lazy]}
         slidesPerView={'auto'}
         centeredSlides={true}
         spaceBetween={12}
@@ -38,6 +39,9 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
         controller={{ control: control }}
         loop={true}
         autoplay
+        lazy={{
+          loadPrevNext: true,
+        }}
         className="h-full"
       >
         {galleryDesktop.map((item, index) => (
@@ -61,16 +65,23 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
                 )}
                 <picture>
                   {galleryDesktop[index]?.srcSet && (
-                    <source srcSet={galleryDesktop[index]?.srcSet} sizes="(min-width: 768px) 950px, 90vw" media={md} />
+                    <source
+                      data-srcSet={galleryDesktop[index]?.srcSet}
+                      sizes="(min-width: 768px) 950px, 90vw"
+                      media={md}
+                    />
                   )}
                   {galleryMobile && galleryMobile[index]?.srcSet && (
-                    <source srcSet={galleryMobile[index].srcSet} sizes="(min-width: 768px) 950px, 90vw" />
+                    <source data-srcSet={galleryMobile[index].srcSet} sizes="(min-width: 768px) 950px, 90vw" />
                   )}
                   <img
-                    src={galleryDesktop[index].sourceUrl}
+                    data-src={galleryDesktop[index].sourceUrl}
                     alt={galleryDesktop[index].altText}
-                    className={`h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
+                    className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                   />
+                  <div className="swiper-lazy-preloader | absolute top-0 left-0 flex h-full w-full items-center justify-center bg-white bg-opacity-75">
+                    <Loader size="sm" />
+                  </div>
                 </picture>
               </>
             )}

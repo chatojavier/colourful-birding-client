@@ -11,27 +11,28 @@ import Header from 'components/Header';
 import Section from 'components/Section';
 import JumboImage from 'components/JumboImage';
 import CollectionPostCard from 'components/CollectionPostCard';
-import Dropdown from 'components/Dropdown';
+import { ListboxMultiple, ListboxSingle } from 'components/Listbox';
 import Container from 'components/Container';
 import { useEffect, useState } from 'react';
 import Button from 'components/Button';
-import useAllJourneys from 'hooks/useAllJourneys';
-import useAllRegions from 'hooks/useAllRegions';
-import useAllBirds from 'hooks/useAllBirds';
+import { useCallback } from 'react';
+import { getAllJourneys } from 'lib/journeys';
+import { getAllRegions } from 'lib/regions';
+import { getAllBirds } from 'lib/birds';
 
-export default function Journeys({ pageInfo, posts, pagination }) {
+export default function Journeys({ pageInfo, posts, pagination, allPosts, regions, birds }) {
   const title = 'All Our Journeys';
   const slug = 'journeys';
   const [currentPosts, setCurrentPosts] = useState(posts);
-  const [allPostsUpdated, setAllPostsUpdated] = useState(posts);
+  const [allFilteredPosts, setAllFilteredPosts] = useState(allPosts);
   const [pagesCount, setPagesCount] = useState(pagination.pagesCount);
   const [currentPage, setCurrentPage] = useState(pagination.currentPage);
   const postsPerPage = pageInfo?.postsPerPage ?? 4;
-  const { data: allPosts } = useAllJourneys({ queryIncludes: 'archive' });
-  const { data: regions, loading: regionsLoading } = useAllRegions();
-  const { data: birds, loading: birdsLoading } = useAllBirds();
   const [regionsItems, setRegionsItems] = useState([]);
   const [birdsItems, setBirdsItems] = useState([]);
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [selectedBirds, setSelectedBirds] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState({ label: 'A-Z' });
 
   const { metadata } = usePageMetadata({
     metadata: {
@@ -50,96 +51,95 @@ export default function Journeys({ pageInfo, posts, pagination }) {
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
-  const orderPostsBy = (sortCallback) => {
-    allPostsUpdated.sort(sortCallback);
-    const postsUpdated = allPostsUpdated.slice(0, postsPerPage);
+  const orderPosts = (sortCallback) => {
+    allFilteredPosts.sort(sortCallback);
+    const postsUpdated = allFilteredPosts.slice(0, postsPerPage);
     setCurrentPage(1);
     setCurrentPosts(postsUpdated);
-  };
-
-  const filterPostsBy = (filterCallback) => {
-    const filteredPosts = allPosts.filter(filterCallback);
-    const postsUpdated = filteredPosts.slice(0, postsPerPage);
-    setCurrentPage(1);
-    setAllPostsUpdated(filteredPosts);
-    setCurrentPosts(postsUpdated);
-    const newCount = getPagesCount(postsUpdated, postsPerPage);
-    setPagesCount(newCount);
-  };
-
-  const getAllPosts = () => {
-    setCurrentPage(1);
-    setAllPostsUpdated(allPosts);
-    setCurrentPosts(allPosts.slice(0, postsPerPage));
-    const newCount = getPagesCount(allPosts, postsPerPage);
-    console.log(newCount);
-    setPagesCount(newCount);
   };
 
   const handleMorePosts = () => {
     const newPage = currentPage + 1;
     const newCountStart = currentPosts.length;
-    const postsUpdated = [...currentPosts, ...allPostsUpdated.slice(newCountStart, newCountStart + postsPerPage)];
+    const postsUpdated = [...currentPosts, ...allFilteredPosts.slice(newCountStart, newCountStart + postsPerPage)];
     setCurrentPage(newPage);
     setCurrentPosts(postsUpdated);
+  };
+
+  const setFilterPosts = (filteredPosts) => {
+    const currentPostsUpdated = filteredPosts.slice(0, postsPerPage);
+    setCurrentPage(1);
+    setAllFilteredPosts(filteredPosts);
+    setCurrentPosts(currentPostsUpdated);
+    const newCount = getPagesCount(filteredPosts, postsPerPage);
+    setPagesCount(newCount);
+  };
+
+  const filterAllPostsBySelectedItems = () => {
+    if (!allPosts || allPosts.length === 0) {
+      return [];
+    }
+    if (selectedRegions.length === 0 && selectedBirds.length === 0) {
+      setFilterPosts(allPosts);
+      return;
+    }
+    const filteredPosts = allPosts.filter((post) => {
+      const postRegions = post.regions;
+      const postBirds = post.birdsToWatch;
+      const selectedRegionsUpdated = selectedRegions.length === 0 ? generateRegionsItems() : selectedRegions;
+      const selectedRegionsIds = selectedRegionsUpdated.map((region) => region.id);
+      const selectedBirdsUpdated = selectedBirds.length === 0 ? generateBirdsItems() : selectedBirds;
+      const selectedBirdsIds = selectedBirdsUpdated.map((bird) => bird.id);
+      const isPostInRegions = postRegions.some((region) => selectedRegionsIds.includes(region.id));
+      const isPostInBirds = postBirds.some((bird) => selectedBirdsIds.includes(bird.id));
+      return isPostInRegions && isPostInBirds;
+    });
+    setFilterPosts(filteredPosts);
   };
 
   const orderByItems = [
     {
       label: 'A-Z',
-      onClick: () => orderPostsBy((a, b) => (a.title > b.title ? 1 : -1)),
+      onClick: () => orderPosts((a, b) => (a.title > b.title ? 1 : -1)),
     },
     {
       label: 'Price',
-      onClick: () => orderPostsBy((a, b) => (a.price > b.price ? 1 : -1)),
+      onClick: () => orderPosts((a, b) => (a.price > b.price ? 1 : -1)),
     },
     {
       label: 'Programed Dates',
-      onClick: () =>
-        orderPostsBy((a, b) => (new Date(a.programedDates.from) > new Date(b.programedDates.from) ? 1 : -1)),
+      onClick: () => orderPosts((a, b) => (new Date(a.programedDates.from) > new Date(b.programedDates.from) ? 1 : -1)),
     },
   ];
 
-  const generateRegionsItems = () => {
-    const items = regions
-      .map((region) => {
-        return {
-          label: region.name,
-          onClick: () => filterPostsBy((a) => a.regions.some((r) => r.slug === region.slug)),
-        };
-      })
-      .concat([
-        {
-          label: 'All',
-          onClick: () => getAllPosts(),
-        },
-      ]);
+  const generateRegionsItems = useCallback(() => {
+    const items = regions.map((region) => {
+      return {
+        id: region.id,
+        label: region.name,
+      };
+    });
     return items;
-  };
+  }, [regions]);
 
-  const generateBirdsItems = () => {
-    const items = birds
-      .map((bird) => {
-        return {
-          label: bird.title,
-          onClick: () => filterPostsBy((a) => a.birdsToWatch.some((b) => b.slug === bird.slug)),
-        };
-      })
-      .concat([
-        {
-          label: 'All',
-          onClick: () => getAllPosts(),
-        },
-      ]);
+  const generateBirdsItems = useCallback(() => {
+    const items = birds.map((bird) => {
+      return {
+        id: bird.id,
+        label: bird.title,
+      };
+    });
     return items;
-  };
+  }, [birds]);
 
   useEffect(() => {
-    setAllPostsUpdated(allPosts);
     setRegionsItems(generateRegionsItems());
     setBirdsItems(generateBirdsItems());
-  }, [allPosts, regions, birds]);
+  }, [regions, birds]);
 
+  useEffect(() => {
+    filterAllPostsBySelectedItems();
+  }, [selectedRegions, selectedBirds]);
   return (
     <Layout>
       <Helmet {...helmetSettings} />
@@ -155,16 +155,26 @@ export default function Journeys({ pageInfo, posts, pagination }) {
       </Header>
 
       <Section className="Journeys-filters">
-        <Container className="mb-8 flex justify-between">
-          <div className="filterButtons | space-x-4">
-            <Dropdown name="Region" className="filterButtons__dropdown" items={regionsItems} loading={regionsLoading} />
-            <Dropdown name="Birds" className="filterButtons__dropdown" items={birdsItems} loading={birdsLoading} />
+        <Container className="mb-8 space-y-2 md:flex md:justify-between md:space-y-0">
+          <div className="filterButtons | space-y-2 md:space-x-4 md:space-y-0">
+            <ListboxMultiple
+              name="Regions"
+              items={regionsItems}
+              selected={selectedRegions}
+              setSelected={setSelectedRegions}
+            />
+            <ListboxMultiple name="Birds" items={birdsItems} selected={selectedBirds} setSelected={setSelectedBirds} />
           </div>
           <div className="sortButtons">
-            <Dropdown name="Order by" className="filterButtons__dropdown" items={orderByItems} orientation="right" />
+            <ListboxSingle
+              name="Order by"
+              items={orderByItems}
+              selected={selectedOrder}
+              setSelected={setSelectedOrder}
+            />
           </div>
         </Container>
-        <CollectionPostCard posts={currentPosts} title={false} button={false} color="blue" /* loading={loading} */ />
+        <CollectionPostCard posts={currentPosts} title={false} button={false} color="blue" />
         {currentPage < pagesCount && currentPosts.length > 0 && (
           <Button className="mx-auto block" color="blue" onClick={handleMorePosts}>
             Load more Journeys
@@ -182,6 +192,10 @@ export async function getStaticProps() {
     postsPerPage: pageInfo?.postsPerPage ?? 4,
     queryIncludes: 'archive',
   });
+  const { journeys } = await getAllJourneys({ queryIncludes: 'archive' });
+  const { regions } = await getAllRegions();
+  const { birds } = await getAllBirds();
+  const allPosts = journeys;
 
   return {
     props: {
@@ -191,6 +205,9 @@ export async function getStaticProps() {
         basePath: '/journeys',
       },
       pageInfo,
+      allPosts,
+      regions,
+      birds,
     },
   };
 }

@@ -1,11 +1,11 @@
-import Dropdown from './Dropdown';
+import { ListboxMultiple } from './ListBox';
 
 export default {
   title: 'components/Dropdown',
-  component: Dropdown,
+  component: ListboxMultiple,
 };
 
-const Template = (args) => <Dropdown {...args} />;
+const Template = (args) => <ListboxMultiple {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

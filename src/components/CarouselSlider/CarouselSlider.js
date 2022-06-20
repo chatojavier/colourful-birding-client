@@ -43,6 +43,7 @@ const CarouselSlider = ({ post }) => {
               width="280"
               height="495"
               alt={`${featuredImage.altText}`}
+              loading="lazy"
               className={`h-full w-full object-cover transition-transform duration-500 ${
                 contentTypeName === 'post' ? 'scale-105 group-hover:scale-100' : 'group-hover:scale-105'
               }`}

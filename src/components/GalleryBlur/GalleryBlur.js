@@ -4,6 +4,7 @@ import 'swiper/css/effect-fade';
 import { EffectFade, Controller } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getMediaQueries } from 'lib/responsive';
+import Loader from 'components/Loader';
 
 const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
   const { md } = getMediaQueries();
@@ -20,16 +21,17 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
           <SwiperSlide key={item.id} className="overflow-hidden">
             <picture>
               {galleryDesktop[index]?.srcSet && (
-                <source srcSet={galleryDesktop[index]?.srcSet} sizes={galleryDesktop[index]?.sizes} media={md} />
+                <source data-srcSet={galleryDesktop[index]?.srcSet} sizes={galleryDesktop[index]?.sizes} media={md} />
               )}
               {galleryMobile && galleryMobile[index]?.srcSet && (
-                <source srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+                <source data-srcSet={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
               )}
               <img
-                src={galleryDesktop[index].sourceUrl}
+                data-src={galleryDesktop[index].sourceUrl}
                 alt={galleryDesktop[index].altText}
-                className="h-full w-full scale-150 object-cover blur-lg"
+                className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
               />
+              <Loader size="sm" className="swiper-lazy-preloader" />
             </picture>
           </SwiperSlide>
         ))}

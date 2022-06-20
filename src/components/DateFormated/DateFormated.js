@@ -1,10 +1,7 @@
-const DateFormated = ({ date }) => {
-  const dateUpdated = new Date(date);
-  const dateFormatted = dateUpdated.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
+import { format } from 'date-fns';
+
+const DateFormated = ({ date, pattern = 'PPP' }) => {
+  const dateFormatted = format(new Date(date), pattern);
   return <span>{dateFormatted}</span>;
 };
 export default DateFormated;
