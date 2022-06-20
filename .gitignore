@@ -42,3 +42,6 @@ public/images/og
 
 # VSCode settings
 .vscode/
+
+# Storybook
+storybook-static/

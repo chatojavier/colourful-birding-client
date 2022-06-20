@@ -26,7 +26,8 @@ Default.args = {
       id: 'cG9zdDozNg==',
     },
     title: 'Yellow-scarfed tanager',
-    subtitle: 'Thraupidae',
+    slug: 'yellow-scarfed-tanager',
+    familyName: 'Thraupidae',
     regions: [
       {
         databaseId: 4,
@@ -42,6 +43,7 @@ Default.args = {
       },
     ],
     contentTypeName: 'birds',
+    date: '',
   },
 };
 
