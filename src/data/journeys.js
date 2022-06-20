@@ -154,6 +154,10 @@ export const QUERY_JOURNEY_BY_SLUG = gql`
           srcSet
           sizes
           id
+          mediaDetails {
+            height
+            width
+          }
         }
         galleryMobile {
           altText
@@ -161,6 +165,10 @@ export const QUERY_JOURNEY_BY_SLUG = gql`
           srcSet
           sizes
           id
+          mediaDetails {
+            height
+            width
+          }
         }
       }
     }

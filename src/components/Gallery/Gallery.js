@@ -13,14 +13,12 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
   const [swiper, setSwiper] = useState(null);
   const [windowWidth] = useWindowSize();
   const mdWidth = md.replace(/\D/g, '');
-  console.log(mdWidth);
 
   useEffect(() => {
     let timeout;
     if (swiper === null) {
       timeout = setTimeout(() => swiper.update(), 500);
     }
-    console.log(swiper);
     return () => {
       clearTimeout(timeout);
     };
@@ -47,15 +45,16 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
         className="h-full"
       >
         {galleryDesktop.map((item, index) => {
-          console.log(item.mediaDetails);
           const galleryDesktopHeight = 456;
           const galleryDesktopWidth =
             (galleryDesktopHeight * galleryDesktop[index].mediaDetails.width) /
             galleryDesktop[index].mediaDetails.height;
           const galleryMobileHeight = 390;
-          const galleryMobileWidth = galleryMobile
-            ? (galleryMobileHeight * galleryMobile[index].mediaDetails.width) / galleryMobile[index].mediaDetails.height
-            : 0;
+          const galleryMobileWidth =
+            galleryMobile && galleryMobile[index]
+              ? (galleryMobileHeight * galleryMobile[index].mediaDetails.width) /
+                galleryMobile[index].mediaDetails.height
+              : 0;
           return (
             <SwiperSlide
               key={item.id}
