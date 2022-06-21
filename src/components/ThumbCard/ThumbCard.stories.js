@@ -1,7 +1,7 @@
 import ThumbCard from './ThumbCard';
 
 export default {
-  title: 'component/ThumbCard',
+  title: 'components/ThumbCard',
   component: ThumbCard,
 };
 
