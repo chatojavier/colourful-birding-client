@@ -1,40 +1,41 @@
 import Link from 'next/link';
 
-const Button = ({ children, className, color = 'purple', filled = false, path = '', ...rest }) => {
-  const getClassesByColorAndFill = (color, filled) => {
-    if (filled) {
-      const constantClasses = 'text-white hover:bg-opacity-0';
-      switch (color) {
-        case 'green':
-          return `${constantClasses} bg-green border-green hover:text-green`;
-        case 'purple':
-          return `${constantClasses} bg-purple border-purple hover:text-purple`;
-        case 'blue':
-          return `${constantClasses} bg-blue border-blue hover:text-blue`;
-        case 'lightblue':
-          return `${constantClasses} bg-lightblue border-lightblue hover:text-lightblue`;
-        case 'white':
-          return `${constantClasses} bg-white border-white hover:text-darkgrey`;
-        default:
-          return `${constantClasses} bg-purple border-purple hover:text-purple`;
-      }
-    }
-    const constantClasses = 'bg-opacity-0 hover:bg-opacity-100 hover:text-white';
+export const getClassesByColorAndFill = (color, filled) => {
+  if (filled) {
+    const constantClasses = 'text-white hover:bg-opacity-0';
     switch (color) {
       case 'green':
-        return `bg-green border-green text-green ${constantClasses}`;
+        return `${constantClasses} bg-green border-green hover:text-green`;
       case 'purple':
-        return `bg-purple border-purple text-purple ${constantClasses}`;
+        return `${constantClasses} bg-purple border-purple hover:text-purple`;
       case 'blue':
-        return `bg-blue border-blue text-blue ${constantClasses}`;
+        return `${constantClasses} bg-blue border-blue hover:text-blue`;
       case 'lightblue':
-        return `bg-lightblue border-lightblue text-lightblue ${constantClasses}`;
+        return `${constantClasses} bg-lightblue border-lightblue hover:text-lightblue`;
       case 'white':
-        return `bg-white border-white text-white bg-opacity-0 hover:bg-opacity-100 hover:text-primary hover:border-opacity-0`;
+        return `${constantClasses} bg-white border-white hover:text-darkgrey`;
       default:
-        return `bg-purple border-purple text-purple ${constantClasses}`;
+        return `${constantClasses} bg-purple border-purple hover:text-purple`;
     }
-  };
+  }
+  const constantClasses = 'bg-opacity-0 hover:bg-opacity-100 hover:text-white';
+  switch (color) {
+    case 'green':
+      return `bg-green border-green text-green ${constantClasses}`;
+    case 'purple':
+      return `bg-purple border-purple text-purple ${constantClasses}`;
+    case 'blue':
+      return `bg-blue border-blue text-blue ${constantClasses}`;
+    case 'lightblue':
+      return `bg-lightblue border-lightblue text-lightblue ${constantClasses}`;
+    case 'white':
+      return `bg-white border-white text-white bg-opacity-0 hover:bg-opacity-100 hover:text-primary hover:border-opacity-0`;
+    default:
+      return `bg-purple border-purple text-purple ${constantClasses}`;
+  }
+};
+
+const Button = ({ children, className, color = 'purple', filled = false, path = '', ...rest }) => {
   return (
     <>
       {!path ? (
