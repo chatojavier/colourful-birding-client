@@ -1,7 +1,9 @@
 import Layout from 'components/Layout';
 import usePageMetadata from 'hooks/use-page-metadata';
 
-import { getPaginatedBirds } from 'lib/birds';
+import { getPaginatedPosts } from 'lib/posts';
+import { getAllJourneys } from 'lib/journeys';
+import { getAllRegions } from 'lib/regions';
 import { WebpageJsonLd } from 'lib/json-ld';
 import Helmet from 'react-helmet';
 
@@ -10,8 +12,9 @@ import { helmetSettingsFromMetadata } from 'lib/site';
 import ToggleButton from 'components/ToggleButton';
 import Section from 'components/Section';
 import Container from 'components/Container';
+import CollectionThumbCard from 'components/CollectionThumbCard';
 
-export default function Birds() {
+export default function Birds({ posts }) {
   const title = 'All Birds';
   const slug = 'birds';
 
@@ -32,8 +35,8 @@ export default function Birds() {
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
-  const FilterBar = () => (
-    <div className="birds__filter-bar | flex w-full flex-wrap gap-4">
+  const FilterBar = ({ className }) => (
+    <div className={`birds__filter-bar | flex w-full flex-wrap gap-4 ${className}`}>
       <div className="birds__filter-bar-item | flex-1">
         <ToggleButton color="lightblue" className="w-full">
           Coast
@@ -49,11 +52,6 @@ export default function Birds() {
           Rainforest
         </ToggleButton>
       </div>
-      <div className="birds__filter-bar-item | flex-1">
-        <ToggleButton color="lightblue" className="w-full">
-          All
-        </ToggleButton>
-      </div>
     </div>
   );
 
@@ -65,7 +63,8 @@ export default function Birds() {
 
       <Section className="birds-collection">
         <Container>
-          <FilterBar />
+          <FilterBar className="mb-12" />
+          <CollectionThumbCard posts={posts} />
         </Container>
       </Section>
     </Layout>
@@ -73,16 +72,24 @@ export default function Birds() {
 }
 
 export async function getStaticProps() {
-  const { birds, pagination } = await getPaginatedBirds({
+  const { posts, pagination } = await getPaginatedPosts({
+    postType: 'birds',
+    postsPerPage: 12,
     queryIncludes: 'archive',
   });
+  const { journeys } = await getAllJourneys({ queryIncludes: 'archive' });
+  const { regions } = await getAllRegions();
+  const allPosts = journeys;
+
   return {
     props: {
-      birds,
+      posts,
       pagination: {
         ...pagination,
-        basePath: '/birds',
+        basePath: '/journeys',
       },
+      allPosts,
+      regions,
     },
   };
 }
