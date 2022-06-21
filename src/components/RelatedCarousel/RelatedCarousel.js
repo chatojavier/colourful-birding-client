@@ -3,7 +3,7 @@ import SectionTitle from 'components/SectionTitle';
 import Button from 'components/Button';
 import Container from 'components/Container';
 import CarouselSlider from 'components/CarouselSlider';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import 'swiper/css';
@@ -20,10 +20,6 @@ const SectionRelatedCarousel = ({
   color = 'blue',
 }) => {
   const mainSwiper = useRef(null);
-
-  useEffect(() => {
-    console.log('mainSwiper', mainSwiper.current);
-  }, [mainSwiper]);
 
   return (
     <section className="related-carousel | relative overflow-hidden">
