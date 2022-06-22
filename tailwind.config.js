@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin');
+const lineClap = require('@tailwindcss/line-clamp');
 
 module.exports = {
   content: [
@@ -38,5 +39,6 @@ module.exports = {
         html: { fontFamily: theme('raleway') },
       });
     }),
+    lineClap,
   ],
 };

@@ -28,21 +28,21 @@ const CarouselSlider = ({ post }) => {
               <div className="carousel-slider__subtitle | text-sm uppercase">
                 <div>{familyName ? familyName : date ? <DateFormated date={date} /> : ''}</div>
               </div>
-              {contentTypeName === 'post' && (
+              {contentTypeName === 'post' && excerpt && (
                 <div className="carousel-slider__excerpt | mt-2 h-0 overflow-hidden text-sm transition-all group-hover:h-20">
-                  <div dangerouslySetInnerHTML={{ __html: excerpt }}></div>
+                  <div dangerouslySetInnerHTML={{ __html: excerpt }} className="line-clamp-4"></div>
                 </div>
               )}
             </div>
           </div>
           <div className="carousel-slider__image | absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
             <img
-              src={featuredImage.sourceUrl}
-              srcSet={featuredImage.srcSet}
+              src={featuredImage?.sourceUrl ?? 'https://source.unsplash.com/random/280×500/?birds'}
+              srcSet={featuredImage?.srcSet ?? ''}
               sizes="500w"
               width="280"
               height="495"
-              alt={`${featuredImage.altText}`}
+              alt={`${featuredImage?.altText}`}
               loading="lazy"
               className={`h-full w-full object-cover transition-transform duration-500 ${
                 contentTypeName === 'post' ? 'scale-105 group-hover:scale-100' : 'group-hover:scale-105'

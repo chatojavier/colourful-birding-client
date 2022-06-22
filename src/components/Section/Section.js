@@ -1,6 +1,6 @@
 const Section = ({ children, className = '', ...rest }) => {
   return (
-    <section className={`${className} my-12 w-full py-8`} {...rest}>
+    <section className={`${className} my-20 w-full`} {...rest}>
       {children}
     </section>
   );
