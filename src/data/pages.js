@@ -174,14 +174,21 @@ export const QUERY_PAGE_CUSTOMDATA_BY_URI = gql`
   query PageCustomDataByUri($uri: ID!) {
     page(id: $uri, idType: URI) {
       content
-      featuredImage {
-        node {
-          altText
-          caption
+      jumboimage {
+        headerImage {
           id
+          altText
           sizes
           sourceUrl
           srcSet
+          mediaDetails {
+            height
+            width
+          }
+        }
+        headerText {
+          title
+          subtitle
         }
       }
       id

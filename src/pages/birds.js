@@ -2,6 +2,7 @@ import Layout from 'components/Layout';
 import usePageMetadata from 'hooks/use-page-metadata';
 
 import { getPaginatedPosts } from 'lib/posts';
+import { getPageCustomDataByUri } from 'lib/pages';
 import { getAllJourneys } from 'lib/journeys';
 import { getAllRegions } from 'lib/regions';
 import { WebpageJsonLd } from 'lib/json-ld';
@@ -13,10 +14,16 @@ import ToggleButton from 'components/ToggleButton';
 import Section from 'components/Section';
 import Container from 'components/Container';
 import CollectionThumbCard from 'components/CollectionThumbCard';
+import Header from 'components/Header';
+import JumboImage from 'components/JumboImage';
 
-export default function Birds({ posts }) {
-  const title = 'All Birds';
-  const slug = 'birds';
+export default function Birds({ posts, pageInfo }) {
+  const { title = 'Journeys' } = pageInfo;
+  const slug = 'journeys';
+  const {
+    headerImage,
+    headerText: { title: headerTitle = 'Get Inspired', subtitle: headerSubtitle = 'AND FLY AWAY' },
+  } = pageInfo.jumboimage;
 
   const { metadata } = usePageMetadata({
     metadata: {
@@ -61,6 +68,10 @@ export default function Birds({ posts }) {
 
       <WebpageJsonLd title={title} description={metadata.description} sitetitle={siteMetadata.title} slug={slug} />
 
+      <Header>
+        <JumboImage featuredImage={headerImage} title={headerTitle} subtitle={headerSubtitle} />
+      </Header>
+
       <Section className="birds-collection">
         <Container>
           <FilterBar className="mb-12" />
@@ -72,6 +83,7 @@ export default function Birds({ posts }) {
 }
 
 export async function getStaticProps() {
+  const pageInfo = await getPageCustomDataByUri(`/pagebirds/`);
   const { posts, pagination } = await getPaginatedPosts({
     postType: 'birds',
     postsPerPage: 12,
@@ -88,6 +100,7 @@ export async function getStaticProps() {
         ...pagination,
         basePath: '/journeys',
       },
+      pageInfo,
       allPosts,
       regions,
     },
