@@ -21,8 +21,6 @@ import { getAllRegions } from 'lib/regions';
 import { getAllBirds } from 'lib/birds';
 
 export default function Journeys({ pageInfo, posts, pagination, allPosts, regions, birds }) {
-  const title = 'All Our Journeys';
-  const slug = 'journeys';
   const [currentPosts, setCurrentPosts] = useState(posts);
   const [allFilteredPosts, setAllFilteredPosts] = useState(allPosts);
   const [pagesCount, setPagesCount] = useState(pagination.pagesCount);
@@ -33,6 +31,16 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [selectedBirds, setSelectedBirds] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState({ label: 'A-Z' });
+
+  const { title = 'Journeys' } = pageInfo;
+  const slug = 'journeys';
+  const {
+    headerImage,
+    headerText: {
+      title: headerTitle = 'Find your Journey',
+      subtitle: headerSubtitle = 'We take care to make it perfect',
+    },
+  } = pageInfo.jumboimage;
 
   const { metadata } = usePageMetadata({
     metadata: {
@@ -147,11 +155,7 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
       <WebpageJsonLd title={title} description={metadata.description} siteTitle={siteMetadata.title} slug={slug} />
 
       <Header>
-        <JumboImage
-          featuredImage={pageInfo?.featuredImage}
-          title="Find your Journey"
-          subtitle="We take care to make it perfect"
-        />
+        <JumboImage featuredImage={headerImage} title={headerTitle} subtitle={headerSubtitle} />
       </Header>
 
       <Section className="Journeys-filters">

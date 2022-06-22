@@ -7,10 +7,10 @@ import { getRegionIconByName } from 'lib/regions';
 const ThumbCard = ({ title, slug, featuredImage, regions, familyName, className = '' }) => {
   const { md, lg } = getMediaQueries();
   return (
-    <div className={`thumbcard | group max-w-[280px] ${className}`}>
+    <div className={`thumbcard | group relative max-w-[280px] ${className}`}>
       <Link href={postPathBySlug('birds', slug)}>
         <a>
-          <div className="thumbcard-background | mb-2 aspect-square h-full w-full overflow-hidden">
+          <div className="thumbcard-background | mb-2 aspect-square w-full overflow-hidden">
             <img
               src={featuredImage.src}
               alt={featuredImage.altText}
@@ -22,19 +22,19 @@ const ThumbCard = ({ title, slug, featuredImage, regions, familyName, className 
         </a>
       </Link>
 
-      <div className="thumbcard-content | flex w-full items-center justify-between">
+      <div className="thumbcard-content | flex w-full items-start justify-between space-x-2 md:space-x-0">
         <div className="thumcard-content left">
-          <h3 className="thumbcard-content__title | font-bebas text-2xl font-bold uppercase group-hover:text-lightblue">
+          <h3 className="thumbcard-content__title | font-bebas text-xl font-bold uppercase leading-5 group-hover:text-lightblue md:text-2xl md:leading-6">
             <Link href={postPathBySlug('birds', slug)}>
               <a>{title}</a>
             </Link>
           </h3>
           <div className="thumbcard-content__subtitle | text-xs uppercase md:text-sm">{familyName}</div>
         </div>
-        <div className="thumcard-content right">
-          <div className="thumbcard-content__regions | space-x-2 text-xs">
+        <div className="thumcard-content">
+          <div className="thumbcard-content__regions | flex flex-col space-y-1 text-xs md:flex-row md:space-x-1 md:space-y-0">
             {regions.map((region) => (
-              <span key={region.id} className="inline-block h-[40px] w-[40px] border p-1">
+              <span key={region.id} className=" inline-block h-6 w-6 border p-1 md:h-8 md:w-8 ">
                 {getRegionIconByName(region.name)}
               </span>
             ))}
