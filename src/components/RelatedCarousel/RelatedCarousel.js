@@ -18,11 +18,12 @@ const SectionRelatedCarousel = ({
   postOptions = DEFAULT_POST_OPTIONS,
   slug = false,
   color = 'blue',
+  reverse = false,
 }) => {
   const mainSwiper = useRef(null);
 
   return (
-    <section className="related-carousel | relative overflow-hidden">
+    <section className={`related-carousel | relative overflow-hidden ${reverse && 'rotate-180'}`}>
       <Container>
         <div className="related-carousel__title | mb-4 md:hidden">
           <SectionTitle color={color}>{title}</SectionTitle>
@@ -45,15 +46,15 @@ const SectionRelatedCarousel = ({
           }}
           className={`mb-4 !overflow-visible`}
         >
-          <SwiperSlide className="hidden !h-auto !w-auto md:block">
+          <SwiperSlide className={`hidden !h-auto !w-auto md:block`}>
             <div
               className={`related-carousel__header | flex h-full max-w-[420px] shrink-0 flex-col px-12 ${
                 slug ? 'justify-end' : 'justify-center'
-              }`}
+              } ${reverse && 'rotate-180'}`}
             >
               <div className={`related-carousel__title | ${slug && 'mb-8'}`}>
                 <SectionTitle color={color}>{title}</SectionTitle>
-                <SectionSubtitle className="text-right">{subtitle}</SectionSubtitle>
+                <SectionSubtitle className={`${!reverse && 'text-right'}`}>{subtitle}</SectionSubtitle>
               </div>
               {slug && (
                 <Button path={slug} color={color} filled className="mx-auto block w-full text-center">
@@ -67,7 +68,7 @@ const SectionRelatedCarousel = ({
               {posts.map((post) => {
                 return (
                   <SwiperSlide key={post.id} className="!w-auto">
-                    <div className="related-carousel__post" key={post.databaseId}>
+                    <div className={`related-carousel__post | ${reverse && 'rotate-180'}`} key={post.databaseId}>
                       <CarouselSlider post={post} postOptions={postOptions} />
                     </div>
                   </SwiperSlide>
@@ -93,7 +94,7 @@ const SectionRelatedCarousel = ({
 const ArrowPrev = ({ className, ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__prev | border border-dashed border-blue p-3 text-blue`}>
+      <div className={`carousel-buttons__prev | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -115,7 +116,7 @@ const ArrowPrev = ({ className, ...props }) => {
 const ArrowNext = ({ className, ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__next | border border-dashed border-blue p-3 text-blue`}>
+      <div className={`carousel-buttons__next | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
