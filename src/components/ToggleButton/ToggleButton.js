@@ -1,10 +1,7 @@
 import Link from 'next/link';
-import { useState } from 'react';
 
-const ToggleButton = ({ children, className, path = '', onClick, ...rest }) => {
-  const [isActive, setIsActive] = useState(false);
+const ToggleButton = ({ children, className, path = '', onClick, isActive, ...rest }) => {
   const handleClick = () => {
-    setIsActive(!isActive);
     onClick && onClick();
   };
 
