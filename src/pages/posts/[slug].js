@@ -33,8 +33,6 @@ export default function Post({ post, socialImage, related }) {
     isSticky = false,
   } = post;
 
-  console.log(post);
-
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
   if (!post.og) {
