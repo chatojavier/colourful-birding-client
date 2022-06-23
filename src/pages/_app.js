@@ -23,6 +23,7 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 
   return (
     <SiteContext.Provider value={site}>
+      {console.log(site)}
       <SearchProvider>
         <NextNProgress height={4} color={variables.progressbarColor} />
         <Component {...pageProps} />
