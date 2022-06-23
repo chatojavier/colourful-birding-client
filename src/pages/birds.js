@@ -1,7 +1,7 @@
 import Layout from 'components/Layout';
 import usePageMetadata from 'hooks/use-page-metadata';
 
-import { getPagesCount, getPaginatedPosts } from 'lib/posts';
+import { getPagesCount, getPaginatedPosts, getRecentPosts } from 'lib/posts';
 import { getPageCustomDataByUri } from 'lib/pages';
 import { getAllBirds } from 'lib/birds';
 import { getAllRegions } from 'lib/regions';
@@ -18,8 +18,9 @@ import Header from 'components/Header';
 import JumboImage from 'components/JumboImage';
 import { useState, useCallback, useEffect } from 'react';
 import Button from 'components/Button';
+import RelatedCarousel from 'components/RelatedCarousel';
 
-export default function Birds({ pageInfo, posts, pagination, allPosts, regions }) {
+export default function Birds({ pageInfo, posts, pagination, allPosts, regions, articles }) {
   const [currentPosts, setCurrentPosts] = useState(posts);
   const [allFilteredPosts, setAllFilteredPosts] = useState(allPosts);
   const [pagesCount, setPagesCount] = useState(pagination.pagesCount);
@@ -166,6 +167,17 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions }
           )}
         </Container>
       </Section>
+      <Section>
+        {console.log(articles)}
+        <RelatedCarousel
+          title="our stories"
+          subtitle="and experiences"
+          slug="/posts"
+          posts={articles}
+          color="blue"
+          reverse
+        />
+      </Section>
     </Layout>
   );
 }
@@ -179,6 +191,7 @@ export async function getStaticProps() {
   });
   const { birds } = await getAllBirds({ queryIncludes: 'archive' });
   const { regions } = await getAllRegions();
+  const { posts: articles } = await getRecentPosts({ count: 5, queryIncludes: 'archive' });
   const allPosts = birds;
 
   return {
@@ -191,6 +204,7 @@ export async function getStaticProps() {
       pageInfo,
       allPosts,
       regions,
+      articles,
     },
   };
 }
