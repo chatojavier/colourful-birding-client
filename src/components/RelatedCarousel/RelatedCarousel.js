@@ -19,6 +19,7 @@ const SectionRelatedCarousel = ({
   slug = false,
   color = 'blue',
   reverse = false,
+  button = 'See All',
 }) => {
   const [initState, setInitState] = useState(0);
   const TitleSlide = () => (
@@ -33,7 +34,7 @@ const SectionRelatedCarousel = ({
       </div>
       {slug && (
         <Button path={slug} color={color} filled className="mx-auto block w-full text-center">
-          See All the Birds
+          {button}
         </Button>
       )}
     </div>
@@ -96,7 +97,7 @@ const SectionRelatedCarousel = ({
             filled
             className={`p-4 md:float-none md:hidden ${reverse ? 'float-right' : 'float-left'}`}
           >
-            See All the Birds
+            {button}
           </Button>
         )}
       </Container>
