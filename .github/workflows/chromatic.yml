@@ -22,6 +22,11 @@ jobs:
           diagnostics: true
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
+          BIRDS_PER_PAGE: 12
+          WORDPRESS_PLUGIN_SEO: true
+          WORDPRESS_MENU_LOCATION_NAVIGATION: MAIN_MENU
+          WORDPRESS_MENU_ALTERNATIVE_NAVIGATION: FOOTER_MENU
       - uses: actions/upload-artifact@v2
         if: always()
         with:
