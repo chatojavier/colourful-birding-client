@@ -20,7 +20,7 @@
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook -s public",
-    "chromatic": "npx chromatic --project-token=f562dc1513e9"
+    "chromatic": "npx chromatic"
   },
   "lint-staged": {
     "**/*.js": "yarn format:no-path",

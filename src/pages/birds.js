@@ -175,6 +175,7 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
           slug="/posts"
           posts={articles}
           color="blue"
+          button="See all our Stories"
           reverse
         />
       </Section>
