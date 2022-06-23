@@ -25,10 +25,3 @@ jobs:
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           exitZeroOnChanges: true 
-        # NextJS environments
-        env:
-          WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
-          BIRDS_PER_PAGE: 12
-          WORDPRESS_PLUGIN_SEO: true
-          WORDPRESS_MENU_LOCATION_NAVIGATION: MAIN_MENU
-          WORDPRESS_MENU_ALTERNATIVE_NAVIGATION: FOOTER_MENU
