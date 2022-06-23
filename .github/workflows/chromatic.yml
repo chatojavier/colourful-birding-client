@@ -1,0 +1,36 @@
+# Workflow name
+name: 'Chromatic'
+
+# Event for the workflow
+on: push
+
+# List of jobs
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: install
+        run: yarn install --frozen-lockfile
+      - uses: chromaui/action-next@v1
+        with:
+          exitOnceUploaded: true
+          onlyChanged: true
+          traceChanged: true
+          diagnostics: true
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          WORDPRESS_GRAPHQL_ENDPOINT: ${{ secrets.WORDPRESS_GRAPHQL_ENDPOINT }}
+          BIRDS_PER_PAGE: 12
+          WORDPRESS_PLUGIN_SEO: true
+          WORDPRESS_MENU_LOCATION_NAVIGATION: MAIN_MENU
+          WORDPRESS_MENU_ALTERNATIVE_NAVIGATION: FOOTER_MENU
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: chromatic-build-artifacts-${{ github.run_id }}
+          path: |
+            chromatic-diagnostics.json
+            **/build-storybook.log
