@@ -3,7 +3,7 @@ import SectionTitle from 'components/SectionTitle';
 import Button from 'components/Button';
 import Container from 'components/Container';
 import CarouselSlider from 'components/CarouselSlider';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import 'swiper/css';
@@ -18,18 +18,37 @@ const SectionRelatedCarousel = ({
   postOptions = DEFAULT_POST_OPTIONS,
   slug = false,
   color = 'blue',
+  reverse = false,
+  button = 'See All',
 }) => {
-  const mainSwiper = useRef(null);
-
+  const [initState, setInitState] = useState(0);
+  const TitleSlide = () => (
+    <div
+      className={`related-carousel__header | flex h-full max-w-[420px] shrink-0 flex-col px-12 ${
+        slug ? 'justify-end' : 'justify-center'
+      }`}
+    >
+      <div className={`related-carousel__title | ${slug && 'mb-8'}`}>
+        <SectionTitle color={color}>{title}</SectionTitle>
+        <SectionSubtitle className={`${!reverse && 'text-right'}`}>{subtitle}</SectionSubtitle>
+      </div>
+      {slug && (
+        <Button path={slug} color={color} filled className="mx-auto block w-full text-center">
+          {button}
+        </Button>
+      )}
+    </div>
+  );
   return (
-    <section className="related-carousel | relative overflow-hidden">
+    <section className={`related-carousel | relative overflow-hidden`}>
       <Container>
-        <div className="related-carousel__title | mb-4 md:hidden">
+        <div className={`related-carousel__title | mb-4 md:hidden ${reverse && 'text-right'}`}>
           <SectionTitle color={color}>{title}</SectionTitle>
-          <SectionSubtitle className="ml-24">{subtitle}</SectionSubtitle>
+          <SectionSubtitle className={`${reverse ? 'mr-24' : 'ml-24'}`}>{subtitle}</SectionSubtitle>
         </div>
         <Swiper
-          onSwiper={(swiper) => (mainSwiper.current = swiper)}
+          onSlideNextTransitionEnd={() => setInitState(initState + 1)}
+          onSlidePrevTransitionEnd={() => setInitState(initState - 1)}
           modules={[Navigation]}
           navigation={{
             prevEl: '.related-carousel-buttons__prev',
@@ -38,36 +57,26 @@ const SectionRelatedCarousel = ({
           slidesPerView={'auto'}
           spaceBetween={0}
           centeredSlides={true}
+          initialSlide={0}
           breakpoints={{
             768: {
               centeredSlides: false,
+              initialSlide: reverse ? posts.length - 2 : 0,
             },
           }}
           className={`mb-4 !overflow-visible`}
         >
-          <SwiperSlide className="hidden !h-auto !w-auto md:block">
-            <div
-              className={`related-carousel__header | flex h-full max-w-[420px] shrink-0 flex-col px-12 ${
-                slug ? 'justify-end' : 'justify-center'
-              }`}
-            >
-              <div className={`related-carousel__title | ${slug && 'mb-8'}`}>
-                <SectionTitle color={color}>{title}</SectionTitle>
-                <SectionSubtitle className="text-right">{subtitle}</SectionSubtitle>
-              </div>
-              {slug && (
-                <Button path={slug} color={color} filled className="mx-auto block w-full text-center">
-                  See All the Birds
-                </Button>
-              )}
-            </div>
-          </SwiperSlide>
+          {!reverse && (
+            <SwiperSlide className={`hidden !h-auto !w-auto md:block`}>
+              <TitleSlide />
+            </SwiperSlide>
+          )}
           {Array.isArray(posts) && (
             <>
               {posts.map((post) => {
                 return (
                   <SwiperSlide key={post.id} className="!w-auto">
-                    <div className="related-carousel__post" key={post.databaseId}>
+                    <div className={`related-carousel__post`} key={post.databaseId}>
                       <CarouselSlider post={post} postOptions={postOptions} />
                     </div>
                   </SwiperSlide>
@@ -75,16 +84,31 @@ const SectionRelatedCarousel = ({
               })}
             </>
           )}
+          {reverse && (
+            <SwiperSlide className={`hidden !h-auto !w-auto md:block`}>
+              <TitleSlide />
+            </SwiperSlide>
+          )}
         </Swiper>
         {slug && (
-          <Button path={slug} color={color} filled className="p-4 md:hidden">
-            See All the Birds
+          <Button
+            path={slug}
+            color={color}
+            filled
+            className={`p-4 md:float-none md:hidden ${reverse ? 'float-right' : 'float-left'}`}
+          >
+            {button}
           </Button>
         )}
       </Container>
       <div className="carousel-buttons hidden md:block">
         <ArrowPrev className="related-carousel-buttons__prev | absolute top-1/2 left-2 z-20 -translate-y-1/2" />
-        <ArrowNext className="related-carousel-buttons__next | absolute top-1/2 right-2 z-20 -translate-y-1/2" />
+        {console.log(initState)}
+        <ArrowNext
+          className={`related-carousel-buttons__next | absolute top-1/2 right-2 z-20 -translate-y-1/2 ${
+            reverse && initState === 1 && 'hidden'
+          }`}
+        />
       </div>
     </section>
   );
@@ -93,7 +117,7 @@ const SectionRelatedCarousel = ({
 const ArrowPrev = ({ className, ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__prev | border border-dashed border-blue p-3 text-blue`}>
+      <div className={`carousel-buttons__prev | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -115,7 +139,7 @@ const ArrowPrev = ({ className, ...props }) => {
 const ArrowNext = ({ className, ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__next | border border-dashed border-blue p-3 text-blue`}>
+      <div className={`carousel-buttons__next | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

@@ -20,7 +20,7 @@
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006 -s ./public",
     "build-storybook": "build-storybook -s public",
-    "chromatic": "npx chromatic --project-token=f562dc1513e9"
+    "chromatic": "npx chromatic"
   },
   "lint-staged": {
     "**/*.js": "yarn format:no-path",
@@ -30,6 +30,7 @@
     "@apollo/client": "^3.5",
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.6",
+    "@tailwindcss/line-clamp": "^0.4.0",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.1",
     "fuse.js": "^6.6.1",
