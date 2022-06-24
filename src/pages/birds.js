@@ -59,15 +59,12 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
     const postsUpdated = [...currentPosts, ...allFilteredPosts.slice(newCountStart, newCountStart + postsPerPage)];
     setCurrentPage(newPage);
     setCurrentPosts(postsUpdated);
-    console.log(postsUpdated);
-    console.log('AllPosts', allFilteredPosts);
   };
 
   const handleSelect = (value) => {
     if (!isSelected(value, selectedRegions)) {
       const selectedUpdated = [...selectedRegions, regionsItems.find((el) => el === value)];
       setSelectedRegions(selectedUpdated);
-      console.log(selectedUpdated);
     } else {
       handleDeselect(value);
     }
@@ -76,7 +73,6 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
   function handleDeselect(value) {
     const selectedUpdated = selectedRegions.filter((el) => el !== value);
     setSelectedRegions(selectedUpdated);
-    console.log(selectedUpdated);
   }
 
   function isSelected(value, arr) {
@@ -153,7 +149,12 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
       <WebpageJsonLd title={title} description={metadata.description} sitetitle={siteMetadata.title} slug={slug} />
 
       <Header>
-        <JumboImage featuredImage={headerImage} title={headerTitle} subtitle={headerSubtitle} />
+        <JumboImage
+          imageDesktop={headerImage.desktop}
+          imageMobile={headerImage?.mobile}
+          title={headerTitle}
+          subtitle={headerSubtitle}
+        />
       </Header>
 
       <Section className="birds-collection">
@@ -168,7 +169,6 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
         </Container>
       </Section>
       <Section>
-        {console.log(articles)}
         <RelatedCarousel
           title="our stories"
           subtitle="and experiences"

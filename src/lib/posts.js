@@ -331,18 +331,25 @@ export async function getRelatedPosts(categories, postId, count = 5) {
     const filtered = posts.filter(({ postId: id }) => id !== postId);
     const sorted = sortObjectsByDate(filtered);
 
-    related.posts = sorted.map((post) => ({ title: post.title, slug: post.slug }));
+    related.posts = sorted.map((post) => ({
+      title: post.title,
+      slug: post.slug,
+      id: post.id,
+      excerpt: post.excerpt,
+      date: post.date,
+      imagePost: post.imagePost,
+      contentTypeName: post.contentTypeName,
+    }));
   }
 
-  if (!Array.isArray(related.posts) || related.posts.length === 0) {
+  if (categories.length > 0 && related.posts.length < count) {
     const relatedPosts = await getRelatedPosts(categories, postId, count);
-    related = relatedPosts || related;
+    related.posts = [...related.posts, ...relatedPosts];
   }
 
   if (Array.isArray(related.posts) && related.posts.length > count) {
     return related.posts.slice(0, count);
   }
-
   return related;
 }
 

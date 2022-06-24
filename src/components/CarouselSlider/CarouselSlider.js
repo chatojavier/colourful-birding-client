@@ -4,7 +4,8 @@ import { postPathBySlug } from 'lib/posts';
 import Link from 'next/link';
 
 const CarouselSlider = ({ post }) => {
-  const { featuredImage, title, familyName, regions, contentTypeName, excerpt, slug, date } = post;
+  const { featuredImage, title, familyName, regions, contentTypeName, excerpt, slug, date, imagePost } = post;
+  const sliderImage = imagePost?.mobile ?? featuredImage;
   return (
     <div className="carousel-slider | group relative h-[495px] w-[280px] p-4">
       <Link href={postPathBySlug(contentTypeName, slug) || '/'}>
@@ -37,12 +38,12 @@ const CarouselSlider = ({ post }) => {
           </div>
           <div className="carousel-slider__image | absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
             <img
-              src={featuredImage?.sourceUrl ?? 'https://source.unsplash.com/random/280×500/?birds'}
-              srcSet={featuredImage?.srcSet ?? ''}
+              src={sliderImage?.sourceUrl ?? 'https://source.unsplash.com/random/280×500/?birds'}
+              srcSet={sliderImage?.srcSet ?? ''}
               sizes="500w"
               width="280"
               height="495"
-              alt={`${featuredImage?.altText}`}
+              alt={`${sliderImage?.altText}`}
               loading="lazy"
               className={`h-full w-full object-cover transition-transform duration-500 ${
                 contentTypeName === 'post' ? 'scale-105 group-hover:scale-100' : 'group-hover:scale-105'

@@ -155,7 +155,12 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
       <WebpageJsonLd title={title} description={metadata.description} siteTitle={siteMetadata.title} slug={slug} />
 
       <Header>
-        <JumboImage featuredImage={headerImage} title={headerTitle} subtitle={headerSubtitle} />
+        <JumboImage
+          imageDesktop={headerImage.desktop}
+          imageMobile={headerImage?.mobile}
+          title={headerTitle}
+          subtitle={headerSubtitle}
+        />
       </Header>
 
       <Section className="Journeys-filters">

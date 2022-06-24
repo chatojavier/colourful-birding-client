@@ -176,14 +176,27 @@ export const QUERY_PAGE_CUSTOMDATA_BY_URI = gql`
       content
       jumboimage {
         headerImage {
-          id
-          altText
-          sizes
-          sourceUrl
-          srcSet
-          mediaDetails {
-            height
-            width
+          desktop {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              height
+              width
+            }
+          }
+          mobile {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              height
+              width
+            }
           }
         }
         headerText {
