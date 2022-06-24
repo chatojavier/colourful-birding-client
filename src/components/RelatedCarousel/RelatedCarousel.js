@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 
 const DEFAULT_POST_OPTIONS = {};
 
-const SectionRelatedCarousel = ({
+const RelatedCarousel = ({
   title = 'Get Inspired',
   subtitle = 'And Fly Away',
   posts,
@@ -103,7 +103,6 @@ const SectionRelatedCarousel = ({
       </Container>
       <div className="carousel-buttons hidden md:block">
         <ArrowPrev className="related-carousel-buttons__prev | absolute top-1/2 left-2 z-20 -translate-y-1/2" />
-        {console.log(initState)}
         <ArrowNext
           className={`related-carousel-buttons__next | absolute top-1/2 right-2 z-20 -translate-y-1/2 ${
             reverse && initState === 1 && 'hidden'
@@ -159,4 +158,4 @@ const ArrowNext = ({ className, ...props }) => {
   );
 };
 
-export default SectionRelatedCarousel;
+export default RelatedCarousel;

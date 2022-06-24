@@ -56,14 +56,28 @@ export const QUERY_ALL_POSTS_ARCHIVE = gql`
             }
           }
           excerpt
-          featuredImage {
-            node {
-              altText
-              caption
+          imagePost {
+            desktop {
+              id
               sourceUrl
               srcSet
               sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
               id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
             }
           }
         }
@@ -93,14 +107,28 @@ export const QUERY_ALL_POSTS = gql`
           }
           content
           excerpt
-          featuredImage {
-            node {
-              altText
-              caption
+          imagePost {
+            desktop {
+              id
               sourceUrl
               srcSet
               sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
               id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
             }
           }
           modified
@@ -139,14 +167,28 @@ export const QUERY_POST_BY_SLUG = gql`
       content
       date
       excerpt
-      featuredImage {
-        node {
-          altText
-          caption
+      imagePost {
+        desktop {
+          id
           sourceUrl
           srcSet
           sizes
+          mediaDetails {
+            height
+            width
+          }
+          altText
+        }
+        mobile {
           id
+          sourceUrl
+          srcSet
+          sizes
+          mediaDetails {
+            height
+            width
+          }
+          altText
         }
       }
       modified
@@ -192,6 +234,30 @@ export const QUERY_POSTS_BY_CATEGORY_ID_ARCHIVE = gql`
             }
           }
           excerpt
+          imagePost {
+            desktop {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+          }
         }
       }
     }
@@ -219,14 +285,28 @@ export const QUERY_POSTS_BY_CATEGORY_ID = gql`
           }
           content
           excerpt
-          featuredImage {
-            node {
-              altText
-              caption
+          imagePost {
+            desktop {
               id
-              sizes
               sourceUrl
               srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
             }
           }
           modified
@@ -257,6 +337,30 @@ export const QUERY_POSTS_BY_AUTHOR_SLUG_ARCHIVE = gql`
         node {
           ...PostFields
           excerpt
+          imagePost {
+            desktop {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+          }
         }
       }
     }
@@ -271,14 +375,28 @@ export const QUERY_POSTS_BY_AUTHOR_SLUG = gql`
         node {
           ...PostFields
           excerpt
-          featuredImage {
-            node {
-              altText
-              caption
+          imagePost {
+            desktop {
               id
-              sizes
               sourceUrl
               srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
+            }
+            mobile {
+              id
+              sourceUrl
+              srcSet
+              sizes
+              mediaDetails {
+                height
+                width
+              }
+              altText
             }
           }
           modified
