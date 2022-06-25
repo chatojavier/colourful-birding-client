@@ -18,10 +18,12 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
     categories = null,
     regions = null,
     featuredImage,
+    imagePost,
     contentTypeName,
     programedDates,
     excerpt,
   } = post;
+  const sliderImage = imagePost?.desktop ?? featuredImage;
   const featuredImageHtml = useRef(null);
   const backgroundHtml = useRef(null);
   const [bottomSpace, setBottomSpace] = useState(0);
@@ -78,12 +80,12 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
           >
             <Link href={postPathBySlug(contentTypeName, slug)}>
               <a>
-                {featuredImage && (
+                {sliderImage && (
                   <img
-                    src={featuredImage?.sourceUrl}
-                    srcSet={featuredImage?.srcSet}
+                    src={sliderImage?.sourceUrl}
+                    srcSet={sliderImage?.srcSet}
                     sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
-                    alt={featuredImage?.altText}
+                    alt={sliderImage?.altText}
                     title={title}
                     loading="lazy"
                     className="postcard__main__featured-image__image h-full w-full object-cover"
@@ -105,10 +107,10 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
               {contentTypeName === 'post' && <DateFormated date={date} />}
             </div>
             {contentTypeName === 'post' && (
-              <div className="postcard__main__content__excerpt | mb-4 text-sm md:text-base lg:text-lg">
+              <div className="postcard__main__content__excerpt | mb-4 text-xs md:text-sm lg:text-base">
                 {excerpt && (
                   <div
-                    className="postcard__main__content__excerpt__text"
+                    className="postcard__main__content__excerpt__text | line-clamp-3"
                     dangerouslySetInnerHTML={{
                       __html: sanitizeExcerpt(excerpt),
                     }}
@@ -128,16 +130,20 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
           </div>
         </div>
         <div
-          className="postcard__backgorund | -z-10 hidden h-full w-full md:absolute md:top-0 md:right-0 md:grid md:grid-cols-[auto_86%_auto] lg:grid-cols-[auto_875px_auto]"
+          className={`postcard__backgorund | -z-10 hidden h-full w-full md:absolute md:top-0 md:right-0 md:grid ${
+            contentTypeName === 'post' && excerpt
+              ? 'md:grid-cols-[20%_60%_20%] lg:grid-cols-[1fr_660px_1fr]'
+              : 'md:grid-cols-[1fr_86%_1fr] lg:grid-cols-[1fr_875px_1fr]'
+          }`}
           ref={backgroundHtml}
         >
           <div className="postcard__background__left col-start-1 col-end-3 h-full overflow-hidden group-even:col-start-2 group-even:col-end-4">
-            {featuredImage && (
+            {sliderImage && (
               <img
-                src={featuredImage.sourceUrl}
-                srcSet={featuredImage.srcSet}
+                src={sliderImage.sourceUrl}
+                srcSet={sliderImage.srcSet}
                 sizes={`80vw`}
-                alt={featuredImage.altText}
+                alt={sliderImage.altText}
                 title={title}
                 className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
               />

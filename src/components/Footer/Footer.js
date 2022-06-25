@@ -8,7 +8,7 @@ import SectionNewsletter from 'components/SectionNewsletter';
 const Footer = () => {
   const { menus } = useSite();
 
-  const navigation = findMenuByLocation(menus, [process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION]);
+  const navigation = findMenuByLocation(menus, [process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION] || 'FOOTER_MENU');
 
   return (
     <footer>
