@@ -8,7 +8,7 @@ const NavMenu = ({ isOpen }) => {
   const { menus } = useSite();
 
   const navigation = findMenuByLocation(menus, [
-    process.env.WORDPRESS_MENU_LOCATION_NAVIGATION,
+    process.env.WORDPRESS_MENU_LOCATION_NAVIGATION || 'MAIN_MENU',
     MENU_LOCATION_NAVIGATION_DEFAULT,
   ]);
 
