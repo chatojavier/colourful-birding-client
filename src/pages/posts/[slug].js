@@ -15,8 +15,10 @@ import Container from 'components/Container';
 import ArticleContent from 'components/ArticleContent/ArticleContent';
 import JumboImage from 'components/JumboImage';
 import RelatedCarousel from 'components/RelatedCarousel';
+import { getRandomJourneys } from 'lib/journeys';
+import CollectionPostCard from 'components/CollectionPostCard';
 
-export default function Post({ post, socialImage, related }) {
+export default function Post({ post, socialImage, related, journeys }) {
   const { title, metaTitle, description, content, date, author, imagePost } = post;
 
   const { metadata: siteMetadata = {}, homepage } = useSite();
@@ -78,6 +80,17 @@ export default function Post({ post, socialImage, related }) {
           />
         </Section>
       )}
+      {journeys && journeys.length > 0 && (
+        <Section>
+          <CollectionPostCard
+            posts={journeys}
+            title="Find your Journey"
+            subtitle="We take care to make it perfect"
+            button="See all the journeys"
+            slug="/journeys"
+          />
+        </Section>
+      )}
     </Layout>
   );
 }
@@ -103,6 +116,16 @@ export async function getStaticProps({ params = {} } = {}) {
       },
     };
   }
+
+  const { journeys } = await getRandomJourneys({
+    count: 2,
+    queryIncludes: 'archive',
+  });
+
+  if (Array.isArray(journeys) && journeys.length > 0) {
+    props.journeys = journeys;
+  }
+
   return {
     props,
   };

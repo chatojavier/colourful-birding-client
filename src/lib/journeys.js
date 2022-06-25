@@ -166,6 +166,18 @@ export async function getRecentJourneys({ count, ...options }) {
 }
 
 /**
+ * getRandomJourneys
+ */
+
+export async function getRandomJourneys({ count, ...options }) {
+  const { journeys } = await getAllJourneys(options);
+  const sorted = sortObjectsRamdomly(journeys);
+  return {
+    journeys: sorted.slice(0, count),
+  };
+}
+
+/**
  * sanitizeExcerpt
  */
 
