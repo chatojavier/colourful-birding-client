@@ -97,7 +97,7 @@ export default function Page({ page }) {
 }
 
 export async function getStaticProps() {
-  const pageUri = '/contact/';
+  const pageUri = '/contactpage/';
   const { page } = await getPageByUri(pageUri);
 
   // In order to show the proper breadcrumbs, we need to find the entire
