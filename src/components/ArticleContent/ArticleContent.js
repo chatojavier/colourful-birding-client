@@ -1,5 +1,5 @@
 import DateFormated from 'components/DateFormated';
-import Divider from 'components/Divider';
+import { DividerH } from 'components/Divider';
 
 const { default: FormatedContent } = require('components/FormatedContent');
 
@@ -30,7 +30,7 @@ const ArticleContent = ({ children, author, date }) => {
     <div className="article-content | text-xs md:text-sm">
       <ArticleHeader className="mb-12 md:mb-20" />
       <FormatedContent content={children} className="mb-8 md:mb-12" />
-      <Divider />
+      <DividerH />
     </div>
   );
 };

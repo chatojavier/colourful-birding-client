@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import useSite from 'hooks/use-site';
-import Divider from 'components/Divider';
+import { DividerH } from 'components/Divider';
 import BurgerButton from 'components/BurgerButton';
 import NavMenu from 'components/NavMenu';
 
@@ -29,7 +29,7 @@ const Nav = () => {
         <NavMenu isOpen={isOpen} />
         <BurgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="mobileMenuBtn | md:hidden" />
       </div>
-      <Divider />
+      <DividerH />
     </nav>
   );
 };

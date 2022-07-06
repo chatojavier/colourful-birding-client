@@ -74,6 +74,45 @@ export const getTextColorByName = (color) => {
 };
 
 /**
+ * getBorderColorByName
+ */
+export const getBorderColorByName = (color) => {
+  switch (color) {
+    case 'green':
+      return 'border-green';
+    case 'purple':
+      return 'border-purple';
+    case 'blue':
+      return 'border-blue';
+    case 'lightblue':
+      return 'border-lightblue';
+    case 'white':
+      return 'border-white';
+    default:
+      return 'border-darkgrey';
+  }
+};
+
+/**
+ * getInputColorByName
+ */
+export const getInputColorByName = (color) => {
+  const constantClasses = 'focus:outline-none focus:ring-1 focus:ring-offset-2';
+  switch (color) {
+    case 'green':
+      return `${constantClasses} focus:ring-green focus:ring-offset-green-100`;
+    case 'purple':
+      return `${constantClasses} focus:ring-purple focus:ring-offset-purple-100`;
+    case 'blue':
+      return `${constantClasses} focus:ring-blue focus:ring-offset-blue-100`;
+    case 'lightblue':
+      return `${constantClasses} focus:ring-lightblue focus:ring-offset-lightblue-100`;
+    default:
+      return `${constantClasses} focus:ring-blue focus:ring-offset-blue-100`;
+  }
+};
+
+/**
  * sortObjectsRandomly
  */
 export function sortObjectsRandomly(arr) {
@@ -81,4 +120,9 @@ export function sortObjectsRandomly(arr) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
+}
+
+// Currency format
+export function formatCurrency(value) {
+  return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }

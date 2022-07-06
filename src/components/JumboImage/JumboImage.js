@@ -76,7 +76,11 @@ const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
             <Title color={'white'} className="">
               {title}
             </Title>
-            {subtitle && <Subtitle className="relative left-20 text-white md:text-right">{subtitle}</Subtitle>}
+            {subtitle && (
+              <Subtitle className="relative left-20 text-white md:text-right">
+                <span dangerouslySetInnerHTML={{ __html: subtitle }}></span>
+              </Subtitle>
+            )}
           </div>
         </div>
       )}

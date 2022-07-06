@@ -1,5 +1,5 @@
 import useSite from 'hooks/use-site';
-import Divider from 'components/Divider';
+import { DividerH } from 'components/Divider';
 import styles from './Footer.module.scss';
 import { findMenuByLocation } from 'lib/menus';
 import MenuListItem from 'components/MenuListItem';
@@ -8,12 +8,12 @@ import SectionNewsletter from 'components/SectionNewsletter';
 const Footer = () => {
   const { menus } = useSite();
 
-  const navigation = findMenuByLocation(menus, [process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION] || 'FOOTER_MENU');
+  const navigation = findMenuByLocation(menus, [process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION || 'FOOTER_MENU']);
 
   return (
     <footer>
       <SectionNewsletter />
-      <Divider />
+      <DividerH />
       <section className="footer | container relative mx-auto p-4">
         {navigation && (
           <ul

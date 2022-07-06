@@ -5,6 +5,7 @@ import { regionPathBySlug } from 'lib/regions';
 import { getAllBirds } from 'lib/birds';
 import { ArticleJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
+import { useState } from 'react';
 import useSite from 'hooks/use-site';
 import usePageMetadata from 'hooks/use-page-metadata';
 
@@ -18,6 +19,9 @@ import DateFromTo from 'components/DateFromTo';
 import JourneyInfo from 'components/JourneyInfo';
 import Button from 'components/Button';
 import CollectionPostCard from 'components/CollectionPostCard';
+import JourneyTabs from 'components/JourneyTabs';
+import Modal from 'components/Modal';
+import BookNow from 'components/BookNow';
 
 export default function Journey({ journey, socialImage, related }) {
   const {
@@ -26,15 +30,20 @@ export default function Journey({ journey, socialImage, related }) {
     description,
     content,
     featuredImage,
-    contentTypeName,
     destinations,
     mapEmbed,
     programedDates,
     price,
     birdsToWatch,
     gallery,
+    accomodation,
+    itinerary,
+    toursInclusions,
   } = journey;
   const { metadata: siteMetadata = {}, homepage } = useSite();
+  const [openTabs, setOpenTabs] = useState(false);
+  const [openBookNow, setOpenBookNow] = useState(false);
+  const [indexTab, setIndexTab] = useState(0);
 
   if (!journey.og) {
     journey.og = {};
@@ -67,13 +76,26 @@ export default function Journey({ journey, socialImage, related }) {
     title: title,
     subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} />,
     button: {
-      path: '/',
+      onClick: () => setOpenBookNow(true),
       text: 'Book Now',
       color: 'lightblue',
     },
   };
 
-  const journeyInfoProps = { contentTypeName, content, destinations, mapEmbed, programedDates, price };
+  const journeyInfoProps = {
+    onClick: () => setOpenBookNow(true),
+    content,
+    destinations,
+    mapEmbed,
+    programedDates,
+    price,
+  };
+  const journeyTabsProps = { journeyInfo: { accomodation, itinerary, toursInclusions }, activeTab: indexTab };
+
+  const handleOpenTabs = (index) => {
+    setIndexTab(index);
+    setOpenTabs(true);
+  };
 
   return (
     <Layout>
@@ -97,16 +119,21 @@ export default function Journey({ journey, socialImage, related }) {
 
           <div className="journey-extended-info">
             <div className="journey-extended-info__buttons | space-y-2 md:flex md:justify-center md:space-y-0">
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(0)}>
                 Itinerary
               </Button>
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(1)}>
                 Acomodation
               </Button>
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4">
+              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(2)}>
                 Tours Inclution
               </Button>
-              <Button color="lightblue" filled className="!mt-8 block w-full py-2 md:hidden">
+              <Button
+                color="lightblue"
+                filled
+                className="!mt-8 block w-full py-2 md:hidden"
+                onClick={() => setOpenBookNow(true)}
+              >
                 Book Now
               </Button>
             </div>
@@ -126,6 +153,14 @@ export default function Journey({ journey, socialImage, related }) {
           slug="/journeys"
         />
       </Widescreen>
+
+      <Modal isOpen={openTabs} setIsOpen={setOpenTabs} color="lightblue">
+        <JourneyTabs {...journeyTabsProps} />
+      </Modal>
+
+      <Modal isOpen={openBookNow} setIsOpen={setOpenBookNow} color="lightblue">
+        <BookNow price={price} programedDates={programedDates} color="lightblue" />
+      </Modal>
     </Layout>
   );
 }

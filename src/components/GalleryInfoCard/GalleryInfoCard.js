@@ -13,8 +13,9 @@ const GalleryInfoCard = ({ title, subtitle, button }) => {
       </div>
       <div className="gallery-info-card__button">
         <Button
-          path={button.path}
+          path={button?.path}
           color={button.color}
+          onClick={button?.onClick}
           filled
           className="block py-2 text-center text-base hover:!bg-white hover:!bg-opacity-80 md:inline-block"
         >

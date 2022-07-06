@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
-import { getPageByUri, getAllPages, getBreadcrumbsByUri } from 'lib/pages';
+import { getPageByUri, getAllPages } from 'lib/pages';
 import { WebpageJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
@@ -12,13 +12,19 @@ import Header from 'components/Header';
 import Content from 'components/Content';
 import Section from 'components/Section';
 import Container from 'components/Container';
-import FeaturedImage from 'components/FeaturedImage';
-import Breadcrumbs from 'components/Breadcrumbs';
+import JumboImage from 'components/JumboImage';
 
 import styles from 'styles/pages/Page.module.scss';
 
-export default function Page({ page, breadcrumbs }) {
-  const { title, metaTitle, description, slug, content, featuredImage, children } = page;
+export default function Page({ page }) {
+  const { title, metaTitle, description, slug, content, jumboimage, children } = page;
+  const {
+    headerImage,
+    headerText: {
+      title: headerTitle = 'Find your Journey',
+      subtitle: headerSubtitle = 'We take care to make it perfect',
+    },
+  } = jumboimage;
 
   const { metadata: siteMetadata = {} } = useSite();
 
@@ -37,7 +43,6 @@ export default function Page({ page, breadcrumbs }) {
   }
 
   const hasChildren = Array.isArray(children) && children.length > 0;
-  const hasBreadcrumbs = Array.isArray(breadcrumbs) && breadcrumbs.length > 0;
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
@@ -53,15 +58,12 @@ export default function Page({ page, breadcrumbs }) {
       />
 
       <Header>
-        {hasBreadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
-        {featuredImage && (
-          <FeaturedImage
-            {...featuredImage}
-            src={featuredImage.sourceUrl}
-            dangerouslySetInnerHTML={featuredImage.caption}
-          />
-        )}
-        <h1 className={styles.title}>{title}</h1>
+        <JumboImage
+          imageDesktop={headerImage.desktop}
+          imageMobile={headerImage?.mobile}
+          title={headerTitle}
+          subtitle={headerSubtitle}
+        />
       </Header>
 
       <Content>
@@ -120,21 +122,9 @@ export async function getStaticProps({ params = {} } = {}) {
 
   const { page } = await getPageByUri(pageUri);
 
-  // In order to show the proper breadcrumbs, we need to find the entire
-  // tree of pages. Rather than querying every segment, the query should
-  // be cached for all pages, so we can grab that and use it to create
-  // our trail
-
-  const { pages } = await getAllPages({
-    queryIncludes: 'index',
-  });
-
-  const breadcrumbs = getBreadcrumbsByUri(pageUri, pages);
-
   return {
     props: {
       page,
-      breadcrumbs,
     },
   };
 }

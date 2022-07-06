@@ -5,7 +5,7 @@ import DateFromTo from 'components/DateFromTo';
 import EmbedCode from 'components/EmbedCode';
 import Button from 'components/Button';
 
-const JourneyInfo = ({ contentTypeName, content, destinations, mapEmbed, programedDates, price, className }) => {
+const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates, price, className }) => {
   const FeaturedInfoCard = ({ label, icon, children, className }) => (
     <div className={`journey-info__header__featured-info | flex flex-col  items-center ${className}`}>
       <div className="journey-info__header__featured-info__icon | mb-2">{icon}</div>
@@ -37,7 +37,7 @@ const JourneyInfo = ({ contentTypeName, content, destinations, mapEmbed, program
           </FeaturedInfoCard>
         </div>
         <div className="journey-info__header__book-now | hidden shrink-0 md:block">
-          <Button path={`/book-now/${contentTypeName}/${content.slug}`} color="lightblue" filled>
+          <Button onClick={onClick} color="lightblue" filled>
             Book Now
           </Button>
         </div>
