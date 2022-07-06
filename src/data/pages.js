@@ -111,6 +111,36 @@ export const QUERY_PAGE_BY_URI = gql`
         }
       }
       id
+      jumboimage {
+        headerImage {
+          desktop {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              height
+              width
+            }
+          }
+          mobile {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              height
+              width
+            }
+          }
+        }
+        headerText {
+          title
+          subtitle
+        }
+      }
       menuOrder
       parent {
         node {
