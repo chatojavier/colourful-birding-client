@@ -5,17 +5,19 @@ import { EffectFade, Controller, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getMediaQueries } from 'lib/responsive';
 
-const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], control }) => {
+const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
   const { md } = getMediaQueries();
   return (
     <div className="gallery-background">
       <Swiper
+        onSwiper={onSwiper}
         modules={[EffectFade, Controller, Lazy]}
         effect="fade"
         loop={true}
-        onSwiper={control}
+        loopAdditionalSlides={1}
         lazy={true}
-        className="md:h=[578px] h-[472px]"
+        allowTouchMove={false}
+        className="h-[472px] md:h-[578px]"
       >
         {galleryDesktop.map((item, index) => (
           <SwiperSlide key={item.id} className="overflow-hidden">

@@ -93,6 +93,10 @@ export const QUERY_ALL_JOURNEYS_ARCHIVE = gql`
             sourceUrl
             srcSet
             sizes
+            mediaDetails {
+              width
+              height
+            }
             id
           }
         }

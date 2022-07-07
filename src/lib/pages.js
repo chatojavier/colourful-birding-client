@@ -7,6 +7,7 @@ import {
   QUERY_PAGE_BY_URI,
   QUERY_PAGE_SEO_BY_URI,
   QUERY_PAGE_CUSTOMDATA_BY_URI,
+  QUERY_PAGE_HOME,
 } from 'data/pages';
 
 /**
@@ -207,6 +208,9 @@ export function getBreadcrumbsByUri(uri, pages) {
   return breadcrumbs;
 }
 
+/**
+ * getPageCustomDataByUri
+ */
 export const getPageCustomDataByUri = async (uri) => {
   const apolloClient = getApolloClient();
   let pageData;
@@ -219,7 +223,28 @@ export const getPageCustomDataByUri = async (uri) => {
       },
     });
   } catch (e) {
-    console.log(`[pages][getPageByUri] Failed to query page data: ${e.message}`);
+    console.log(`[pages][getPageCustomDataByUri] Failed to query page data: ${e.message}`);
+    throw e;
+  }
+
+  const page = [pageData?.data.page].map(mapPageData)[0];
+
+  return page;
+};
+
+/**
+ * getHomePage
+ */
+export const getHomePage = async () => {
+  const apolloClient = getApolloClient();
+  let pageData;
+
+  try {
+    pageData = await apolloClient.query({
+      query: QUERY_PAGE_HOME,
+    });
+  } catch (e) {
+    console.log(`[pages][getHomePage] Failed to query page data: ${e.message}`);
     throw e;
   }
 

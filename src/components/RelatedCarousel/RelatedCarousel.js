@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { getBorderColorByName, getTextColorByName } from 'lib/util';
 
 const DEFAULT_POST_OPTIONS = {};
 
@@ -22,6 +23,8 @@ const RelatedCarousel = ({
   button = 'See All',
 }) => {
   const [initState, setInitState] = useState(0);
+  const sliderIdentifier = title.toLocaleLowerCase().replace(/\s/g, '-');
+
   const TitleSlide = () => (
     <div
       className={`related-carousel__header | flex h-full max-w-[420px] shrink-0 flex-col px-12 ${
@@ -51,8 +54,8 @@ const RelatedCarousel = ({
           onSlidePrevTransitionEnd={() => setInitState(initState - 1)}
           modules={[Navigation]}
           navigation={{
-            prevEl: '.related-carousel-buttons__prev',
-            nextEl: '.related-carousel-buttons__next',
+            prevEl: `.${sliderIdentifier}-buttons__prev`,
+            nextEl: `.${sliderIdentifier}-buttons__next`,
           }}
           slidesPerView={'auto'}
           spaceBetween={0}
@@ -76,7 +79,7 @@ const RelatedCarousel = ({
               {posts.map((post) => {
                 return (
                   <SwiperSlide key={post.id} className="!w-auto">
-                    <div className={`related-carousel__post`} key={post.databaseId}>
+                    <div className={`related-carousel__post`}>
                       <CarouselSlider post={post} postOptions={postOptions} />
                     </div>
                   </SwiperSlide>
@@ -102,9 +105,11 @@ const RelatedCarousel = ({
         )}
       </Container>
       <div className="carousel-buttons hidden md:block">
-        <ArrowPrev className="related-carousel-buttons__prev | absolute top-1/2 left-2 z-20 -translate-y-1/2" />
+        <ArrowPrev
+          className={`${sliderIdentifier}-buttons__prev | absolute top-1/2 left-2 z-20 w-[60px] -translate-y-1/2`}
+        />
         <ArrowNext
-          className={`related-carousel-buttons__next | absolute top-1/2 right-2 z-20 -translate-y-1/2 ${
+          className={`${sliderIdentifier}-buttons__next  | absolute top-1/2 right-2 z-20 w-[60px] -translate-y-1/2 ${
             reverse && initState === 1 && 'hidden'
           }`}
         />
@@ -113,14 +118,18 @@ const RelatedCarousel = ({
   );
 };
 
-const ArrowPrev = ({ className, ...props }) => {
+export const ArrowPrev = ({ className, color = 'blue', ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__prev | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
+      <div
+        className={`carousel-buttons__prev | border border-dashed p-3 hover:border-dotted ${getTextColorByName(
+          color
+        )} ${getBorderColorByName(color)}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="100%"
+          height="100%"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -135,14 +144,18 @@ const ArrowPrev = ({ className, ...props }) => {
     </div>
   );
 };
-const ArrowNext = ({ className, ...props }) => {
+export const ArrowNext = ({ className, color = 'blue', ...props }) => {
   return (
     <div className={`oversize | cursor-pointer bg-white bg-opacity-50 p-1 ${className}`} {...props}>
-      <div className={`carousel-buttons__next | border border-dashed border-blue p-3 text-blue hover:border-dotted`}>
+      <div
+        className={`carousel-buttons__next | border border-dashed p-3 hover:border-dotted ${getTextColorByName(
+          color
+        )} ${getBorderColorByName(color)}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="100%"
+          height="100%"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

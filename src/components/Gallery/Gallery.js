@@ -8,7 +8,7 @@ import { getMediaQueries } from 'lib/responsive';
 import Loader from 'components/Loader';
 import useWindowSize from 'hooks/use-window-resize';
 
-const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = false }) => {
+const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = false }) => {
   const { md } = getMediaQueries();
   const [swiper, setSwiper] = useState(null);
   const [windowWidth] = useWindowSize();
@@ -27,6 +27,7 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
   return (
     <div className="gallery-main absolute top-0 left-0 z-20 h-full w-full py-[10%] md:top-12 md:h-[calc(100%-1rem)] md:py-0">
       <Swiper
+        onSwiper={onSwiper}
         onInit={(swiper) => setSwiper(swiper)}
         modules={[Navigation, Controller, Autoplay, Lazy]}
         slidesPerView={'auto'}
@@ -38,8 +39,8 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], control, square = fa
             spaceBetween: square ? '12%' : '7%',
           },
         }}
-        controller={{ control: control }}
         loop={true}
+        loopedSlides={2}
         autoplay
         lazy={{ loadPrevNext: true }}
         className="h-full"
