@@ -1,16 +1,17 @@
 // core version + navigation, pagination modules:
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import GalleryBlur from 'components/GalleryBlur';
 import Gallery from 'components/Gallery';
 import GalleryInfoCard from 'components/GalleryInfoCard';
 import GalleryInfo from 'components/GalleryInfo';
+import JumboImage from 'components/JumboImage';
 
 const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, square = false, info = false }) => {
   const swiperGallery = useRef(null);
   const swiperInfo = useRef(null);
   const swiperBlur = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (swiperGallery.current) {
       swiperGallery.current.controller.control = swiperBlur.current;
       swiperBlur.current.controller.control = swiperInfo.current;
@@ -56,15 +57,14 @@ const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, squar
           )}
         </>
       ) : (
-        <div className="md:h=[578px] h-[472px] w-full overflow-hidden">
-          <img
-            src={featuredImage.sourceUrl}
-            alt={featuredImage.altText}
-            srcSet={featuredImage.srcSet}
-            sizes="100vw"
-            className="h-full w-full object-cover object-center"
-          />
-        </div>
+        <>
+          {featuredImage && <JumboImage imageDesktop={featuredImage} />}
+          {info && square && (
+            <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
+              <GalleryInfoCard title={info.title} subtitle={info.subtitle} button={info.button} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

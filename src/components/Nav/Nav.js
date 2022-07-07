@@ -11,26 +11,29 @@ const Nav = () => {
   const { title } = metadata;
 
   return (
-    <nav>
-      <div className="navbar | container mx-auto flex items-center justify-between p-2 md:space-x-8">
-        <div className="nav-left | shrink-0">
-          <Link href="/">
-            <a>
-              <img
-                src="https://admin.colourfulbirding.com/wp-content/uploads/images/colourful-nav-logo.png"
-                alt={title}
-                width={167}
-                height={50}
-                loading="lazy"
-              />
-            </a>
-          </Link>
+    <div className="">
+      {isOpen && <div className="relative -z-20 h-[70.15px] w-full" />}
+      <nav className={`navbar ${isOpen && 'fixed top-0 z-50 w-full bg-white'}`}>
+        <div className={`container mx-auto flex items-center justify-between p-2 md:space-x-8`}>
+          <div className="nav-left | shrink-0">
+            <Link href="/">
+              <a>
+                <img
+                  src="https://admin.colourfulbirding.com/wp-content/uploads/images/colourful-nav-logo.png"
+                  alt={title}
+                  width={167}
+                  height={50}
+                  loading="lazy"
+                />
+              </a>
+            </Link>
+          </div>
+          <NavMenu isOpen={isOpen} />
+          <BurgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="mobileMenuBtn | md:hidden" />
         </div>
-        <NavMenu isOpen={isOpen} />
-        <BurgerButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} className="mobileMenuBtn | md:hidden" />
-      </div>
-      <DividerH />
-    </nav>
+        <DividerH />
+      </nav>
+    </div>
   );
 };
 

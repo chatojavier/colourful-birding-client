@@ -50,7 +50,9 @@ export function sortObjectsRamdomly(arr) {
 
 export function getFirstPathname(url) {
   if (typeof url !== 'string') return;
-  return url.split('/')[1];
+  const pathArray = [...url.split('/')];
+  const filteredPathArray = pathArray.filter((el) => el !== '');
+  return filteredPathArray[filteredPathArray.length - 1];
 }
 
 /**
