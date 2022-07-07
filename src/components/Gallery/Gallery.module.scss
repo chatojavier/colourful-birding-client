@@ -1,0 +1,13 @@
+.galleryMain {
+  [class~="swiper-slide"] {
+    @apply transition-transform;
+    @apply scale-95 md:origin-top md:scale-[.85];
+  }
+  [class~="swiper-slide-active"] {
+    @apply scale-100;
+  }
+  [class~="swiper-slide-wrapper"] {
+    align-items: center;
+    @apply md:items-start;
+  }
+}

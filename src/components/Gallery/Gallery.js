@@ -8,6 +8,8 @@ import { getMediaQueries } from 'lib/responsive';
 import Loader from 'components/Loader';
 import useWindowSize from 'hooks/use-window-resize';
 
+import styles from './Gallery.module.scss';
+
 const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = false }) => {
   const { md } = getMediaQueries();
   const [swiper, setSwiper] = useState(null);
@@ -16,19 +18,22 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = f
 
   useEffect(() => {
     let timeout;
-    if (swiper === null) {
+    if (swiper !== null) {
       timeout = setTimeout(() => swiper.update(), 500);
     }
+    console.log(swiper);
     return () => {
       clearTimeout(timeout);
     };
   }, [swiper]);
 
   return (
-    <div className="gallery-main absolute top-0 left-0 z-20 h-full w-full py-[10%] md:top-12 md:h-[calc(100%-1rem)] md:py-0">
+    <div
+      className={`${styles.galleryMain} absolute top-0 left-0 z-20 h-full w-full py-[10%] md:top-12 md:h-[calc(100%-1rem)] md:py-0`}
+    >
       <Swiper
         onSwiper={onSwiper}
-        onInit={(swiper) => setSwiper(swiper)}
+        onBeforeInit={setSwiper}
         modules={[Navigation, Controller, Autoplay, Lazy]}
         slidesPerView={'auto'}
         centeredSlides={true}
