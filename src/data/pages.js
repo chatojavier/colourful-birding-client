@@ -239,3 +239,98 @@ export const QUERY_PAGE_CUSTOMDATA_BY_URI = gql`
     }
   }
 `;
+
+export const QUERY_PAGE_HOME = gql`
+  query Home {
+    page(id: "/home/", idType: URI) {
+      id
+      jumbotron {
+        journeysToShow {
+          ... on Journey {
+            id
+            slug
+          }
+        }
+      }
+      aboutUsBlock {
+        auImages {
+          main {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              width
+              height
+            }
+          }
+          secondary {
+            id
+            altText
+            sizes
+            sourceUrl
+            srcSet
+            mediaDetails {
+              width
+              height
+            }
+          }
+        }
+        auContent {
+          intro
+          title
+          description
+        }
+      }
+      featuredBirdsBlock {
+        fbTitle
+        fbSubtitle
+        fbButton
+        featuredBirds {
+          ... on Bird {
+            id
+            slug
+          }
+        }
+      }
+      findYourJourney {
+        fjTitle
+        fjSubtitle
+        button
+        featuredJourneys {
+          ... on Journey {
+            id
+            slug
+          }
+        }
+      }
+      tailorMadeBlock {
+        tmImage {
+          id
+          altText
+          sizes
+          sourceUrl
+          srcSet
+          mediaDetails {
+            width
+            height
+          }
+        }
+        tmContent {
+          title
+          subtitle
+          button
+        }
+      }
+      testimonialsBlock {
+        testTitle
+        testSubtitle
+        testimonials {
+          name
+          testimony
+        }
+      }
+    }
+  }
+`;

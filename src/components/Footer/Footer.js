@@ -38,7 +38,7 @@ const Footer = () => {
                 alt="Colourful Peru"
                 width={150}
                 height={55}
-                loadeing="lazy"
+                loading="lazy"
               />
             </a>
           </div>
