@@ -15,7 +15,7 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
         effect="fade"
         loop={true}
         loopAdditionalSlides={1}
-        lazy={true}
+        lazy={{ loadPrevNext: true }}
         allowTouchMove={false}
         className="h-[472px] md:h-[578px]"
       >
@@ -23,10 +23,10 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
           <SwiperSlide key={item.id} className="overflow-hidden">
             <picture>
               {galleryDesktop[index]?.srcSet && (
-                <source data-srcset={galleryDesktop[index]?.srcSet} sizes={galleryDesktop[index]?.sizes} media={md} />
+                <source data-srcset={galleryDesktop[index]?.srcSet} sizes="(min-width: 768px) 950px, 90vw" media={md} />
               )}
               {galleryMobile && galleryMobile[index]?.srcSet && (
-                <source data-srcset={galleryMobile[index].srcSet} sizes={galleryMobile[index].sizes} />
+                <source data-srcset={galleryMobile[index].srcSet} sizes="(min-width: 768px) 950px, 90vw" />
               )}
               <img
                 data-src={galleryDesktop[index].sourceUrl}
