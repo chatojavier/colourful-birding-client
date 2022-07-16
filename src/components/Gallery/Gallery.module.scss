@@ -6,7 +6,7 @@
   [class~="swiper-slide-active"] {
     @apply scale-100;
   }
-  [class~="swiper-slide-wrapper"] {
+  [class~="swiper-wrapper"] {
     align-items: center;
     @apply md:items-start;
   }
