@@ -38,12 +38,12 @@ const CarouselSlider = ({ post }) => {
           </div>
           <div className="carousel-slider__image | absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
             <img
-              src={sliderImage?.sourceUrl ?? 'https://source.unsplash.com/random/280×500/?birds'}
+              src={sliderImage?.sourceUrl ?? '/images/default_image.png'}
               srcSet={sliderImage?.srcSet ?? ''}
               sizes="500w"
               width="280"
               height="495"
-              alt={`${sliderImage?.altText}`}
+              alt={`${sliderImage?.altText ?? 'Default image'}`}
               loading="lazy"
               className={`h-full w-full object-cover transition-transform duration-500 ${
                 contentTypeName === 'post' ? 'scale-105 group-hover:scale-100' : 'group-hover:scale-105'
