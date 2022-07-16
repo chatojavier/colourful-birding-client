@@ -3,6 +3,7 @@ import { getMediaQueries } from 'lib/responsive';
 import Link from 'next/link';
 import { postPathBySlug } from 'lib/posts';
 import { getRegionIconByName } from 'lib/regions';
+import Loader from 'components/Loader';
 
 const ThumbCard = ({ title, slug, featuredImage, regions, familyName, className = '' }) => {
   const { md, lg } = getMediaQueries();
@@ -10,14 +11,17 @@ const ThumbCard = ({ title, slug, featuredImage, regions, familyName, className 
     <div className={`thumbcard | group relative max-w-[280px] ${className}`}>
       <Link href={postPathBySlug('birds', slug)}>
         <a>
-          <div className="thumbcard-background | mb-2 aspect-square w-full overflow-hidden">
+          <div className="thumbcard-background | relative mb-2 aspect-square w-full overflow-hidden">
             <img
-              src={featuredImage.src}
-              alt={featuredImage.altText}
-              srcSet={featuredImage.srcSet}
+              src={featuredImage?.src || '/images/default_image.png'}
+              alt={featuredImage?.altText || 'Default image'}
+              srcSet={featuredImage?.srcSet || ''}
               sizes={`${lg} 280px, ${md} 33.33vw, 50vw`}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
+            <div className="absolute top-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-10">
+              <Loader size="sm" />
+            </div>
           </div>
         </a>
       </Link>

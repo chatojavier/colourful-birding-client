@@ -82,10 +82,10 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
               <a>
                 {sliderImage && (
                   <img
-                    src={sliderImage?.sourceUrl}
-                    srcSet={sliderImage?.srcSet}
+                    src={sliderImage?.sourceUrl || '/images/default_image.png'}
+                    srcSet={sliderImage?.srcSet || ''}
                     sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
-                    alt={sliderImage?.altText}
+                    alt={sliderImage?.altText || 'placeholder image'}
                     title={title}
                     loading="lazy"
                     className="postcard__main__featured-image__image h-full w-full object-cover"
@@ -140,10 +140,10 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
           <div className="postcard__background__left col-start-1 col-end-3 h-full overflow-hidden group-even:col-start-2 group-even:col-end-4">
             {sliderImage && (
               <img
-                src={sliderImage.sourceUrl}
-                srcSet={sliderImage.srcSet}
+                src={sliderImage?.sourceUrl || '/images/default_image.png'}
+                srcSet={sliderImage?.srcSet || ''}
                 sizes={`80vw`}
-                alt={sliderImage.altText}
+                alt={sliderImage?.altText || 'placeholder image'}
                 title={title}
                 className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
               />

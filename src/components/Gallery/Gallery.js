@@ -105,7 +105,7 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = f
                       height={windowWidth >= mdWidth ? galleryDesktopHeight : galleryMobileHeight}
                       className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                     />
-                    <div className="swiper-lazy-preloader | absolute top-0 left-0 flex h-full w-full items-center justify-center bg-white bg-opacity-75">
+                    <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-20">
                       <Loader size="sm" />
                     </div>
                   </picture>
