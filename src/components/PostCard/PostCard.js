@@ -139,7 +139,7 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
             <img
               src={sliderImage?.sourceUrl || '/images/default_image.png'}
               srcSet={sliderImage?.srcSet || ''}
-              sizes={`80vw`}
+              sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
               alt={sliderImage?.altText || 'placeholder image'}
               title={title}
               className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
