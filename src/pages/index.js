@@ -52,7 +52,7 @@ export default function Home({
       </Header>
 
       <Widescreen>
-        <JumboGallery galleryDesktop={jumboGallery.gallery} info={galleryInfo} square />
+        <JumboGallery galleryImages={jumboGallery.gallery} info={galleryInfo} square />
       </Widescreen>
 
       <Section>

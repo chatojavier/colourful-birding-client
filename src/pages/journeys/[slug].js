@@ -22,6 +22,8 @@ import CollectionPostCard from 'components/CollectionPostCard';
 import JourneyTabs from 'components/JourneyTabs';
 import Modal from 'components/Modal';
 import BookNow from 'components/BookNow';
+import { getMediaQueries } from 'lib/responsive';
+import useWindowSize from 'hooks/use-window-resize';
 
 export default function Journey({ journey, socialImage, related }) {
   const {
@@ -40,6 +42,13 @@ export default function Journey({ journey, socialImage, related }) {
     itinerary,
     toursInclusions,
   } = journey;
+  const { md } = getMediaQueries();
+  const mdQuery = md.replace(/[^0-9]/g, '');
+  const [windowWidth] = useWindowSize();
+  const galleryImages =
+    gallery.galleryMobile && gallery.galleryMobile.length > 0 && windowWidth < mdQuery
+      ? gallery.galleryMobile
+      : gallery.galleryDesktop;
   const { metadata: siteMetadata = {}, homepage } = useSite();
   const [openTabs, setOpenTabs] = useState(false);
   const [openBookNow, setOpenBookNow] = useState(false);
@@ -104,13 +113,7 @@ export default function Journey({ journey, socialImage, related }) {
       <ArticleJsonLd post={journey} siteTitle={siteMetadata.title} />
 
       <Widescreen>
-        <JumboGallery
-          galleryDesktop={gallery.galleryDesktop}
-          galleryMobile={gallery.galleryMobile}
-          featuredImage={featuredImage}
-          square
-          info={galleryInfo}
-        />
+        <JumboGallery galleryImages={galleryImages} featuredImage={featuredImage} square info={galleryInfo} />
       </Widescreen>
 
       <Section>

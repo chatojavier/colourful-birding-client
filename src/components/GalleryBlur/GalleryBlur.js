@@ -3,10 +3,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import { EffectFade, Controller, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getMediaQueries } from 'lib/responsive';
 
-const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
-  const { md } = getMediaQueries();
+const GalleryBlur = ({ images = [], onSwiper }) => {
   return (
     <div className="gallery-background">
       <Swiper
@@ -19,34 +17,21 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
         allowTouchMove={false}
         className="h-[472px] md:h-[578px]"
       >
-        {galleryDesktop.map((item, index) => {
-          const galleryMobileUpdated = galleryMobile && galleryMobile?.length > 0 ? galleryMobile : galleryDesktop;
-          const galleryDesktopHeight = galleryDesktop[index].mediaDetails.height;
-          const galleryDesktopWidth = galleryDesktop[index].mediaDetails.width;
-          const galleryMobileHeight = galleryMobileUpdated[index].mediaDetails.height;
-          const galleryMobileWidth = galleryMobileUpdated[index].mediaDetails.width;
+        {images.map((image) => {
+          const { id, mediaDetails, sourceUrl, srcSet, altText } = image;
+          const imageHeight = mediaDetails.height;
+          const imageWidth = mediaDetails.width;
           return (
-            <SwiperSlide key={item.id} className="overflow-hidden">
-              <picture>
-                <source
-                  data-srcset={galleryDesktop[index]?.srcSet}
-                  sizes="(min-width: 768px) 950px, 90vw"
-                  media={md}
-                  height={galleryDesktopHeight}
-                  width={galleryDesktopWidth}
-                />
-                <source
-                  data-srcset={galleryMobileUpdated[index].srcSet}
-                  sizes="(min-width: 768px) 950px, 90vw"
-                  height={galleryMobileHeight}
-                  width={galleryMobileWidth}
-                />
-                <img
-                  data-src={galleryDesktop[index].sourceUrl}
-                  alt={galleryDesktop[index].altText}
-                  className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
-                />
-              </picture>
+            <SwiperSlide key={id} className="overflow-hidden">
+              <img
+                data-src={sourceUrl}
+                data-srcset={srcSet}
+                sizes="(min-width: 768px) 950px, 90vw"
+                height={imageHeight}
+                width={imageWidth}
+                alt={altText}
+                className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
+              />
             </SwiperSlide>
           );
         })}

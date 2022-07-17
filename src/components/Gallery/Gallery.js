@@ -4,13 +4,11 @@ import 'swiper/css/navigation';
 import { useState } from 'react';
 import { Navigation, Controller, Autoplay, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getMediaQueries } from 'lib/responsive';
 import Loader from 'components/Loader';
 
 import styles from './Gallery.module.scss';
 
-const Gallery = ({ galleryDesktop, galleryMobile = [], onSwiper, square = false }) => {
-  const { md } = getMediaQueries();
+const Gallery = ({ images = [], onSwiper, square = false }) => {
   const [swiper, setSwiper] = useState(null);
   const [isSwiperReady, setIsSwiperReady] = useState(false);
   const [updateComponent, setUpdateComponent] = useState(false);
@@ -51,15 +49,13 @@ const Gallery = ({ galleryDesktop, galleryMobile = [], onSwiper, square = false 
         }`}
       >
         <>
-          {galleryDesktop.map((item, index) => {
-            const galleryMobileUpdated = galleryMobile && galleryMobile?.length > 0 ? galleryMobile : galleryDesktop;
-            const galleryDesktopHeight = galleryDesktop[index].mediaDetails.height;
-            const galleryDesktopWidth = galleryDesktop[index].mediaDetails.width;
-            const galleryMobileHeight = galleryMobileUpdated[index].mediaDetails.height;
-            const galleryMobileWidth = galleryMobileUpdated[index].mediaDetails.width;
+          {images.map((image) => {
+            const { id, mediaDetails, sourceUrl, srcSet, altText } = image;
+            const imageHeight = mediaDetails.height;
+            const imageWidth = mediaDetails.width;
             return (
               <SwiperSlide
-                key={item.id}
+                key={id}
                 className={`${
                   square ? 'aspect-square !h-auto md:!h-full md:!w-auto' : '!w-auto'
                 } max-w-[80%] overflow-hidden`}
@@ -76,29 +72,20 @@ const Gallery = ({ galleryDesktop, galleryMobile = [], onSwiper, square = false 
                         }`}
                       ></div>
                     )}
-                    <picture className="relative">
-                      <source
-                        data-srcset={galleryDesktop[index]?.srcSet}
-                        sizes="(min-width: 768px) 950px, 90vw"
-                        media={md}
-                        width={galleryDesktopWidth}
-                        height={galleryDesktopHeight}
-                      />
-                      <source
-                        data-srcset={galleryMobileUpdated[index].srcSet}
-                        sizes="(min-width: 768px) 950px, 90vw"
-                        width={galleryMobileWidth}
-                        height={galleryMobileHeight}
-                      />
+                    <div className="relative h-full">
                       <img
-                        data-src={galleryDesktop[index].sourceUrl}
-                        alt={galleryDesktop[index].altText}
+                        data-src={sourceUrl}
+                        data-srcset={srcSet}
+                        sizes="(min-width: 768px) 950px, 90vw"
+                        height={imageHeight}
+                        width={imageWidth}
+                        alt={altText}
                         className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                       />
-                      <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-20">
+                      <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-40">
                         <Loader size="sm" />
                       </div>
-                    </picture>
+                    </div>
                   </>
                 )}
               </SwiperSlide>
@@ -108,7 +95,7 @@ const Gallery = ({ galleryDesktop, galleryMobile = [], onSwiper, square = false 
       </Swiper>
       <div
         className={`absolute bottom-12 z-10 flex h-full w-full items-center justify-center ${
-          isSwiperReady ? 'opacity-0' : 'opacity-1'
+          isSwiperReady ? 'invisible opacity-0' : 'opacity-1 visible'
         }`}
       >
         <Loader />
