@@ -3,10 +3,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
 import { EffectFade, Controller, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getMediaQueries } from 'lib/responsive';
 
-const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
-  const { md } = getMediaQueries();
+const GalleryBlur = ({ images, onSwiper }) => {
   return (
     <div className="gallery-background">
       <Swiper
@@ -19,23 +17,30 @@ const GalleryBlur = ({ galleryDesktop = [], galleryMobile = [], onSwiper }) => {
         allowTouchMove={false}
         className="h-[472px] md:h-[578px]"
       >
-        {galleryDesktop.map((item, index) => (
-          <SwiperSlide key={item.id} className="overflow-hidden">
-            <picture>
-              {galleryDesktop[index]?.srcSet && (
-                <source data-srcset={galleryDesktop[index]?.srcSet} sizes="(min-width: 768px) 950px, 90vw" media={md} />
-              )}
-              {galleryMobile && galleryMobile[index]?.srcSet && (
-                <source data-srcset={galleryMobile[index].srcSet} sizes="(min-width: 768px) 950px, 90vw" />
-              )}
+        {images.map((image, index) => {
+          const imageUpdated = image ?? {};
+          const {
+            id = index,
+            sourceUrl = '/images/default_image.png',
+            altText = 'default image',
+            srcSet = '',
+            mediaDetails = {},
+          } = imageUpdated;
+          const { height = 1500, width = 1500 } = mediaDetails;
+          return (
+            <SwiperSlide key={id} className="overflow-hidden">
               <img
-                data-src={galleryDesktop[index].sourceUrl}
-                alt={galleryDesktop[index].altText}
+                data-src={sourceUrl || '/images/default_image.png'}
+                data-srcset={srcSet}
+                sizes="(min-width: 768px) 950px, 90vw"
+                height={height}
+                width={width}
+                alt={altText}
                 className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
               />
-            </picture>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
       <div className="overlay | absolute top-0 left-0 z-10 h-full w-full bg-black opacity-10 mix-blend-multiply"></div>
     </div>

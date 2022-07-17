@@ -6,7 +6,7 @@ import GalleryInfoCard from 'components/GalleryInfoCard';
 import GalleryInfo from 'components/GalleryInfo';
 import JumboImage from 'components/JumboImage';
 
-const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, square = false, info = false }) => {
+const JumboGallery = ({ galleryImages, featuredImage, square = false, info = false }) => {
   const swiperGallery = useRef(null);
   const swiperInfo = useRef(null);
   const swiperBlur = useRef(null);
@@ -20,19 +20,16 @@ const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, squar
 
   return (
     <div className="jumboGallery relative w-full">
-      {galleryDesktop || galleryDesktop?.length > 0 ? (
+      {galleryImages?.length > 0 ? (
         <>
           <GalleryBlur
-            galleryDesktop={galleryDesktop}
-            galleryMobile={galleryMobile}
+            images={galleryImages}
             onSwiper={(swiper) => {
               swiperBlur.current = swiper;
             }}
           />
           <Gallery
-            galleryDesktop={galleryDesktop}
-            galleryMobile={galleryMobile}
-            // control={controlledSwiper}
+            images={galleryImages}
             square={square}
             onSwiper={(swiper) => {
               swiperGallery.current = swiper;
@@ -58,7 +55,7 @@ const JumboGallery = ({ galleryDesktop = [], galleryMobile, featuredImage, squar
         </>
       ) : (
         <>
-          {featuredImage && <JumboImage imageDesktop={featuredImage} />}
+          <JumboImage imageDesktop={featuredImage} />
           {info && square && (
             <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
               <GalleryInfoCard title={info.title} subtitle={info.subtitle} button={info.button} />

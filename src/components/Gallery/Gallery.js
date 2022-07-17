@@ -1,31 +1,17 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigation, Controller, Autoplay, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getMediaQueries } from 'lib/responsive';
 import Loader from 'components/Loader';
-import useWindowSize from 'hooks/use-window-resize';
 
 import styles from './Gallery.module.scss';
 
-const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = false }) => {
-  const { md } = getMediaQueries();
+const Gallery = ({ images = [], onSwiper, square = false }) => {
   const [swiper, setSwiper] = useState(null);
-  const [windowWidth] = useWindowSize();
-  const mdWidth = md.replace(/\D/g, '');
-
-  useEffect(() => {
-    let timeout;
-    if (swiper !== null) {
-      timeout = setTimeout(() => swiper.update(), 500);
-    }
-    console.log(swiper);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [swiper]);
+  const [isSwiperReady, setIsSwiperReady] = useState(false);
+  const [updateComponent, setUpdateComponent] = useState(false);
 
   return (
     <div
@@ -34,6 +20,15 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = f
       <Swiper
         onSwiper={onSwiper}
         onBeforeInit={setSwiper}
+        onLazyImageReady={() => {
+          setIsSwiperReady(true);
+        }}
+        onSliderFirstMove={() => {
+          !square && setUpdateComponent(true);
+        }}
+        onBeforeLoopFix={() => {
+          !square && setUpdateComponent(true);
+        }}
         modules={[Navigation, Controller, Autoplay, Lazy]}
         slidesPerView={'auto'}
         centeredSlides={true}
@@ -48,75 +43,70 @@ const Gallery = ({ galleryDesktop = [], galleryMobile = [], onSwiper, square = f
         loopedSlides={2}
         autoplay
         lazy={{ loadPrevNext: true }}
-        className="h-full"
+        observer
+        className={`${isSwiperReady ? 'opacity-1' : 'opacity-0'} transition-opacity ${
+          updateComponent ? 'h-full' : 'h-[99%] '
+        }`}
       >
-        {galleryDesktop.map((item, index) => {
-          const galleryDesktopHeight = 456;
-          const galleryDesktopWidth =
-            (galleryDesktopHeight * galleryDesktop[index].mediaDetails.width) /
-            galleryDesktop[index].mediaDetails.height;
-          const galleryMobileHeight = 390;
-          const galleryMobileWidth =
-            galleryMobile && galleryMobile[index]
-              ? (galleryMobileHeight * galleryMobile[index].mediaDetails.width) /
-                galleryMobile[index].mediaDetails.height
-              : 0;
-          return (
-            <SwiperSlide
-              key={item.id}
-              className={`${
-                square ? 'aspect-square !h-auto md:!h-full md:!w-auto' : '!w-auto'
-              } max-w-[80%] overflow-hidden`}
-            >
-              {({ isPrev, isNext }) => (
-                <>
-                  {(isPrev || isNext) && (
-                    <div
-                      onClick={() => {
-                        isPrev ? swiper.slidePrev() : swiper.slideNext();
-                      }}
-                      className={`absolute top-0 left-0 z-10 h-full w-full ${
-                        isNext ? 'cursor-e-resize' : 'cursor-w-resize'
-                      }`}
-                    ></div>
-                  )}
-                  <picture>
-                    {galleryDesktop[index]?.srcSet && (
-                      <source
-                        data-srcset={galleryDesktop[index]?.srcSet}
-                        sizes="(min-width: 768px) 950px, 90vw"
-                        media={md}
-                        width={galleryDesktopWidth}
-                        height={galleryDesktopHeight}
-                      />
+        <>
+          {images.map((image, index) => {
+            const imageUpdated = image ?? {};
+            const {
+              id = index,
+              sourceUrl = '/images/default_image.png',
+              altText = 'default image',
+              srcSet = '',
+              mediaDetails = {},
+            } = imageUpdated;
+            const { height = 1500, width = 1500 } = mediaDetails;
+            return (
+              <SwiperSlide
+                key={id}
+                className={`${
+                  square ? 'aspect-square !h-auto md:!h-full md:!w-auto' : '!w-auto'
+                } max-w-[80%] overflow-hidden`}
+              >
+                {({ isPrev, isNext }) => (
+                  <>
+                    {(isPrev || isNext) && (
+                      <div
+                        onClick={() => {
+                          isPrev ? swiper.slidePrev() : swiper.slideNext();
+                        }}
+                        className={`absolute top-0 left-0 z-10 h-full w-full ${
+                          isNext ? 'cursor-e-resize' : 'cursor-w-resize'
+                        }`}
+                      ></div>
                     )}
-                    {galleryMobile && galleryMobile[index]?.srcSet && (
-                      <source
-                        data-srcset={galleryMobile[index].srcSet}
+                    <div className="relative h-full">
+                      <img
+                        data-src={sourceUrl || '/images/default_image.png'}
+                        data-srcset={srcSet}
                         sizes="(min-width: 768px) 950px, 90vw"
-                        width={galleryMobileWidth}
-                        height={galleryMobileHeight}
+                        height={height}
+                        width={width}
+                        alt={altText}
+                        className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                       />
-                    )}
-                    <img
-                      data-src={galleryDesktop[index].sourceUrl}
-                      alt={galleryDesktop[index].altText}
-                      width={windowWidth >= mdWidth ? galleryDesktopWidth : galleryMobileWidth}
-                      height={windowWidth >= mdWidth ? galleryDesktopHeight : galleryMobileHeight}
-                      className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
-                    />
-                    <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-20">
-                      <Loader size="sm" />
+                      <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-40">
+                        <Loader size="sm" />
+                      </div>
                     </div>
-                  </picture>
-                </>
-              )}
-            </SwiperSlide>
-          );
-        })}
+                  </>
+                )}
+              </SwiperSlide>
+            );
+          })}
+        </>
       </Swiper>
+      <div
+        className={`absolute bottom-12 z-10 flex h-full w-full items-center justify-center ${
+          isSwiperReady ? 'invisible opacity-0' : 'opacity-1 visible'
+        }`}
+      >
+        <Loader />
+      </div>
     </div>
   );
 };
-
 export default Gallery;
