@@ -1,13 +1,10 @@
 import Title from 'components/Title';
 import Subtitle from 'components/Subtitle';
 import { getMediaQueries } from 'lib/responsive';
-import useWindowSize from 'hooks/use-window-resize';
 import Loader from 'components/Loader';
 
 const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
   const { md } = getMediaQueries();
-  const [windowWidth] = useWindowSize();
-  const mdWidth = md.replace(/\D/g, '');
 
   return (
     <div className="jumbo-image relative w-full pb-10">
@@ -32,10 +29,8 @@ const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
               />
             )}
             <img
-              src={imageDesktop?.sourceUrl}
-              alt={imageDesktop?.altText}
-              width={windowWidth >= mdWidth ? imageDesktop?.width : imageMobile?.width}
-              height={windowWidth >= mdWidth ? imageDesktop?.height : imageMobile?.height}
+              src={imageDesktop?.sourceUrl || '/images/default_image.png'}
+              alt={imageDesktop?.altText || 'default image'}
               className="h-full w-full scale-150 object-cover blur-lg"
             />
           </picture>
@@ -60,10 +55,8 @@ const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
               />
             )}
             <img
-              src={imageDesktop?.sourceUrl}
-              alt={imageDesktop?.altText}
-              width={windowWidth >= mdWidth ? imageDesktop?.width : imageMobile?.width ?? imageDesktop?.width}
-              height={windowWidth >= mdWidth ? imageDesktop?.height : imageMobile?.height ?? imageDesktop?.height}
+              src={imageDesktop?.sourceUrl || '/images/default_image.png'}
+              alt={imageDesktop?.altText || 'default image'}
               className="h-full w-full object-cover"
             />
             <div className="preloader | absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-75">

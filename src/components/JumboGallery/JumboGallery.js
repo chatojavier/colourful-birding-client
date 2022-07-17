@@ -55,7 +55,7 @@ const JumboGallery = ({ galleryImages, featuredImage, square = false, info = fal
         </>
       ) : (
         <>
-          {featuredImage && <JumboImage imageDesktop={featuredImage} />}
+          <JumboImage imageDesktop={featuredImage} />
           {info && square && (
             <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
               <GalleryInfoCard title={info.title} subtitle={info.subtitle} button={info.button} />
