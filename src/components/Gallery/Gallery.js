@@ -49,10 +49,16 @@ const Gallery = ({ images = [], onSwiper, square = false }) => {
         }`}
       >
         <>
-          {images.map((image) => {
-            const { id, mediaDetails, sourceUrl, srcSet, altText } = image;
-            const imageHeight = mediaDetails.height;
-            const imageWidth = mediaDetails.width;
+          {images.map((image, index) => {
+            const imageUpdated = image ?? {};
+            const {
+              id = index,
+              sourceUrl = '/images/default_image.png',
+              altText = 'default image',
+              srcSet = '',
+              mediaDetails = {},
+            } = imageUpdated;
+            const { height = 1500, width = 1500 } = mediaDetails;
             return (
               <SwiperSlide
                 key={id}
@@ -74,11 +80,11 @@ const Gallery = ({ images = [], onSwiper, square = false }) => {
                     )}
                     <div className="relative h-full">
                       <img
-                        data-src={sourceUrl}
+                        data-src={sourceUrl || '/images/default_image.png'}
                         data-srcset={srcSet}
                         sizes="(min-width: 768px) 950px, 90vw"
-                        height={imageHeight}
-                        width={imageWidth}
+                        height={height}
+                        width={width}
                         alt={altText}
                         className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                       />

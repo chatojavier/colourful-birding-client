@@ -80,17 +80,15 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
           >
             <Link href={postPathBySlug(contentTypeName, slug)}>
               <a>
-                {sliderImage && (
-                  <img
-                    src={sliderImage?.sourceUrl || '/images/default_image.png'}
-                    srcSet={sliderImage?.srcSet || ''}
-                    sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
-                    alt={sliderImage?.altText || 'placeholder image'}
-                    title={title}
-                    loading="lazy"
-                    className="postcard__main__featured-image__image h-full w-full object-cover"
-                  />
-                )}
+                <img
+                  src={sliderImage?.sourceUrl || '/images/default_image.png'}
+                  srcSet={sliderImage?.srcSet || ''}
+                  sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
+                  alt={sliderImage?.altText || 'placeholder image'}
+                  title={title}
+                  loading="lazy"
+                  className="postcard__main__featured-image__image h-full w-full object-cover"
+                />
               </a>
             </Link>
           </div>
@@ -138,16 +136,14 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
           ref={backgroundHtml}
         >
           <div className="postcard__background__left col-start-1 col-end-3 h-full overflow-hidden group-even:col-start-2 group-even:col-end-4">
-            {sliderImage && (
-              <img
-                src={sliderImage?.sourceUrl || '/images/default_image.png'}
-                srcSet={sliderImage?.srcSet || ''}
-                sizes={`80vw`}
-                alt={sliderImage?.altText || 'placeholder image'}
-                title={title}
-                className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
-              />
-            )}
+            <img
+              src={sliderImage?.sourceUrl || '/images/default_image.png'}
+              srcSet={sliderImage?.srcSet || ''}
+              sizes={`80vw`}
+              alt={sliderImage?.altText || 'placeholder image'}
+              title={title}
+              className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
+            />
             <div className="postcard__background__overlay | absolute top-0 left-0 z-20 h-full w-full bg-white opacity-75"></div>
           </div>
           <div className="postcard__backgrund__center h-full"></div>

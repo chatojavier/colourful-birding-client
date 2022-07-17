@@ -4,7 +4,7 @@ import 'swiper/css/effect-fade';
 import { EffectFade, Controller, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const GalleryBlur = ({ images = [], onSwiper }) => {
+const GalleryBlur = ({ images, onSwiper }) => {
   return (
     <div className="gallery-background">
       <Swiper
@@ -17,18 +17,24 @@ const GalleryBlur = ({ images = [], onSwiper }) => {
         allowTouchMove={false}
         className="h-[472px] md:h-[578px]"
       >
-        {images.map((image) => {
-          const { id, mediaDetails, sourceUrl, srcSet, altText } = image;
-          const imageHeight = mediaDetails.height;
-          const imageWidth = mediaDetails.width;
+        {images.map((image, index) => {
+          const imageUpdated = image ?? {};
+          const {
+            id = index,
+            sourceUrl = '/images/default_image.png',
+            altText = 'default image',
+            srcSet = '',
+            mediaDetails = {},
+          } = imageUpdated;
+          const { height = 1500, width = 1500 } = mediaDetails;
           return (
             <SwiperSlide key={id} className="overflow-hidden">
               <img
-                data-src={sourceUrl}
+                data-src={sourceUrl || '/images/default_image.png'}
                 data-srcset={srcSet}
                 sizes="(min-width: 768px) 950px, 90vw"
-                height={imageHeight}
-                width={imageWidth}
+                height={height}
+                width={width}
                 alt={altText}
                 className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
               />

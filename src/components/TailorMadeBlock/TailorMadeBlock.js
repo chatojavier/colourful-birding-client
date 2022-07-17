@@ -3,18 +3,20 @@ import SectionSubtitle from 'components/SectionSubtitle';
 import Button from 'components/Button';
 
 const TailorMadeBlock = ({ image, content }) => {
+  const imageUpdated = image ?? {};
   const {
-    sourceUrl,
-    altText,
-    srcSet,
-    mediaDetails: { height, width },
-  } = image;
+    sourceUrl = '/images/default_image.png',
+    altText = 'default image',
+    srcSet = '',
+    mediaDetails = {},
+  } = imageUpdated;
+  const { height = 1500, width = 1500 } = mediaDetails;
   const { title, subtitle, button } = content;
   return (
     <div className="tailor-made-block | relative flex h-[350px] items-center justify-center overflow-hidden md:h-[480px] lg:h-[550px]">
       <div className="tailor-made-block__bgImage | absolute top-0 left-0 -z-10 h-full w-full">
         <img
-          src={sourceUrl}
+          src={sourceUrl || '/images/default_image.png'}
           alt={altText}
           srcSet={srcSet}
           height={height}
