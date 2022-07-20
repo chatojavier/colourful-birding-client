@@ -12,6 +12,8 @@ import { getAllMenus, createMenuFromPages, MENU_LOCATION_NAVIGATION_DEFAULT } fr
 
 import 'styles/globals.scss';
 import variables from 'styles/_variables.module.scss';
+import { useEffect } from 'react';
+import TagManager from 'react-gtm-module';
 
 function App({ Component, pageProps = {}, metadata, recentPosts, categories, menus }) {
   const site = useSiteContext({
@@ -20,6 +22,13 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
     categories,
     menus,
   });
+
+  // Add Google Tag Manager
+  useEffect(() => {
+    TagManager.initialize({
+      gtmId: 'GTM-NKDLS37',
+    });
+  }, []);
 
   return (
     <SiteContext.Provider value={site}>
