@@ -50,6 +50,9 @@ export default function Post({ post, socialImage, related, journeys }) {
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
+  const imageDesktop = imagePost.desktop;
+  const imageMobile = imagePost?.mobile ?? imagePost.desktop;
+
   return (
     <Layout>
       <Helmet {...helmetSettings} />
@@ -57,7 +60,7 @@ export default function Post({ post, socialImage, related, journeys }) {
       <ArticleJsonLd post={post} siteTitle={siteMetadata.title} />
 
       <Header>
-        <JumboImage imageDesktop={imagePost.desktop} imageMobile={imagePost.mobile} title={title} />
+        <JumboImage imageDesktop={imageDesktop} imageMobile={imageMobile} title={title} />
       </Header>
 
       <Section>
