@@ -6,9 +6,11 @@ import GroupTitle from 'components/GroupTitle';
 import useWindowSize from 'hooks/use-window-resize';
 import { formatCurrency, getTextColorByName } from 'lib/util';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '' }) => {
+  const [serverError, setServerError] = useState('');
   const { register, handleSubmit, formState, watch, control, trigger } = useForm({
     defaultValues: {
       dates: `From: ${programedDates.from} / to: ${programedDates.to}`,
@@ -16,7 +18,26 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
     },
   });
 
-  const onSubmit = (data, e) => console.log(data, e);
+  const parseDataToNetlify = (data) =>
+    Object.keys(data)
+      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+      .join('&');
+
+  const onSubmit = (formData, event) => {
+    fetch(`/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: parseDataToNetlify({ 'form-name': 'book-now', ...formData }),
+    })
+      .then(() => {
+        setServerError('');
+      })
+      .catch((error) => {
+        setServerError(error.message);
+      });
+    event.preventDefault();
+  };
+
   const watchPeople = watch('people', 1);
   const [windowWidth] = useWindowSize();
 
@@ -26,7 +47,14 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
         <form
           className={`book-now | max-h-[80vh] space-y-6 overflow-x-auto p-8 md:flex md:flex-row md:space-x-8 md:space-y-0 ${className}`}
           onSubmit={handleSubmit(onSubmit)}
+          name="book-now"
+          method="POST"
+          action="contact/?success=true"
+          data-netlify="true"
+          netlify-honeypot="address"
         >
+          <input type="hidden" name="form-name" value="book-now" />
+          <input type="hidden" name="formId" value="book-now" ref={register()} />
           <div className="col-left | flex shrink-0 flex-col justify-between md:w-4/12">
             <div className="block-top | space-y-8">
               {programedDates && (
@@ -89,6 +117,10 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                   errorMessage={formState.errors.email?.message}
                   {...register('email', {
                     required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: 'Invalid email address',
+                    },
                   })}
                   color={color}
                 />
@@ -102,6 +134,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                   useFormMthods={{ control, trigger }}
                   errorMessage={formState.errors.phone?.type}
                   {...register('phone', { required: 'Phone is required' })}
+                  color={color}
                 />
               </div>
             </div>
@@ -115,6 +148,23 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                 })}
                 color={color}
               />
+            </div>
+            <div
+              style={{
+                position: 'absolute',
+                overflow: 'hidden',
+                clip: 'rect(0 0 0 0)',
+                height: '1px',
+                width: '1px',
+                margin: '-1px',
+                padding: '0',
+                border: '0',
+              }}
+            >
+              <label htmlFor="address">
+                {"Don’t fill this out if you're human:"}
+                <input tabIndex="-1" name="address" ref={register()} />
+              </label>
             </div>
             <div className="flex justify-between space-x-4">
               <Checkbox
@@ -149,12 +199,19 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
             </div>
           </div>
         </form>
-      ) : (
+      ) : !serverError ? (
         <div className="contact-form__success | p-8 text-center">
           <div className=" mb-4 font-bebas text-2xl text-lightblue md:text-3xl lg:text-4xl">
             Thank you for your message.
           </div>
           <div className="">We will get back to you as soon as possible.</div>
+        </div>
+      ) : (
+        <div className="contact-form__success | p-8 text-center">
+          <div className=" mb-4 font-bebas text-2xl text-lightblue md:text-3xl lg:text-4xl">
+            {"It couldn't be submited."}
+          </div>
+          <div className="">{serverError}</div>
         </div>
       )}
     </>
