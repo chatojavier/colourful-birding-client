@@ -29,7 +29,7 @@ const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates,
           <FeaturedInfoCard label="Destinations" icon={<Location />}>
             {destinations.map((destination, index) => (
               <div key={index}>
-                <a href={destination.url} className="hover:text-lightblue">
+                <a href={destination.url} target="_blank" rel="noreferrer" className="hover:text-lightblue">
                   {destination.name}
                 </a>
               </div>
