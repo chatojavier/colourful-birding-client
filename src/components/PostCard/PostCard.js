@@ -68,6 +68,7 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
     return () => {
       clearTimeout(timeout);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomSpace]);
 
   return (
@@ -86,6 +87,7 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
                   sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
                   alt={sliderImage?.altText || 'placeholder image'}
                   title={title}
+                  onContextMenu={(e) => e.preventDefault()}
                   loading="lazy"
                   className="postcard__main__featured-image__image h-full w-full object-cover"
                 />
@@ -142,6 +144,8 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
               sizes={`${lg} 400px, ${md} 35.5vw, 100vw`}
               alt={sliderImage?.altText || 'placeholder image'}
               title={title}
+              loading="lazy"
+              onContextMenu={(e) => e.preventDefault()}
               className="postcard__background__image h-full w-full scale-125 object-cover object-center blur-md"
             />
             <div className="postcard__background__overlay | absolute top-0 left-0 z-20 h-full w-full bg-white opacity-75"></div>

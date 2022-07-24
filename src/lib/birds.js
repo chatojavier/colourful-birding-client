@@ -41,6 +41,8 @@ export async function getBirdBySlug(slug) {
     throw e;
   }
 
+  if (!birdData?.data.bird) return { bird: null };
+
   // Clean up nested properties to make more east to access
 
   const bird = [birdData?.data.bird].map(mapBirdData)[0];

@@ -51,10 +51,10 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
           method="POST"
           action="contact/?success=true"
           data-netlify="true"
-          netlify-honeypot="address"
+          netlify-honeypot="instagram"
         >
           <input type="hidden" name="form-name" value="book-now" />
-          <input type="hidden" name="formId" value="book-now" ref={register()} />
+          <input type="hidden" name="formId" value="book-now" {...register('formId')} />
           <div className="col-left | flex shrink-0 flex-col justify-between md:w-4/12">
             <div className="block-top | space-y-8">
               {programedDates && (
@@ -76,6 +76,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                     required: 'A number is required',
                     value: 1,
                   })}
+                  onBlur={() => trigger('people')}
                 />
               </div>
               <div className="book-now__price">
@@ -106,6 +107,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                   required: 'Fullname is required',
                 })}
                 color={color}
+                onBlur={() => trigger('fullname')}
               />
             </div>
             <div className="space-y-6 md:flex md:space-y-0 md:space-x-4">
@@ -118,11 +120,12 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i,
                       message: 'Invalid email address',
                     },
                   })}
                   color={color}
+                  onBlur={() => trigger('email')}
                 />
               </div>
               <div>
@@ -138,17 +141,6 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                 />
               </div>
             </div>
-            <div>
-              <GroupTitle className={getTextColorByName(color)}>Comments</GroupTitle>
-              <TextArea
-                id="message"
-                errorMessage={formState.errors.message?.message}
-                {...register('message', {
-                  required: 'Message is required',
-                })}
-                color={color}
-              />
-            </div>
             <div
               style={{
                 position: 'absolute',
@@ -161,10 +153,22 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                 border: '0',
               }}
             >
-              <label htmlFor="address">
+              <label htmlFor="instagram">
                 {"Don’t fill this out if you're human:"}
-                <input tabIndex="-1" name="address" ref={register()} />
+                <input tabIndex="-1" name="instagram" {...register('instagram')} autoComplete="off" />
               </label>
+            </div>
+            <div>
+              <GroupTitle className={getTextColorByName(color)}>Comments</GroupTitle>
+              <TextArea
+                id="message"
+                errorMessage={formState.errors.message?.message}
+                {...register('message', {
+                  required: 'Message is required',
+                })}
+                color={color}
+                onBlur={() => trigger('message')}
+              />
             </div>
             <div className="flex justify-between space-x-4">
               <Checkbox
@@ -183,6 +187,9 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
                 {...register('policies', {
                   required: 'You should accept the privacy policies',
                 })}
+                onBlur={async () => {
+                  await trigger('policies');
+                }}
               />
               <div>
                 <Button

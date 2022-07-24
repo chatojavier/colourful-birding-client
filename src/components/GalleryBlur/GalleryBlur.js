@@ -4,7 +4,7 @@ import 'swiper/css/effect-fade';
 import { EffectFade, Controller, Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const GalleryBlur = ({ images, onSwiper }) => {
+const GalleryBlur = ({ images = [], onSwiper }) => {
   return (
     <div className="gallery-background">
       <Swiper
@@ -36,6 +36,7 @@ const GalleryBlur = ({ images, onSwiper }) => {
                 height={height}
                 width={width}
                 alt={altText}
+                onContextMenu={(e) => e.preventDefault()}
                 className="swiper-lazy h-full w-full scale-150 object-cover blur-lg"
               />
             </SwiperSlide>

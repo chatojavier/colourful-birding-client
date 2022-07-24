@@ -14,13 +14,13 @@ export default function Custom404() {
         <title>404 | Page not found</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <Section>
+      <Section className="flex h-96 items-center justify-center">
         <Container className={styles.center}>
-          <h1>Page Not Found</h1>
-          <span>The page you were looking for could not be found.</span>
+          <h1 className="mb-12 font-bebas text-7xl">Page Not Found</h1>
+          <div className="mb-12">The page you were looking for could not be found.</div>
           <p>
             <Link href="/">
-              <a>Go back home</a>
+              <a className="font-bold uppercase">Go back home</a>
             </Link>
           </p>
         </Container>

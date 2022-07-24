@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Helmet } from 'react-helmet';
 
 import { getBirdBySlug, getAllBirds } from 'lib/birds';
@@ -14,8 +15,20 @@ import JumboGallery from 'components/JumboGallery';
 import Widescreen from 'components/Widescreen';
 import CollectionPostCard from 'components/CollectionPostCard';
 import { getRelatedJourneys } from 'lib/journeys';
+import Section from 'components/Section';
+import Loader from 'components/Loader';
 
 export default function Bird({ bird, socialImage, related }) {
+  if (!bird) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
+
   const { title, metaTitle, description, content, regions, featuredImage, familyName, gallery } = bird;
   const { metadata: siteMetadata = {}, homepage } = useSite();
 
@@ -78,6 +91,16 @@ export default function Bird({ bird, socialImage, related }) {
 
 export async function getStaticProps({ params = {} } = {}) {
   const { bird } = await getBirdBySlug(params?.slug);
+
+  if (!bird) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const { regions, databaseId: birdId } = bird;
 
   const props = {
@@ -118,6 +141,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }

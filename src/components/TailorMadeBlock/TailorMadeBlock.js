@@ -22,6 +22,8 @@ const TailorMadeBlock = ({ image, content }) => {
           height={height}
           width={width}
           sizes="100vw"
+          loading="lazy"
+          onContextMenu={(e) => e.preventDefault()}
           className="h-full w-full scale-110 object-cover blur-sm"
         />
         <div className="tailor-made-block__bgImage__overlay absolute top-0 left-0 h-full w-full bg-black opacity-25"></div>

@@ -37,10 +37,10 @@ const ContactForm = ({ className }) => {
       method="POST"
       action="contact/?success=true"
       data-netlify="true"
-      netlify-honeypot="address"
+      netlify-honeypot="instagram"
     >
       <input type="hidden" name="form-name" value="contact-us" />
-      <input type="hidden" name="formId" value="contact-us" ref={register()} />
+      <input type="hidden" name="formId" value="contact-us" {...register('formId')} />
       <TextInput
         id="name"
         label="Name"
@@ -49,6 +49,7 @@ const ContactForm = ({ className }) => {
         {...register('name', {
           required: 'Name is required',
         })}
+        onBlur={() => trigger('name')}
       />
       <div className="flex w-full flex-col space-y-6 md:flex-row md:space-y-0 md:space-x-4">
         <TextInput
@@ -59,7 +60,12 @@ const ContactForm = ({ className }) => {
           errorMessage={formState.errors.email?.message}
           {...register('email', {
             required: 'Email is required',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i,
+              message: 'Invalid email address',
+            },
           })}
+          onBlur={() => trigger('email')}
         />
         <PhoneInput
           id="phone"
@@ -83,9 +89,9 @@ const ContactForm = ({ className }) => {
           border: '0',
         }}
       >
-        <label htmlFor="address">
+        <label htmlFor="instagram">
           {"Don’t fill this out if you're human:"}
-          <input tabIndex="-1" name="address" ref={register()} />
+          <input tabIndex="-1" name="address" {...register('instagram')} />
         </label>
       </div>
 
@@ -96,6 +102,7 @@ const ContactForm = ({ className }) => {
         {...register('message', {
           required: 'Message is required',
         })}
+        onBlur={() => trigger('message')}
       />
 
       <Button className="block shadow active:shadow-none" type="submit" disabled={formState.isSubmitting} color="green">

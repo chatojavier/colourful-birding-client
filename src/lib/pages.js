@@ -41,6 +41,8 @@ export async function getPageByUri(uri) {
     throw e;
   }
 
+  if (!pageData?.data.page) return { page: null };
+
   const page = [pageData?.data.page].map(mapPageData)[0];
 
   // If the SEO plugin is enabled, look up the data

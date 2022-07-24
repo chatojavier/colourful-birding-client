@@ -17,6 +17,8 @@ const ThumbCard = ({ title, slug, featuredImage, regions, familyName, className 
               alt={featuredImage?.altText || 'Default image'}
               srcSet={featuredImage?.srcSet || ''}
               sizes={`${lg} 280px, ${md} 33.33vw, 50vw`}
+              loading="lazy"
+              onContextMenu={(e) => e.preventDefault()}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <div className="absolute top-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-10">

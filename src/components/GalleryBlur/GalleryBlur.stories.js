@@ -1,7 +1,7 @@
 import GalleryBlur from './GalleryBlur';
 
-const props = {
-  galleryDesktop: [
+const propsDesktop = {
+  images: [
     {
       altText: '',
       caption: null,
@@ -68,7 +68,10 @@ const props = {
       },
     },
   ],
-  galleryMobile: [
+};
+
+const propsMobile = {
+  images: [
     {
       altText: '',
       caption: null,
@@ -150,5 +153,8 @@ export default {
 
 const Template = (args) => <GalleryBlur {...args} />;
 
-export const Default = Template.bind({});
-Default.args = { ...props };
+export const Desktop = Template.bind({});
+Desktop.args = { ...propsDesktop };
+
+export const Mobile = Template.bind({});
+Mobile.args = { ...propsMobile };

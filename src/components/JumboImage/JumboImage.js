@@ -31,6 +31,7 @@ const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
             <img
               src={imageDesktop?.sourceUrl || '/images/default_image.png'}
               alt={imageDesktop?.altText || 'default image'}
+              onContextMenu={(e) => e.preventDefault()}
               className="h-full w-full scale-150 object-cover blur-lg"
             />
           </picture>
@@ -57,6 +58,7 @@ const JumboImage = ({ imageDesktop, imageMobile, title, subtitle }) => {
             <img
               src={imageDesktop?.sourceUrl || '/images/default_image.png'}
               alt={imageDesktop?.altText || 'default image'}
+              onContextMenu={(e) => e.preventDefault()}
               className="h-full w-full object-cover"
             />
             <div className="preloader | absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-75">

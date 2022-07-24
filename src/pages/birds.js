@@ -119,10 +119,12 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
 
   useEffect(() => {
     setRegionsItems(generateRegionsItems());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [regions]);
 
   useEffect(() => {
     filterAllPostsBySelectedItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRegions]);
 
   const FilterBar = ({ className }) => (

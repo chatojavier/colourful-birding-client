@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Helmet } from 'react-helmet';
 
 import { getJourneyBySlug, getAllJourneys, getRelatedJourneys } from 'lib/journeys';
@@ -24,8 +25,19 @@ import Modal from 'components/Modal';
 import BookNow from 'components/BookNow';
 import { getMediaQueries } from 'lib/responsive';
 import useWindowSize from 'hooks/use-window-resize';
+import Loader from 'components/Loader';
 
 export default function Journey({ journey, socialImage, related }) {
+  if (!journey) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
+
   const {
     title,
     metaTitle,
@@ -185,6 +197,16 @@ export default function Journey({ journey, socialImage, related }) {
 
 export async function getStaticProps({ params = {} } = {}) {
   const { journey } = await getJourneyBySlug(params?.slug);
+
+  if (!journey) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const { regions, databaseId: journeyId } = journey;
 
   if (journey?.birdsToWatch) {
