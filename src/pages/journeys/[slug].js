@@ -176,21 +176,6 @@ export default function Journey({ journey, socialImage, related }) {
       <Modal isOpen={openBookNow} setIsOpen={setOpenBookNow} color="lightblue">
         <BookNow price={price} programedDates={programedDates} color="lightblue" />
       </Modal>
-
-      <div
-        style={{
-          position: 'absolute',
-          overflow: 'hidden',
-          clip: 'rect(0 0 0 0)',
-          height: '1px',
-          width: '1px',
-          margin: '-1px',
-          padding: '0',
-          border: '0',
-        }}
-      >
-        <BookNow price={price} programedDates={programedDates} color="lightblue" />
-      </div>
     </Layout>
   );
 }
