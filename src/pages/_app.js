@@ -25,7 +25,7 @@ function App({ Component, pageProps = {}, metadata, recentPosts, categories, men
 
   // Add Google Tag Manager
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production')
+    if (process.env.NODE_ENV !== 'local')
       TagManager.initialize({
         gtmId: 'GTM-NKDLS37',
       });
