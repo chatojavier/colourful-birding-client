@@ -24,6 +24,15 @@ export function _createApolloClient() {
     link: new HttpLink({
       uri: removeLastTrailingSlash(process.env.WORDPRESS_GRAPHQL_ENDPOINT),
     }),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        RootQuery: {
+          queryType: true,
+        },
+        RootMutation: {
+          mutationType: true,
+        },
+      },
+    }),
   });
 }
