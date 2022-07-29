@@ -93,6 +93,11 @@ async function getAllPosts(apolloClient, process, verbose = false) {
                 }
               }
             }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
           }
         }
       }
@@ -112,6 +117,11 @@ async function getAllPosts(apolloClient, process, verbose = false) {
                 }
               }
             }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
           }
         }
       }
@@ -129,6 +139,11 @@ async function getAllPosts(apolloClient, process, verbose = false) {
                 node {
                   name
                 }
+              }
+            }
+            featuredImage {
+              node {
+                sourceUrl
               }
             }
           }
@@ -162,6 +177,10 @@ async function getAllPosts(apolloClient, process, verbose = false) {
         data.excerpt = data.excerpt.replace(regExHtmlTags, '');
       }
 
+      if (data.featuredImage) {
+        data.featuredImage = data.featuredImage.node.sourceUrl;
+      }
+
       return data;
     });
 
@@ -179,6 +198,10 @@ async function getAllPosts(apolloClient, process, verbose = false) {
         data.excerpt = data.excerpt.replace(regExHtmlTags, '');
       }
 
+      if (data.featuredImage) {
+        data.featuredImage = data.featuredImage.node.sourceUrl;
+      }
+
       return data;
     });
 
@@ -194,6 +217,10 @@ async function getAllPosts(apolloClient, process, verbose = false) {
         //Sanitize the excerpt by removing all HTML tags
         const regExHtmlTags = /(<([^>]+)>)/g;
         data.excerpt = data.excerpt.replace(regExHtmlTags, '');
+      }
+
+      if (data.featuredImage) {
+        data.featuredImage = data.featuredImage.node.sourceUrl;
       }
 
       return data;

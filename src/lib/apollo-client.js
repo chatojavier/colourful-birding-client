@@ -19,23 +19,20 @@ export function getApolloClient() {
  * createApolloClient
  */
 
-const defaultOptions = {
-  watchQuery: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'ignore',
-  },
-  query: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'all',
-  },
-};
-
 export function _createApolloClient() {
   return new ApolloClient({
     link: new HttpLink({
       uri: removeLastTrailingSlash(process.env.WORDPRESS_GRAPHQL_ENDPOINT),
     }),
-    cache: new InMemoryCache(),
-    defaultOptions: defaultOptions,
+    cache: new InMemoryCache({
+      typePolicies: {
+        RootQuery: {
+          queryType: true,
+        },
+        RootMutation: {
+          mutationType: true,
+        },
+      },
+    }),
   });
 }

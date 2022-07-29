@@ -35,11 +35,12 @@ module.exports = function socialImages(nextConfig = {}) {
 
       await Promise.all(
         allPostTypes.map(async (post) => {
-          const { title, slug } = post;
+          const { title, slug, featuredImage } = post;
           let html = template;
 
           html = html.replace('{{ title }}', title);
           html = html.replace('{{ homepage }}', homepage);
+          html = html.replace('{{ featuredImage }}', featuredImage);
 
           const page = await browser.newPage();
           await page.setViewportSize({ width, height });
