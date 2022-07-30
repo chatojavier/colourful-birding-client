@@ -36,7 +36,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
           {
             pathname: router.asPath,
             query: {
-              succsess: true,
+              successfully: true,
             },
           },
           undefined,

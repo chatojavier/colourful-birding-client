@@ -27,7 +27,7 @@ const ContactForm = ({ className }) => {
           {
             pathname: router.asPath,
             query: {
-              succsess: true,
+              successfully: true,
             },
           },
           undefined,
