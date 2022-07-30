@@ -3,11 +3,13 @@ import { TextArea, TextInput, PhoneInput } from 'components/FormInputs';
 import Modal from 'components/Modal';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const ContactForm = ({ className }) => {
   const [serverError, setServerError] = useState('');
   const [isOpen, setIsOpen] = useState(true);
   const { register, handleSubmit, formState, control, trigger } = useForm();
+  const router = useRouter();
 
   const parseDataToNetlify = (data) =>
     Object.keys(data)
@@ -21,6 +23,16 @@ const ContactForm = ({ className }) => {
       body: parseDataToNetlify({ 'form-name': 'contact-us', ...formData }),
     })
       .then(() => {
+        router.push(
+          {
+            pathname: router.asPath,
+            query: {
+              succsess: true,
+            },
+          },
+          undefined,
+          { shallow: true }
+        );
         setServerError('');
       })
       .catch((error) => {

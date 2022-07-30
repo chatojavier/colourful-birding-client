@@ -6,6 +6,7 @@ import GroupTitle from 'components/GroupTitle';
 import useWindowSize from 'hooks/use-window-resize';
 import { formatCurrency, getTextColorByName } from 'lib/util';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -17,6 +18,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
       price: `USD ${formatCurrency(price)} per person`,
     },
   });
+  const router = useRouter();
 
   const parseDataToNetlify = (data) =>
     Object.keys(data)
@@ -30,6 +32,16 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
       body: parseDataToNetlify({ 'form-name': 'book-now', ...formData }),
     })
       .then(() => {
+        router.push(
+          {
+            pathname: router.asPath,
+            query: {
+              succsess: true,
+            },
+          },
+          undefined,
+          { shallow: true }
+        );
         setServerError('');
       })
       .catch((error) => {
