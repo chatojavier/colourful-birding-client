@@ -2,6 +2,7 @@ import DateFormated from 'components/DateFormated';
 import { getRegionIconByName } from 'lib/regions';
 import { postPathBySlug } from 'lib/posts';
 import Link from 'next/link';
+import Loader from 'components/Loader';
 
 const CarouselSlider = ({ post }) => {
   const { featuredImage, title, familyName, regions, contentTypeName, excerpt, slug, date, imagePost } = post;
@@ -38,17 +39,21 @@ const CarouselSlider = ({ post }) => {
           </div>
           <div className="carousel-slider__image | absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
             <img
-              src={sliderImage?.sourceUrl ?? '/images/default_image.png'}
-              srcSet={sliderImage?.srcSet ?? ''}
+              data-src={sliderImage?.sourceUrl ?? '/images/default_image.png'}
+              data-srcset={sliderImage?.srcSet ?? ''}
               sizes="500w"
               width="280"
               height="495"
               alt={`${sliderImage?.altText ?? 'Default image'}`}
               loading="lazy"
-              className={`h-full w-full object-cover transition-transform duration-500 ${
+              onContextMenu={(e) => e.preventDefault()}
+              className={`swiper-lazy | h-full w-full object-cover transition-transform duration-500 ${
                 contentTypeName === 'post' ? 'scale-105 group-hover:scale-100' : 'group-hover:scale-105'
               }`}
             />
+            <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-40">
+              <Loader size="sm" />
+            </div>
             <div className="carousel-slider__image__overlay | absolute top-0 left-0 flex h-full w-full flex-col justify-between">
               <div className="carousel-slider__image__overlay--top | h-[33%] w-full bg-gradient-to-t from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.60)]"></div>
               <div className="carousel-slider__image__overlay--bottom | h-[33%] w-full bg-gradient-to-t from-[rgba(0,0,0,0.60)] to-[rgba(0,0,0,0)]"></div>

@@ -2,7 +2,7 @@ const SocialMediaIcons = ({ iconSize }) => {
   return (
     <div className="social-media-icons | flex space-x-2 fill-[currentColor]">
       <a
-        href="https://www.facebook.com/colourfulbirds/"
+        href="https://www.facebook.com/Colourful-Birding-106121585370396"
         target="_blank"
         rel="noopener noreferrer"
         className="leading-none hover:text-secondary"
@@ -12,7 +12,7 @@ const SocialMediaIcons = ({ iconSize }) => {
         </svg>
       </a>
       <a
-        href="https://www.instagram.com/colourfulbirds/"
+        href="https://www.instagram.com/colourfulbirding/"
         target="_blank"
         rel="noopener noreferrer"
         className="leading-none hover:text-secondary"

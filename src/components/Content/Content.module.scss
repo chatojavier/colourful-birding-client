@@ -1,8 +1,6 @@
 @import "../../styles/settings/__settings";
 
 .content {
-  font-size: 1.5rem;
-
   h2,
   h3,
   h4,
@@ -15,6 +13,34 @@
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  h2,
+  h3,
+  h4 {
+    @apply font-bebas;
+  }
+
+  h2 {
+    @apply text-5xl;
+  }
+
+  h2:not(:first-child) {
+    margin-top: 2rem;
+  }
+  h3:not(:first-child) {
+    margin-top: 1rem;
+  }
+  h4:not(:first-child) {
+    margin-top: 0.5rem;
+  }
+
+  h3 {
+    @apply text-3xl;
+  }
+
+  h4 {
+    @apply text-2xl;
   }
 
   img {

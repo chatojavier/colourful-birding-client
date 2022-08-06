@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Helmet } from 'react-helmet';
 
 import { getJourneyBySlug, getAllJourneys, getRelatedJourneys } from 'lib/journeys';
@@ -5,7 +6,7 @@ import { regionPathBySlug } from 'lib/regions';
 import { getAllBirds } from 'lib/birds';
 import { ArticleJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import useSite from 'hooks/use-site';
 import usePageMetadata from 'hooks/use-page-metadata';
 
@@ -24,8 +25,19 @@ import Modal from 'components/Modal';
 import BookNow from 'components/BookNow';
 import { getMediaQueries } from 'lib/responsive';
 import useWindowSize from 'hooks/use-window-resize';
+import Loader from 'components/Loader';
 
 export default function Journey({ journey, socialImage, related }) {
+  if (!journey) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
+
   const {
     title,
     metaTitle,
@@ -45,10 +57,14 @@ export default function Journey({ journey, socialImage, related }) {
   const { md } = getMediaQueries();
   const mdQuery = md.replace(/[^0-9]/g, '');
   const [windowWidth] = useWindowSize();
-  const galleryImages =
-    gallery.galleryMobile && gallery.galleryMobile.length > 0 && windowWidth < mdQuery
-      ? gallery.galleryMobile
-      : gallery.galleryDesktop;
+  const galleryImages = useMemo(() => {
+    if (gallery.galleryMobile && gallery.galleryMobile.length > 0 && windowWidth < mdQuery) {
+      return gallery.galleryMobile;
+    } else {
+      return gallery.galleryDesktop;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth]);
   const { metadata: siteMetadata = {}, homepage } = useSite();
   const [openTabs, setOpenTabs] = useState(false);
   const [openBookNow, setOpenBookNow] = useState(false);
@@ -185,6 +201,16 @@ export default function Journey({ journey, socialImage, related }) {
 
 export async function getStaticProps({ params = {} } = {}) {
   const { journey } = await getJourneyBySlug(params?.slug);
+
+  if (!journey) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const { regions, databaseId: journeyId } = journey;
 
   if (journey?.birdsToWatch) {

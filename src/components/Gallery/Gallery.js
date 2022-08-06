@@ -86,6 +86,7 @@ const Gallery = ({ images = [], onSwiper, square = false }) => {
                         height={height}
                         width={width}
                         alt={altText}
+                        onContextMenu={(e) => e.preventDefault()}
                         className={`swiper-lazy | h-full ${square ? 'w-full object-cover' : 'w-auto object-contain'}`}
                       />
                       <div className="absolute top-0 left-0 -z-10 flex h-full w-full items-center justify-center bg-darkgrey bg-opacity-40">

@@ -41,6 +41,8 @@ export async function getJourneyBySlug(slug) {
     throw e;
   }
 
+  if (!journeyData?.data.journey) return { bird: null };
+
   // Clean up nested properties to make more east to access
 
   const journey = [journeyData?.data.journey].map(mapJourneyData)[0];

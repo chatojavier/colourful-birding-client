@@ -60,6 +60,8 @@ export async function getPostBySlug(slug) {
     throw e;
   }
 
+  if (!postData?.data.post) return { page: null };
+
   const post = [postData?.data.post].map(mapPostData)[0];
 
   // If the SEO plugin is enabled, look up the data

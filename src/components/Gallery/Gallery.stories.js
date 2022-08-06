@@ -1,7 +1,7 @@
 import Gallery from './Gallery';
 
-const props = {
-  galleryDesktop: [
+const propsDesktop = {
+  images: [
     {
       altText: '',
       caption: null,
@@ -68,7 +68,10 @@ const props = {
       },
     },
   ],
-  galleryMobile: [
+};
+
+const propsMobile = {
+  images: [
     {
       altText: '',
       caption: null,
@@ -154,8 +157,14 @@ const Template = (args) => (
   </div>
 );
 
-export const Default = Template.bind({});
-Default.args = { ...props };
+export const Desktop = Template.bind({});
+Desktop.args = { ...propsDesktop };
 
-export const Square = Template.bind({});
-Square.args = { ...props, square: true };
+export const DesktopSquare = Template.bind({});
+DesktopSquare.args = { ...propsDesktop, square: true };
+
+export const Mobile = Template.bind({});
+Mobile.args = { ...propsMobile };
+
+export const MobileSquare = Template.bind({});
+MobileSquare.args = { ...propsMobile, square: true };

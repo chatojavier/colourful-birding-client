@@ -5,7 +5,7 @@ import Container from 'components/Container';
 import CarouselSlider from 'components/CarouselSlider';
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Navigation, Lazy } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { getBorderColorByName, getTextColorByName } from 'lib/util';
@@ -52,7 +52,7 @@ const RelatedCarousel = ({
         <Swiper
           onSlideNextTransitionEnd={() => setInitState(initState + 1)}
           onSlidePrevTransitionEnd={() => setInitState(initState - 1)}
-          modules={[Navigation]}
+          modules={[Navigation, Lazy]}
           navigation={{
             prevEl: `.${sliderIdentifier}-buttons__prev`,
             nextEl: `.${sliderIdentifier}-buttons__next`,
@@ -61,10 +61,23 @@ const RelatedCarousel = ({
           spaceBetween={0}
           centeredSlides={true}
           initialSlide={0}
+          lazy={{ loadPrevNext: true, loadPrevNextAmount: 3 }}
           breakpoints={{
             768: {
               centeredSlides: false,
               initialSlide: reverse ? posts.length - 2 : 0,
+            },
+            1024: {
+              lazy: { loadPrevNext: true, loadPrevNextAmount: 4 },
+            },
+            1540: {
+              lazy: { loadPrevNext: true, loadPrevNextAmount: 5 },
+            },
+            2100: {
+              lazy: { loadPrevNext: true, loadPrevNextAmount: 6 },
+            },
+            2675: {
+              lazy: { loadPrevNext: true, loadPrevNextAmount: 7 },
             },
           }}
           className={`mb-4 !overflow-visible`}

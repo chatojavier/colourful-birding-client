@@ -17,6 +17,7 @@ module.exports = withPlugins([[indexSearch], [feed], [sitemap], [socialImages]],
   // verbose: true,
 
   env: {
+    APP_ENV: process.env.APP_ENV || 'development',
     WORDPRESS_GRAPHQL_ENDPOINT: process.env.WORDPRESS_GRAPHQL_ENDPOINT,
     WORDPRESS_MENU_LOCATION_NAVIGATION: process.env.WORDPRESS_MENU_LOCATION_NAVIGATION || 'PRIMARY',
     WORDPRESS_MENU_ALTERNATIVE_NAVIGATION: process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION || 'SECONDARY',

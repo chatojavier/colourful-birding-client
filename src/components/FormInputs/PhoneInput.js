@@ -10,20 +10,21 @@ const TelInput = (
   { useFormMthods, name, required, schema, errorMessage, label, color = 'green', className = '' },
   ref
 ) => {
-  const [validPhoneNumber, setValidPhoneNumber] = React.useState(false);
+  // const [validPhoneNumber, setValidPhoneNumber] = React.useState(false);
+  const validPhoneNumber = React.useRef(true);
   const validatePhoneNumber = (inputNumber, country, isDirty, phoneLength) => {
     if (isDirty) {
       if (inputNumber && inputNumber?.replace(country.dialCode, '')?.trim() === '') {
-        setValidPhoneNumber(false);
+        validPhoneNumber.current = false;
         return false;
       } else if (inputNumber.length < phoneLength) {
-        setValidPhoneNumber(false);
+        validPhoneNumber.current = false;
         return false;
       }
-      setValidPhoneNumber(true);
+      validPhoneNumber.current = true;
       return true;
     }
-    setValidPhoneNumber(true);
+    validPhoneNumber.current = true;
     return true;
   };
   return (
@@ -36,13 +37,13 @@ const TelInput = (
             {label && <InputLabel id={name} label={label} color={color} className="mb-2" />}
             <PhoneInput
               onChange={(e) => {
-                useFormMthods.trigger();
                 props.field.onChange(e);
               }}
+              onBlur={() => useFormMthods?.trigger('phone')}
               inputProps={{
                 id: name,
                 name,
-                autoComplete: 'tel',
+                autoComplete: 'on',
               }}
               inputExtraProps={{
                 ref,
@@ -53,7 +54,7 @@ const TelInput = (
                 const phoneLength = Math.ceil(
                   countries.filter((val) => val.dialCode === country.dialCode)[0]?.format.length / 2
                 );
-                return validatePhoneNumber(inputNumber, country, props.formState.isDirty, phoneLength);
+                return validatePhoneNumber(inputNumber, country, props.formState.dirtyFields?.phone, phoneLength);
               }}
               specialLabel=""
               inputClass={`!rounded-none font-raleway !w-full border border-lightgrey p-1 shadow hover:border-darkgrey ${getInputColorByName(
@@ -64,13 +65,13 @@ const TelInput = (
               className="block !w-full !rounded-none font-raleway"
             />
             {errorMessage === 'required' && <InputError error="Phone is required" className="mt-1" />}
-            {!validPhoneNumber && !errorMessage && <InputError error="Wrong Phone format" className="mt-1" />}
+            {!validPhoneNumber.current && !errorMessage && <InputError error="Wrong Phone format" className="mt-1" />}
           </div>
         );
       }}
       rules={{
         required,
-        validate: () => validPhoneNumber || schema?.errorMessage?.validate,
+        validate: () => validPhoneNumber.current || schema?.errorMessage?.validate,
       }}
     />
   );

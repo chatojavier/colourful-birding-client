@@ -46,3 +46,6 @@ public/images/og
 
 # Storybook
 storybook-static/
+
+# Local Netlify folder
+.netlify

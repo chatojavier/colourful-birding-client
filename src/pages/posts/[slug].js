@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Helmet } from 'react-helmet';
 
 import { getPostBySlug, getAllPosts, getRelatedPosts } from 'lib/posts';
@@ -17,8 +18,19 @@ import JumboImage from 'components/JumboImage';
 import RelatedCarousel from 'components/RelatedCarousel';
 import { getRandomJourneys } from 'lib/journeys';
 import CollectionPostCard from 'components/CollectionPostCard';
+import Loader from 'components/Loader';
 
 export default function Post({ post, socialImage, related, journeys }) {
+  if (!post) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
+
   const { title, metaTitle, description, content, date, author, imagePost } = post;
 
   const { metadata: siteMetadata = {}, homepage } = useSite();
@@ -100,6 +112,16 @@ export default function Post({ post, socialImage, related, journeys }) {
 
 export async function getStaticProps({ params = {} } = {}) {
   const { post } = await getPostBySlug(params?.slug);
+
+  if (!post) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const { categories, databaseId: postId } = post;
 
   const props = {
@@ -149,6 +171,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }

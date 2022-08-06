@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Helmet } from 'react-helmet';
 
 import { getBirdBySlug, getAllBirds } from 'lib/birds';
@@ -14,10 +15,28 @@ import JumboGallery from 'components/JumboGallery';
 import Widescreen from 'components/Widescreen';
 import CollectionPostCard from 'components/CollectionPostCard';
 import { getRelatedJourneys } from 'lib/journeys';
+import Section from 'components/Section';
+import { getMediaQueries } from 'lib/responsive';
+import useWindowSize from 'hooks/use-window-resize';
+import Loader from 'components/Loader';
+import { useMemo } from 'react';
 
 export default function Bird({ bird, socialImage, related }) {
+  if (!bird) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
+
   const { title, metaTitle, description, content, regions, featuredImage, familyName, gallery } = bird;
   const { metadata: siteMetadata = {}, homepage } = useSite();
+  const { md } = getMediaQueries();
+  const mdQuery = md.replace(/[^0-9]/g, '');
+  const [windowWidth] = useWindowSize();
 
   if (!bird.og) {
     bird.og = {};
@@ -42,9 +61,17 @@ export default function Bird({ bird, socialImage, related }) {
     metadata.twitter.title = metadata.title;
   }
 
+  const helmetSettings = helmetSettingsFromMetadata(metadata);
   const { journeys: relatedJourneysList } = related || {};
 
-  const helmetSettings = helmetSettingsFromMetadata(metadata);
+  const galleryImages = useMemo(() => {
+    if (gallery.galleryMobile && gallery.galleryMobile.length > 0 && windowWidth < mdQuery) {
+      return gallery.galleryMobile;
+    } else {
+      return gallery.galleryDesktop;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth]);
 
   return (
     <Layout>
@@ -53,11 +80,7 @@ export default function Bird({ bird, socialImage, related }) {
       <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} hasAuthor={!!bird.author} postType="bird" />
 
       <Widescreen className="mb-6 md:mb-20">
-        <JumboGallery
-          galleryDesktop={gallery.galleryDesktop}
-          galleryMobile={gallery.galleryMobile}
-          featuredImage={featuredImage}
-        />
+        <JumboGallery galleryImages={galleryImages} featuredImage={featuredImage} />
       </Widescreen>
 
       <Container className="mb-6 md:mb-20">
@@ -78,6 +101,16 @@ export default function Bird({ bird, socialImage, related }) {
 
 export async function getStaticProps({ params = {} } = {}) {
   const { bird } = await getBirdBySlug(params?.slug);
+
+  if (!bird) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const { regions, databaseId: birdId } = bird;
 
   const props = {
@@ -118,6 +151,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }

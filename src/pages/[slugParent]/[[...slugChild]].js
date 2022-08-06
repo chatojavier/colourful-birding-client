@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Link from 'next/link';
 import { Helmet } from 'react-helmet';
 
@@ -15,8 +16,18 @@ import Container from 'components/Container';
 import JumboImage from 'components/JumboImage';
 
 import styles from 'styles/pages/Page.module.scss';
+import Loader from 'components/Loader';
 
 export default function Page({ page }) {
+  if (!page) {
+    return (
+      <Layout>
+        <Section className="flex h-96 items-center justify-center">
+          <Loader />
+        </Section>
+      </Layout>
+    );
+  }
   const { title, metaTitle, description, slug, content, jumboimage, children } = page;
   const {
     headerImage,
@@ -70,7 +81,7 @@ export default function Page({ page }) {
         <Section>
           <Container>
             <div
-              className={styles.content}
+              className=""
               dangerouslySetInnerHTML={{
                 __html: content,
               }}
@@ -122,6 +133,15 @@ export async function getStaticProps({ params = {} } = {}) {
 
   const { page } = await getPageByUri(pageUri);
 
+  if (!page) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       page,
@@ -138,8 +158,10 @@ export async function getStaticPaths() {
   // the top level parent page, where the slugChild will be an array of the
   // remaining segments to make up the path or URI
 
+  const urisToExclude = ['/', '/blog/', '/pagebirds/', '/pagejourneys/', '/contactpage/'];
+
   const paths = pages
-    .filter(({ uri }) => typeof uri === 'string' && uri !== '/')
+    .filter(({ uri }) => typeof uri === 'string' && !urisToExclude.includes(uri))
     .map(({ uri }) => {
       const segments = uri.split('/').filter((seg) => seg !== '');
       return {
@@ -152,6 +174,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }
