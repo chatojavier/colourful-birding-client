@@ -147,15 +147,15 @@ export default function Journey({ journey, socialImage, related }) {
               <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(2)}>
                 Tours Inclution
               </Button>
-              <Button
-                color="lightblue"
-                filled
-                className="!mt-8 block w-full py-2 md:hidden"
-                onClick={() => setOpenBookNow(true)}
-              >
-                Book Now
-              </Button>
             </div>
+            <Button
+              color="lightblue"
+              filled
+              className="mx-auto !mt-8 block w-60 py-3 text-base"
+              onClick={() => setOpenBookNow(true)}
+            >
+              Book Now
+            </Button>
           </div>
         </Container>
       </Section>
