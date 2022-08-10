@@ -11,6 +11,7 @@ module.exports = withPlugins([[indexSearch], [feed], [sitemap], [socialImages]],
   // is `/` and by using that, would instantly create a redirect
 
   trailingSlash: true,
+  staticPageGenerationTimeout: 120,
 
   // By enabling verbose logging, it will provide additional output details for
   // diagnostic purposes. By default is set to false.

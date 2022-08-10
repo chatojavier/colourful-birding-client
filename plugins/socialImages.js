@@ -44,8 +44,11 @@ module.exports = function socialImages(nextConfig = {}) {
 
           const page = await browser.newPage();
           await page.setViewportSize({ width, height });
-          await page.setContent(html);
-          await page.screenshot({ path: `${outputDirectory}/${slug}.png` });
+          await page.setContent(html, {
+            waitUntil: 'networkidle0',
+            timeout: 0,
+          });
+          await page.screenshot({ path: `${outputDirectory}/${slug}.png`, waitUntil: 'networkidle0', timeout: 0 });
           await page.close();
         })
       );

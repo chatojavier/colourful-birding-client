@@ -13,12 +13,12 @@ const GalleryInfoCard = ({ title, subtitle, button }) => {
       <div className="gallery-info-card__button">
         <Button
           path={button?.path}
-          color={button.color}
+          color={button?.color || 'green'}
           onClick={button?.onClick}
           filled
           className="inline-block py-3 px-12 text-center text-base hover:!bg-white hover:!bg-opacity-80"
         >
-          {button.text}
+          {button?.text}
         </Button>
       </div>
     </div>

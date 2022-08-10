@@ -20,7 +20,7 @@ const JumboGallery = ({ galleryImages, featuredImage, square = false, info = fal
 
   return (
     <div className="jumboGallery relative w-full">
-      {galleryImages?.length > 0 ? (
+      {galleryImages?.length > 1 ? (
         <>
           <GalleryBlur
             images={galleryImages}
@@ -53,10 +53,24 @@ const JumboGallery = ({ galleryImages, featuredImage, square = false, info = fal
             </div>
           )}
         </>
+      ) : galleryImages?.length === 1 ? (
+        <>
+          <JumboImage imageDesktop={galleryImages[0]} />
+          {info && Array.isArray(info) && square && (
+            <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
+              <GalleryInfoCard title={info[0].title} subtitle={info[0].subtitle} button={info[0].button} />
+            </div>
+          )}
+          {info && !Array.isArray(info) && square && (
+            <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
+              <GalleryInfoCard title={info.title} subtitle={info.subtitle} button={info.button} />
+            </div>
+          )}
+        </>
       ) : (
         <>
           <JumboImage imageDesktop={featuredImage} />
-          {info && square && (
+          {info && !Array.isArray(info) && square && (
             <div className="absolute -bottom-5 left-[35%] z-20 -translate-x-1/2 md:left-[35%]">
               <GalleryInfoCard title={info.title} subtitle={info.subtitle} button={info.button} />
             </div>
