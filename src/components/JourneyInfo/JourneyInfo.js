@@ -38,7 +38,7 @@ const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates,
         </div>
         <div className="journey-info__header__book-now | hidden shrink-0 md:block">
           <Button onClick={onClick} color="lightblue" filled>
-            Book Now
+            Contact Us
           </Button>
         </div>
       </div>

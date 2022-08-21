@@ -18,7 +18,7 @@ const SocialMediaIcons = ({ iconSize }) => {
         className="leading-none hover:text-secondary"
       >
         <svg
-          className="social-media-icon"
+          className="fill-[currentColor]"
           xmlns="http://www.w3.org/2000/svg"
           width={`${iconSize}px`}
           height={`${iconSize}px`}

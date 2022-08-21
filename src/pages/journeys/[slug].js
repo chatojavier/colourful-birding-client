@@ -102,7 +102,7 @@ export default function Journey({ journey, socialImage, related }) {
     subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} />,
     button: {
       onClick: () => setOpenBookNow(true),
-      text: 'Book Now',
+      text: 'Contact Us',
       color: 'lightblue',
     },
   };
@@ -154,7 +154,7 @@ export default function Journey({ journey, socialImage, related }) {
               className="mx-auto !mt-8 block w-60 py-3 text-base"
               onClick={() => setOpenBookNow(true)}
             >
-              Book Now
+              Contact Us
             </Button>
           </div>
         </Container>
