@@ -16,18 +16,25 @@ import Container from 'components/Container';
 import CollectionThumbCard from 'components/CollectionThumbCard';
 import Header from 'components/Header';
 import JumboImage from 'components/JumboImage';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Button from 'components/Button';
 import RelatedCarousel from 'components/RelatedCarousel';
+import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 export default function Birds({ pageInfo, posts, pagination, allPosts, regions, articles }) {
   const [currentPosts, setCurrentPosts] = useState(posts);
-  const [allFilteredPosts, setAllFilteredPosts] = useState(allPosts);
   const [pagesCount, setPagesCount] = useState(pagination.pagesCount);
   const [currentPage, setCurrentPage] = useState(pagination.currentPage);
   const postsPerPage = 12;
-  const [regionsItems, setRegionsItems] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
+  const router = useRouter();
+  const regionsItems = useRef(
+    regions.map((region) => ({
+      id: region.id,
+      label: region.name,
+    }))
+  );
 
   const { title = 'Journeys' } = pageInfo;
   const slug = 'journeys';
@@ -53,84 +60,88 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
+  const setRouterQuery = (selectedRegions, currentPage) => {
+    router.push(
+      {
+        query: {
+          region: selectedRegions.map((region) => region.label),
+          page: currentPage,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
   const handleMorePosts = () => {
     const newPage = currentPage + 1;
-    const newCountStart = currentPosts.length;
-    const postsUpdated = [...currentPosts, ...allFilteredPosts.slice(newCountStart, newCountStart + postsPerPage)];
-    setCurrentPage(newPage);
-    setCurrentPosts(postsUpdated);
+    setRouterQuery(selectedRegions, newPage);
   };
 
-  const handleSelect = (value) => {
-    if (!isSelected(value, selectedRegions)) {
-      const selectedUpdated = [...selectedRegions, regionsItems.find((el) => el === value)];
-      setSelectedRegions(selectedUpdated);
+  const handleSelect = (item) => {
+    let selectedUpdated;
+    if (!isSelected(item, selectedRegions)) {
+      selectedUpdated = [...selectedRegions, regionsItems.current.find((el) => el.label === item.label)];
     } else {
-      handleDeselect(value);
+      selectedUpdated = selectedRegions.filter((el) => el.label !== item.label);
     }
+    setRouterQuery(selectedUpdated, 1);
   };
 
-  function handleDeselect(value) {
-    const selectedUpdated = selectedRegions.filter((el) => el !== value);
-    setSelectedRegions(selectedUpdated);
-  }
-
-  function isSelected(value, arr) {
+  function isSelected(item, arr) {
     const arrUpdated = Array.isArray(arr) ? arr : [arr];
-    return arrUpdated.find((el) => el === value) ? true : false;
+    return arrUpdated.find((el) => el.label === item.label) ? true : false;
   }
 
   const setFilterPosts = (filteredPosts) => {
     const currentPostsUpdated = filteredPosts.slice(0, postsPerPage);
     setCurrentPage(1);
-    setAllFilteredPosts(filteredPosts);
     setCurrentPosts(currentPostsUpdated);
     const newCount = getPagesCount(filteredPosts, postsPerPage);
     setPagesCount(newCount);
   };
 
-  const filterAllPostsBySelectedItems = () => {
-    if (!allPosts || allPosts.length === 0) {
-      return [];
-    }
-    if (selectedRegions.length === 0) {
-      setFilterPosts(allPosts);
-      return;
-    }
-    const filteredPosts = allPosts.filter((post) => {
-      const postRegions = post.regions;
-      const selectedRegionsUpdated = selectedRegions.length === 0 ? generateRegionsItems() : selectedRegions;
-      const selectedRegionsIds = selectedRegionsUpdated.map((region) => region.id);
-      const isPostInRegions = postRegions.some((region) => selectedRegionsIds.includes(region.id));
-      return isPostInRegions;
-    });
+  const filterAllPostsBySelectedItems = useCallback(
+    (selectedRegions) => {
+      if (!allPosts || allPosts.length === 0) {
+        return [];
+      }
+      if (selectedRegions.length === 0) {
+        return allPosts;
+      }
+      const filteredPosts = allPosts.filter((post) => {
+        const postRegions = post.regions;
+        const selectedRegionsUpdated = selectedRegions.length === 0 ? regionsItems.current : selectedRegions;
+        const selectedRegionsIds = selectedRegionsUpdated.map((region) => region.label);
+        const isPostInRegions = postRegions.some((region) => selectedRegionsIds.includes(region.name));
+        return isPostInRegions;
+      });
+      return filteredPosts;
+    },
+    [allPosts]
+  );
+
+  useEffect(() => {
+    const routerRegions = router?.query?.region
+      ? Array.isArray(router.query.region)
+        ? router.query.region
+        : [router.query.region]
+      : [];
+    const selectedRegions = routerRegions ? routerRegions.map((region) => ({ label: region })) : [];
+    setSelectedRegions(selectedRegions);
+    const filteredPosts = filterAllPostsBySelectedItems(selectedRegions);
     setFilterPosts(filteredPosts);
-  };
 
-  const generateRegionsItems = useCallback(() => {
-    const items = regions.map((region) => {
-      return {
-        id: region.id,
-        label: region.name,
-      };
-    });
-    return items;
-  }, [regions]);
-
-  useEffect(() => {
-    setRegionsItems(generateRegionsItems());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [regions]);
-
-  useEffect(() => {
-    filterAllPostsBySelectedItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRegions]);
+    const routerPage = router?.query?.page ? parseInt(router.query.page) : 1;
+    const postsUpdated = [...filteredPosts.slice(0, postsPerPage * routerPage)];
+    setCurrentPosts(postsUpdated);
+    setCurrentPage(routerPage);
+  }, [filterAllPostsBySelectedItems, router.query]);
 
   const FilterBar = ({ className }) => (
     <div className={`birds__filter-bar | flex w-full flex-wrap gap-4 ${className}`}>
-      {regionsItems.map((item) => (
-        <div className="birds__filter-bar-item | flex-1" key={item.id}>
+      {regionsItems.current.map((item) => (
+        <div className="birds__filter-bar-item | flex-1" key={item.label}>
           <ToggleButton
             color="lightblue"
             className="w-full"
@@ -196,6 +207,8 @@ export async function getStaticProps() {
   const { regions } = await getAllRegions();
   const { posts: articles } = await getRecentPosts({ count: 5, queryIncludes: 'archive' });
   const allPosts = birds;
+
+  regions.forEach((region) => region.name && region.name.toLowerCase());
 
   return {
     props: {
