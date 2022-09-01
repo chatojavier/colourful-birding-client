@@ -11,3 +11,7 @@ body {
 p {
   @apply mb-3;
 }
+
+a:hover {
+  @apply text-purple;
+}

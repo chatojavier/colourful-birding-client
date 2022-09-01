@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 
-import { getPageByUri, getAllPages, getBreadcrumbsByUri } from 'lib/pages';
+import { getPageByUri } from 'lib/pages';
 import { WebpageJsonLd } from 'lib/json-ld';
 import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
@@ -15,7 +15,7 @@ import Container from 'components/Container';
 import SocialMediaIcons from 'components/SocialMediaIcons';
 
 export default function Page({ page }) {
-  const { title, metaTitle, description, slug, jumboimage } = page;
+  const { title, metaTitle, description, slug, jumboimage, contactInfo } = page;
   const {
     headerImage,
     headerText: {
@@ -28,6 +28,7 @@ export default function Page({ page }) {
       ),
     },
   } = jumboimage;
+  const { email = '', phone = [] } = contactInfo;
 
   const { metadata: siteMetadata = {} } = useSite();
 
@@ -73,13 +74,19 @@ export default function Page({ page }) {
             <div className="phone">
               <div className="label | font-bebas text-2xl text-green md:text-3xl">Phone</div>
               <div className="info | ml-8">
-                <p>Peru: +51 958347179</p> <p>UK: +44 7483 894732</p> <p>España: +34 618 84 44 70</p>
+                {phone.map((item) => (
+                  <p key={item.phoneNumber}>
+                    <span>{`${item.country}: `}</span>
+                    <a href={`tel:+${Number(item.phoneNumber.replace(/\D/g, ''))}`}>{`+${item.phoneNumber}`}</a>
+                  </p>
+                ))}
+                {/* <p>Peru: +51 958347179</p> <p>UK: +44 7483 894732</p> <p>España: +34 618 84 44 70</p> */}
               </div>
             </div>
             <div className="email">
               <div className="label | font-bebas text-2xl text-green md:text-3xl">email</div>
               <div className="info | ml-8">
-                <p>wantinfo@colourfulperu.com</p>
+                <a href={`mailto:${email}`}>{email}</a>
               </div>
             </div>
             <div className="social-media">
@@ -100,21 +107,9 @@ export async function getStaticProps() {
   const pageUri = '/contactpage/';
   const { page } = await getPageByUri(pageUri);
 
-  // In order to show the proper breadcrumbs, we need to find the entire
-  // tree of pages. Rather than querying every segment, the query should
-  // be cached for all pages, so we can grab that and use it to create
-  // our trail
-
-  const { pages } = await getAllPages({
-    queryIncludes: 'index',
-  });
-
-  const breadcrumbs = getBreadcrumbsByUri(pageUri, pages);
-
   return {
     props: {
       page,
-      breadcrumbs,
     },
   };
 }

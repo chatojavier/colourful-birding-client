@@ -99,6 +99,13 @@ export const QUERY_PAGE_BY_URI = gql`
           }
         }
       }
+      contactInfo {
+        email
+        phone {
+          country
+          phoneNumber
+        }
+      }
       content
       featuredImage {
         node {
