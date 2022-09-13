@@ -10,7 +10,7 @@ module.exports = withPlugins([[indexSearch], [feed], [sitemap], [socialImages]],
   // to include is by default, the `path` property of the router for the homepage
   // is `/` and by using that, would instantly create a redirect
 
-  trailingSlash: true,
+  // trailingSlash: true,
   staticPageGenerationTimeout: 120,
 
   // By enabling verbose logging, it will provide additional output details for
