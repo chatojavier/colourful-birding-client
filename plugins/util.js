@@ -314,6 +314,24 @@ async function getPages(apolloClient, process, verbose = false) {
 }
 
 /**
+ * getNextPages
+ */
+async function getNextPages() {
+  const listFileNames = getListFiles('./src/pages').map((file) => file.split('.')[0]);
+
+  const fileNamesToExclude = ['404', '_app', '_document', 'index'];
+  const nextPages = {
+    pages: listFileNames
+      .filter((fileName) => typeof fileName === 'string' && !fileNamesToExclude.includes(fileName))
+      .map((fileName) => {
+        const modifiedTime = fs.statSync(`./src/pages/${fileName}.js`).mtime.toISOString();
+        return { slug: fileName, modified: modifiedTime };
+      }),
+  };
+  return nextPages;
+}
+
+/**
  * getFeedData
  */
 
@@ -333,7 +351,8 @@ async function getFeedData(apolloClient, process, verbose = false) {
 
 async function getSitemapData(apolloClient, process, verbose = false) {
   const posts = await getAllPosts(apolloClient, process, verbose);
-  const pages = await getPages(apolloClient, process, verbose);
+  // const pages = await getPages(apolloClient, process, verbose);
+  const pages = await getNextPages();
 
   return {
     ...posts,
@@ -564,6 +583,14 @@ function terminalColor(text, level) {
     case 'error':
       return `\x1b[31m${text}\x1b[0m`;
   }
+}
+
+/**
+ * List of files
+ */
+function getListFiles(directory) {
+  const dirents = fs.readdirSync(directory, { withFileTypes: true });
+  return dirents.filter((dirent) => dirent.isFile()).map((dirent) => dirent.name);
 }
 
 module.exports = {
