@@ -4,7 +4,17 @@ import InputLabel from './InputLabel';
 import { forwardRef } from 'react';
 
 const TextInput = (
-  { id, label, type = 'text', errorMessage, autocomplete, color = 'green', className = '', ...rest },
+  {
+    id,
+    label,
+    type = 'text',
+    errorMessage,
+    autocomplete,
+    color = 'green',
+    className = '',
+    classNameInput = '',
+    ...rest
+  },
   ref
 ) => {
   return (
@@ -17,7 +27,7 @@ const TextInput = (
         autoComplete={autocomplete}
         className={`block w-full border border-lightgrey p-1 shadow hover:border-darkgrey ${getInputColorByName(
           color
-        )}`}
+        )} ${classNameInput}`}
         ref={ref}
         {...rest}
       />
