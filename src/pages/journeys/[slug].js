@@ -74,15 +74,15 @@ export default function Journey({ journey, socialImage, related }) {
     journey.og = {};
   }
 
-  journey.og.imageUrl = `${homepage}${socialImage}`;
-  journey.og.imageSecureUrl = journey.og.imageUrl;
-  journey.og.imageWidth = 2000;
-  journey.og.imageHeight = 1000;
+  journey.og.imageUrl = journey.og.image?.sourceUrl || `${homepage}${socialImage}`;
+  journey.og.imageSecureUrl = `${homepage}${socialImage}`;
+  journey.og.imageWidth = journey.og.image?.mediaDetails?.width || 2000;
+  journey.og.imageHeight = journey.og.image?.mediaDetails?.height || 1000;
 
   const { metadata } = usePageMetadata({
     metadata: {
       ...journey,
-      title: metaTitle,
+      title: metaTitle || title,
       description: description || journey.og?.description || `Read more about ${title}`,
     },
   });

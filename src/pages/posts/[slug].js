@@ -39,15 +39,15 @@ export default function Post({ post, socialImage, related, journeys }) {
     post.og = {};
   }
 
-  post.og.imageUrl = `${homepage}${socialImage}`;
-  post.og.imageSecureUrl = post.og.imageUrl;
-  post.og.imageWidth = 2000;
-  post.og.imageHeight = 1000;
+  post.og.imageUrl = post.og.image?.sourceUrl || `${homepage}${socialImage}`;
+  post.og.imageSecureUrl = `${homepage}${socialImage}`;
+  post.og.imageWidth = post.og.image?.mediaDetails?.width || 2000;
+  post.og.imageHeight = post.og.image?.mediaDetails?.height || 1000;
 
   const { metadata } = usePageMetadata({
     metadata: {
       ...post,
-      title: metaTitle,
+      title: metaTitle || title,
       description: description || post.og?.description || `Read more about ${title}`,
     },
   });

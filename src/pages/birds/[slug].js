@@ -42,15 +42,15 @@ export default function Bird({ bird, socialImage, related }) {
     bird.og = {};
   }
 
-  bird.og.imageUrl = `${homepage}${socialImage}`;
-  bird.og.imageSecureUrl = bird.og.imageUrl;
-  bird.og.imageWidth = 2000;
-  bird.og.imageHeight = 1000;
+  bird.og.imageUrl = bird.og.image?.sourceUrl || `${homepage}${socialImage}`;
+  bird.og.imageSecureUrl = `${homepage}${socialImage}`;
+  bird.og.imageWidth = bird.og.image?.mediaDetails?.width || 2000;
+  bird.og.imageHeight = bird.og.image?.mediaDetails?.height || 1000;
 
   const { metadata } = usePageMetadata({
     metadata: {
       ...bird,
-      title: metaTitle,
+      title: metaTitle || title,
       description: description || bird.og?.description || `Read more about ${title}`,
     },
   });

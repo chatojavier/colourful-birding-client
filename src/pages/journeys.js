@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import usePageMetadata from 'hooks/use-page-metadata';
+import { usePageHelmetSetting } from 'hooks/use-page-metadata';
 import { getPagesCount, getPaginatedPosts } from 'lib/posts';
 import { getPageCustomDataByUri } from 'lib/pages';
 import { Helmet } from 'react-helmet';
 import { WebpageJsonLd } from 'lib/json-ld';
-import { helmetSettingsFromMetadata } from 'lib/site';
 import useSite from 'hooks/use-site';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
@@ -32,7 +31,7 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
   const [selectedBirds, setSelectedBirds] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState({ label: 'A-Z' });
 
-  const { title = 'Journeys' } = pageInfo;
+  const { title = 'Journeys', seo } = pageInfo;
   const slug = 'journeys';
   const {
     headerImage,
@@ -42,22 +41,8 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
     },
   } = pageInfo.jumboimage;
 
-  const { metadata } = usePageMetadata({
-    metadata: {
-      title,
-      description: false,
-    },
-  });
-
   const { metadata: siteMetadata = {} } = useSite();
-
-  if (process.env.WORDPRESS_PLUGIN_SEO !== true) {
-    metadata.title = `${title} - ${siteMetadata.title}`;
-    metadata.og.title = metadata.title;
-    metadata.twitter.title = metadata.title;
-  }
-
-  const helmetSettings = helmetSettingsFromMetadata(metadata);
+  const { metaTitle, metaDescription, helmetSettings } = usePageHelmetSetting(title, seo);
 
   const orderPosts = (sortCallback) => {
     allFilteredPosts.sort(sortCallback);
@@ -152,7 +137,7 @@ export default function Journeys({ pageInfo, posts, pagination, allPosts, region
     <Layout>
       <Helmet {...helmetSettings} />
 
-      <WebpageJsonLd title={title} description={metadata.description} siteTitle={siteMetadata.title} slug={slug} />
+      <WebpageJsonLd title={metaTitle} description={metaDescription} siteTitle={siteMetadata.title} slug={slug} />
 
       <Header>
         <JumboImage
