@@ -1,4 +1,7 @@
-import useSite from 'hooks/use-site';
+import { Helmet } from 'react-helmet';
+
+import { usePageHelmetSetting } from 'hooks/use-page-metadata';
+
 import { getAllBirds } from 'lib/birds';
 import { WebsiteJsonLd } from 'lib/json-ld';
 import { getHomePage } from 'lib/pages';
@@ -25,9 +28,9 @@ export default function Home({
   tailorMadeBlock,
   testimonialsBlock,
   articles,
+  seo,
 }) {
-  const { metadata = {} } = useSite();
-  const { title } = metadata;
+  const { metaTitle, helmetSettings } = usePageHelmetSetting(null, seo);
 
   const galleryInfo = jumboGallery.info.map((item) => ({
     title: item.title,
@@ -46,9 +49,11 @@ export default function Home({
 
   return (
     <Layout>
-      <WebsiteJsonLd siteTitle={title} />
+      <Helmet {...helmetSettings} />
+
+      <WebsiteJsonLd siteTitle={metaTitle} />
       <Header className="hidden">
-        <h1>Colourful Birding</h1>
+        <h1>{metaTitle}</h1>
       </Header>
 
       <Widescreen>
@@ -107,6 +112,7 @@ export async function getStaticProps() {
     jumbotron: { journeysToShow },
     tailorMadeBlock,
     testimonialsBlock,
+    seo = {},
   } = homedata;
 
   let jumboGallery = {};
@@ -165,6 +171,7 @@ export async function getStaticProps() {
       tailorMadeBlock,
       testimonialsBlock,
       articles,
+      seo,
     },
   };
 }

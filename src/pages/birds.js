@@ -1,5 +1,5 @@
 import Layout from 'components/Layout';
-import usePageMetadata from 'hooks/use-page-metadata';
+import { usePageHelmetSetting } from 'hooks/use-page-metadata';
 
 import { getPagesCount, getPaginatedPosts, getRecentPosts } from 'lib/posts';
 import { getPageCustomDataByUri } from 'lib/pages';
@@ -9,7 +9,6 @@ import { WebpageJsonLd } from 'lib/json-ld';
 import Helmet from 'react-helmet';
 
 import useSite from 'hooks/use-site';
-import { helmetSettingsFromMetadata } from 'lib/site';
 import ToggleButton from 'components/ToggleButton';
 import Section from 'components/Section';
 import Container from 'components/Container';
@@ -36,29 +35,15 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
     }))
   );
 
-  const { title = 'Journeys' } = pageInfo;
+  const { title = 'Journeys', seo } = pageInfo;
   const slug = 'journeys';
   const {
     headerImage,
     headerText: { title: headerTitle = 'Get Inspired', subtitle: headerSubtitle = 'AND FLY AWAY' },
   } = pageInfo.jumboimage;
 
-  const { metadata } = usePageMetadata({
-    metadata: {
-      title,
-      description: false,
-    },
-  });
-
   const { metadata: siteMetadata = {} } = useSite();
-
-  if (process.env.WORDPRESS_PLUGIN_SEO !== true) {
-    metadata.title = `${title} - ${siteMetadata.title}`;
-    metadata.og.title = metadata.title;
-    metadata.twitter.title = metadata.title;
-  }
-
-  const helmetSettings = helmetSettingsFromMetadata(metadata);
+  const { metaTitle, metaDescription, helmetSettings } = usePageHelmetSetting(title, seo);
 
   const setRouterQuery = (selectedRegions, currentPage) => {
     router.push(
@@ -159,7 +144,7 @@ export default function Birds({ pageInfo, posts, pagination, allPosts, regions, 
     <Layout>
       <Helmet {...helmetSettings} />
 
-      <WebpageJsonLd title={title} description={metadata.description} sitetitle={siteMetadata.title} slug={slug} />
+      <WebpageJsonLd title={metaTitle} description={metaDescription} sitetitle={siteMetadata.title} slug={slug} />
 
       <Header>
         <JumboImage
