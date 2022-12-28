@@ -68,15 +68,23 @@ const RelatedCarousel = ({
               initialSlide: reverse ? posts.length - 2 : 0,
             },
             1024: {
+              centeredSlides: false,
+              initialSlide: reverse ? posts.length - 2 : 0,
               lazy: { loadPrevNext: true, loadPrevNextAmount: 4 },
             },
             1540: {
+              centeredSlides: false,
+              initialSlide: reverse ? posts.length - 2 : 0,
               lazy: { loadPrevNext: true, loadPrevNextAmount: 5 },
             },
             2100: {
+              centeredSlides: false,
+              initialSlide: reverse ? posts.length - 2 : 0,
               lazy: { loadPrevNext: true, loadPrevNextAmount: 6 },
             },
             2675: {
+              centeredSlides: false,
+              initialSlide: reverse ? posts.length - 2 : 0,
               lazy: { loadPrevNext: true, loadPrevNextAmount: 7 },
             },
           }}
