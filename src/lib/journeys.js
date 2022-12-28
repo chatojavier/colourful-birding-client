@@ -35,6 +35,7 @@ export async function getJourneyBySlug(slug) {
       variables: {
         slug,
       },
+      errorPolicy: 'all',
     });
   } catch (e) {
     console.log(`[journeys][getJourneyBySlug] Failed to query journey data: ${e.message}`);
@@ -129,15 +130,21 @@ export async function getAllJourneys(options = {}) {
 
   const apolloClient = getApolloClient();
 
-  const journeysData = await apolloClient.query({
-    query: allJourneysIncludesTypes[queryIncludes],
-  });
+  try {
+    const journeysData = await apolloClient.query({
+      query: allJourneysIncludesTypes[queryIncludes],
+      errorPolicy: 'all',
+    });
 
-  const journeys = journeysData?.data.journeys.nodes;
+    const journeys = journeysData?.data.journeys.nodes;
 
-  return {
-    journeys: Array.isArray(journeys) && journeys.map(mapJourneyData),
-  };
+    return {
+      journeys: Array.isArray(journeys) && journeys.map(mapJourneyData),
+    };
+  } catch (e) {
+    console.log(`[journeys][getAllJourneys] Failed to query journey data: ${e.message}`);
+    throw e;
+  }
 }
 
 /**
