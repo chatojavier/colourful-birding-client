@@ -217,7 +217,9 @@ export async function getStaticProps({ params = {} } = {}) {
     const { birds } = await getAllBirds({
       queryIncludes: 'archive',
     });
-    journey.birdsToWatch = journey.birdsToWatch.map((bird) => birds.find((b) => b.id === bird.id));
+    journey.birdsToWatch = journey.birdsToWatch
+      .map((bird) => birds.find((b) => b.id === bird?.id))
+      .filter((bird) => bird !== undefined);
   }
 
   const props = {
