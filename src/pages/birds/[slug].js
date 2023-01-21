@@ -75,7 +75,9 @@ export default function Bird({ bird, socialImage, related }) {
 
   return (
     <Layout>
-      <Helmet {...helmetSettings} />
+      <Helmet {...helmetSettings}>
+        <meta name="robots" content="all" />
+      </Helmet>
 
       <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} hasAuthor={!!bird.author} postType="bird" />
 

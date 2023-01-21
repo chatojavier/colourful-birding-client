@@ -67,7 +67,9 @@ export default function Post({ post, socialImage, related, journeys }) {
 
   return (
     <Layout>
-      <Helmet {...helmetSettings} />
+      <Helmet {...helmetSettings}>
+        <meta name="robots" content="all" />
+      </Helmet>
 
       <ArticleJsonLd post={post} siteTitle={siteMetadata.title} />
 
