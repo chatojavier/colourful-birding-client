@@ -34,6 +34,7 @@ export default class MyDocument extends Document {
       <Html {...this.helmetHtmlAttrComponents} className={'font-raleway'}>
         <Head>
           {this.helmetHeadComponents}
+          <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
