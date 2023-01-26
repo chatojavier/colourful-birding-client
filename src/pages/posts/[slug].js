@@ -60,16 +60,18 @@ export default function Post({ post, socialImage, related, journeys }) {
 
   const { posts: relatedPostsList } = related || {};
 
-  const helmetSettings = helmetSettingsFromMetadata(metadata);
+  const helmetOptions = {
+    meta: [{ name: 'robots', content: 'all' }],
+  };
+
+  const helmetSettings = helmetSettingsFromMetadata(metadata, helmetOptions);
 
   const imageDesktop = imagePost.desktop;
   const imageMobile = imagePost?.mobile ?? imagePost.desktop;
 
   return (
     <Layout>
-      <Helmet {...helmetSettings}>
-        <meta name="robots" content="all" />
-      </Helmet>
+      <Helmet {...helmetSettings} />
 
       <ArticleJsonLd post={post} siteTitle={siteMetadata.title} />
 

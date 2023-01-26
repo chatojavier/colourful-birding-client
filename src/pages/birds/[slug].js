@@ -61,7 +61,11 @@ export default function Bird({ bird, socialImage, related }) {
     metadata.twitter.title = metadata.title;
   }
 
-  const helmetSettings = helmetSettingsFromMetadata(metadata);
+  const helmetOptions = {
+    meta: [{ name: 'robots', content: 'all' }],
+  };
+
+  const helmetSettings = helmetSettingsFromMetadata(metadata, helmetOptions);
   const { journeys: relatedJourneysList } = related || {};
 
   const galleryImages = useMemo(() => {
@@ -75,9 +79,7 @@ export default function Bird({ bird, socialImage, related }) {
 
   return (
     <Layout>
-      <Helmet {...helmetSettings}>
-        <meta name="robots" content="all" />
-      </Helmet>
+      <Helmet {...helmetSettings} />
 
       <ArticleJsonLd post={bird} siteTitle={siteMetadata.title} hasAuthor={!!bird.author} postType="bird" />
 
