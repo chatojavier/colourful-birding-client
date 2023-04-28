@@ -26,15 +26,17 @@ const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates,
           <FeaturedInfoCard label="Price" icon={<Price />}>
             <span className="text-lightblue">USD {price}</span> per person
           </FeaturedInfoCard>
-          <FeaturedInfoCard label="Destinations" icon={<Location />}>
-            {destinations.map((destination, index) => (
-              <div key={index}>
-                <a href={destination.url} target="_blank" rel="noreferrer" className="hover:text-lightblue">
-                  {destination.name}
-                </a>
-              </div>
-            ))}
-          </FeaturedInfoCard>
+          {destinations && (
+            <FeaturedInfoCard label="Destinations" icon={<Location />}>
+              {destinations.map((destination, index) => (
+                <div key={index}>
+                  <a href={destination.url} target="_blank" rel="noreferrer" className="hover:text-lightblue">
+                    {destination.name}
+                  </a>
+                </div>
+              ))}
+            </FeaturedInfoCard>
+          )}
         </div>
         <div className="journey-info__header__book-now | hidden shrink-0 md:block">
           <Button onClick={onClick} color="lightblue" filled>
