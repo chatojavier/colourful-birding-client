@@ -149,10 +149,12 @@ export async function getStaticProps() {
     const { birds } = await getAllBirds({
       queryIncludes: 'archive',
     });
-    featuredBirds.fbGallery = featuredBirdsBlock.featuredBirds.map((bird) => {
-      const birdData = birds.find((b) => b.id === bird.id);
-      return birdData;
-    });
+    featuredBirds.fbGallery = featuredBirdsBlock.featuredBirds
+      .map((bird) => {
+        const birdData = birds.find((b) => b.id === bird.id) ?? null;
+        return birdData;
+      })
+      .filter((bird) => bird !== null);
   }
 
   if (findYourJourney.featuredJourneys) {
