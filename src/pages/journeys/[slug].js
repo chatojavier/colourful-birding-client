@@ -142,7 +142,7 @@ export default function Journey({ journey, socialImage, related }) {
                 Itinerary
               </Button>
               <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(1)}>
-                Acomodation
+                Accommodation
               </Button>
               <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(2)}>
                 Tours Inclution
