@@ -27,6 +27,12 @@ import { getMediaQueries } from 'lib/responsive';
 import useWindowSize from 'hooks/use-window-resize';
 import Loader from 'components/Loader';
 
+const InfoTabs = {
+  ITINERARY: 0,
+  ACCOMMODATION: 1,
+  INCLUSIONS: 2,
+};
+
 export default function Journey({ journey, socialImage, related }) {
   if (!journey) {
     return (
@@ -138,13 +144,25 @@ export default function Journey({ journey, socialImage, related }) {
 
           <div className="journey-extended-info">
             <div className="journey-extended-info__buttons | space-y-2 md:flex md:justify-center md:space-y-0">
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(0)}>
+              <Button
+                color="lightblue"
+                className="mx-auto block w-60 border md:mx-4"
+                onClick={() => handleOpenTabs(InfoTabs.ITINERARY)}
+              >
                 Itinerary
               </Button>
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(1)}>
+              <Button
+                color="lightblue"
+                className="mx-auto block w-60 border md:mx-4"
+                onClick={() => handleOpenTabs(InfoTabs.ACCOMMODATION)}
+              >
                 Accommodation
               </Button>
-              <Button color="lightblue" className="mx-auto block w-60 border md:mx-4" onClick={() => handleOpenTabs(2)}>
+              <Button
+                color="lightblue"
+                className="mx-auto block w-60 border md:mx-4"
+                onClick={() => handleOpenTabs(InfoTabs.INCLUSIONS)}
+              >
                 Tours Inclution
               </Button>
             </div>
