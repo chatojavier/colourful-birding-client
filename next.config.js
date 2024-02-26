@@ -24,6 +24,7 @@ module.exports = withPlugins([[indexSearch], [feed], [sitemap], [socialImages]],
     WORDPRESS_MENU_ALTERNATIVE_NAVIGATION: process.env.WORDPRESS_MENU_ALTERNATIVE_NAVIGATION || 'SECONDARY',
     WORDPRESS_PLUGIN_SEO: parseEnvValue(process.env.WORDPRESS_PLUGIN_SEO, false),
     BIRDS_PER_PAGE: process.env.BIRDS_PER_PAGE,
+    GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
 
     // The image directory for open graph images will be saved at the location above
     // with `public` prepended. By default, images will be saved at /public/images/og
