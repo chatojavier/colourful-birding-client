@@ -21,7 +21,7 @@ const JourneyInfo = ({ cta, content, destinations, mapEmbed, programedDates, pri
       <div className="journey-info__header | md:flex md:items-center md:justify-between md:space-x-8">
         <div className="journey-info__header__featured-info | mb-8 grid grid-cols-2 gap-x-4 gap-y-8 md:max-w-2xl md:grid-cols-3">
           <FeaturedInfoCard label="Trip duration" icon={<Calendar />}>
-            <DateFromTo from={programedDates.from} to={programedDates.to} onlyLong />
+            <DateFromTo from={programedDates.from} to={programedDates.to} onlyDuration />
           </FeaturedInfoCard>
           <FeaturedInfoCard label="Price" icon={<Price />}>
             <span className="text-lightblue">USD {price}</span> per person
