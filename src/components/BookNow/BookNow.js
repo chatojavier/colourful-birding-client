@@ -72,7 +72,7 @@ const BookNow = ({ price = 0, programedDates, color = 'lightblue', className = '
               {programedDates && (
                 <div className="book-now__dates">
                   <GroupTitle className={getTextColorByName(color)}>Dates</GroupTitle>
-                  <DateFromTo from={programedDates.from} to={programedDates.to} />
+                  <DateFromTo from={programedDates.from} to={programedDates.to} onlyDuration />
                   <TextInput id="dates" {...register('dates')} aria-hidden="true" disabled className="hidden" />
                 </div>
               )}

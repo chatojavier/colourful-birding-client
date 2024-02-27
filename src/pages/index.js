@@ -34,7 +34,7 @@ export default function Home({
 
   const galleryInfo = jumboGallery.info.map((item) => ({
     title: item.title,
-    subtitle: <DateFromTo from={item.programedDates.from} to={item.programedDates.to} />,
+    subtitle: <DateFromTo from={item.programedDates.from} to={item.programedDates.to} onlyDuration />,
     button: {
       path: `/journeys/${item.slug}`,
       text: 'Discover',

@@ -107,7 +107,7 @@ export default function Journey({ journey, socialImage, related }) {
 
   const galleryInfo = {
     title: title,
-    subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} />,
+    subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} onlyDuration />,
     button: {
       onClick: () => setOpenBookNow(true),
       text: ctaLabel,

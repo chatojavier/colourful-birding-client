@@ -102,7 +102,7 @@ const PostCard = ({ post, options = {}, color = 'purple' }) => {
             </h4>
             <div className="postcard__main__content__date | mb-4 text-xs md:text-sm lg:text-base">
               {contentTypeName === 'journeys' && programedDates && (
-                <DateFromTo from={programedDates.from} to={programedDates.to} />
+                <DateFromTo from={programedDates.from} to={programedDates.to} onlyDuration />
               )}
               {contentTypeName === 'post' && <DateFormated date={date} />}
             </div>
