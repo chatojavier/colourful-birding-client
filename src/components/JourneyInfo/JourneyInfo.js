@@ -5,7 +5,7 @@ import DateFromTo from 'components/DateFromTo';
 import EmbedCode from 'components/EmbedCode';
 import Button from 'components/Button';
 
-const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates, price, className }) => {
+const JourneyInfo = ({ cta, content, destinations, mapEmbed, programedDates, price, className }) => {
   const FeaturedInfoCard = ({ label, icon, children, className }) => (
     <div className={`journey-info__header__featured-info | flex flex-col  items-center ${className}`}>
       <div className="journey-info__header__featured-info__icon | mb-2">{icon}</div>
@@ -20,8 +20,8 @@ const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates,
     <div className={`journey-info ${className}`}>
       <div className="journey-info__header | md:flex md:items-center md:justify-between md:space-x-8">
         <div className="journey-info__header__featured-info | mb-8 grid grid-cols-2 gap-x-4 gap-y-8 md:max-w-2xl md:grid-cols-3">
-          <FeaturedInfoCard label="Programed Dates" icon={<Calendar />}>
-            <DateFromTo from={programedDates.from} to={programedDates.to} />
+          <FeaturedInfoCard label="Trip duration" icon={<Calendar />}>
+            <DateFromTo from={programedDates.from} to={programedDates.to} onlyLong />
           </FeaturedInfoCard>
           <FeaturedInfoCard label="Price" icon={<Price />}>
             <span className="text-lightblue">USD {price}</span> per person
@@ -39,9 +39,11 @@ const JourneyInfo = ({ onClick, content, destinations, mapEmbed, programedDates,
           )}
         </div>
         <div className="journey-info__header__book-now | hidden shrink-0 md:block">
-          <Button onClick={onClick} color="lightblue" filled>
-            Contact Us
-          </Button>
+          {cta.label && cta.onClick && (
+            <Button onClick={cta.onClick} color="lightblue" filled>
+              {cta.label}
+            </Button>
+          )}
         </div>
       </div>
       <div className="journey-info__body">

@@ -37,6 +37,12 @@ const props = {
     to: '2022-06-29',
   },
   price: 1415.75,
+  cta: {
+    label: 'Book Now',
+    onClick: () => {
+      console.log('Book Now');
+    },
+  },
 };
 
 export default {

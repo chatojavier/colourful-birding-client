@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-const DateFromTo = ({ from, to }) => {
+const DateFromTo = ({ from, to, onlyDuration = false }) => {
   const fromUpdated = new Date(from);
   const toUpdated = new Date(to);
   const dateFrom = new Date(fromUpdated.getTime() + fromUpdated.getTimezoneOffset() * 60000);
@@ -13,9 +13,17 @@ const DateFromTo = ({ from, to }) => {
   const differenceInDaysFormatted = differenceInDays === 1 ? '1 day' : `${differenceInDays} days`;
   return (
     <span>
-      <span className="inline-block">{dateFromFormatted}</span>
-      <span className="inline-block">{dateFromFormatted !== dateToFormatted && <>&nbsp;- {dateToFormatted}</>}</span>
-      <span className="inline-block">&nbsp;{'(' + differenceInDaysFormatted + ')'}</span>
+      {!onlyDuration && (
+        <>
+          <span className="inline-block">{dateFromFormatted}</span>
+          <span className="inline-block">
+            {dateFromFormatted !== dateToFormatted && <>&nbsp;- {dateToFormatted}</>}
+          </span>
+        </>
+      )}
+      <span className="inline-block">
+        &nbsp;{(!onlyDuration ? '(' : '') + differenceInDaysFormatted + (!onlyDuration ? ')' : '')}
+      </span>
     </span>
   );
 };

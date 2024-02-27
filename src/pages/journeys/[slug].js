@@ -103,18 +103,20 @@ export default function Journey({ journey, socialImage, related }) {
 
   const helmetSettings = helmetSettingsFromMetadata(metadata);
 
+  const ctaLabel = 'Book Now';
+
   const galleryInfo = {
     title: title,
     subtitle: <DateFromTo from={programedDates.from} to={programedDates.to} />,
     button: {
       onClick: () => setOpenBookNow(true),
-      text: 'Contact Us',
+      text: ctaLabel,
       color: 'lightblue',
     },
   };
 
   const journeyInfoProps = {
-    onClick: () => setOpenBookNow(true),
+    cta: { label: ctaLabel, onClick: () => setOpenBookNow(true) },
     content,
     destinations,
     mapEmbed,
@@ -172,7 +174,7 @@ export default function Journey({ journey, socialImage, related }) {
               className="mx-auto !mt-8 block w-60 py-3 text-base"
               onClick={() => setOpenBookNow(true)}
             >
-              Contact Us
+              {ctaLabel}
             </Button>
           </div>
         </Container>
