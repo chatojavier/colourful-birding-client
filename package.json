@@ -89,5 +89,9 @@
     "webpack": "^5.73.0"
   },
   "readme": "ERROR: No README data found!",
-  "_id": "colourful_birding_website@0.1.0"
+  "_id": "colourful_birding_website@0.1.0",
+  "browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ]
 }

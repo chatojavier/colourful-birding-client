@@ -9,7 +9,6 @@ const pkg = require('../package.json');
 
 module.exports = function socialImages(nextConfig = {}) {
   const {
-    env,
     outputDirectory = `./public${nextConfig.env.OG_IMAGE_DIRECTORY}`,
     outputName = '[slug].png',
     verbose = false,
@@ -59,7 +58,7 @@ module.exports = function socialImages(nextConfig = {}) {
     },
   };
 
-  const { WORDPRESS_GRAPHQL_ENDPOINT } = env;
+  const { WORDPRESS_GRAPHQL_ENDPOINT } = process.env;
 
   return Object.assign({}, nextConfig, {
     webpack(config, options) {

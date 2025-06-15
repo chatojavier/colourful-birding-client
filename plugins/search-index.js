@@ -4,7 +4,7 @@ const { getAllPosts, generateIndexSearch } = require('./util');
 const WebpackPluginCompiler = require('./plugin-compiler');
 
 module.exports = function indexSearch(nextConfig = {}) {
-  const { env, outputDirectory, outputName, verbose = false } = nextConfig;
+  const { outputDirectory, outputName, verbose = false } = nextConfig;
 
   const plugin = {
     name: 'SearchIndex',
@@ -14,7 +14,7 @@ module.exports = function indexSearch(nextConfig = {}) {
     generate: generateIndexSearch,
   };
 
-  const { WORDPRESS_GRAPHQL_ENDPOINT } = env;
+  const { WORDPRESS_GRAPHQL_ENDPOINT } = process.env;
 
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
