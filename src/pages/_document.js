@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-document-import-in-page */
+import { GtmNoscript } from 'components/GtmScript';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { Helmet } from 'react-helmet';
 
@@ -43,6 +44,8 @@ export default class MyDocument extends Document {
           />
         </Head>
         <body {...this.helmetBodyAttrComponents}>
+          {/* Google Tag Manager */}
+          <GtmNoscript />
           <Main />
           <NextScript />
         </body>
